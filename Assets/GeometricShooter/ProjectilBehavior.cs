@@ -18,7 +18,8 @@ public class ProjectilBehavior : MonoBehaviour {
 	void Update () {
         //transform.RotateAround(player.transform.position,Vector3.up, speed * Time.deltaTime);
         if(canRotato ==true)
-        transform.Rotate(Vector3.up, speedRotato);
+        { }
+        //transform.Rotate(Vector3.up, speedRotato);
 	}
     public void Shoot(Vector3 direction)
     {
