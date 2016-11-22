@@ -32,7 +32,7 @@ public class Cell : MonoBehaviour {
         _imMoving = true;
         if (direction.y < 0)
         {
-            while (_myPosY > firstPos.y + (strength * direction.y))
+            while (_myPosY >= firstPos.y + (strength * direction.y))
             {
                 transform.Translate(direction * Time.deltaTime * speed);
                 yield return null;
@@ -40,7 +40,7 @@ public class Cell : MonoBehaviour {
         }
         else if (direction.y>0)
         {
-            while (_myPosY < firstPos.y + (strength * direction.y))
+            while (_myPosY <= firstPos.y + (strength * direction.y))
             {
                 transform.Translate(direction * Time.deltaTime * speed);
                 yield return null;

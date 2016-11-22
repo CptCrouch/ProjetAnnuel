@@ -69,46 +69,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BLINDED_AM_ME package\OtherResources\MiniJSON.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\Bolt.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\Electricity.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\ExampleUseof_MeshColliderPeMaterial.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\ExampleUseof_SavedData.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\Math_Functions.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\MeshColliderPerMaterial.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\MeshCut.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\Mesh_Maker.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\ParticlePathFlow.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\Path_Comp.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\PortalView.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\RotationsPerMinute.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\SaveData.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\ToolUser.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\Trail_Mesh.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\_2D\AdjustableQuad2D.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\_2D\Parallax2D.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\_2D\Spline2D.cs" />
-    <Compile Include="Assets\BLINDED_AM_ME package\Scripts\_ScriptHelper\SelectableSphereGizmo.cs" />
-    <Compile Include="Assets\GeometricShooter\CombineMesh.cs" />
-    <Compile Include="Assets\GeometricShooter\CutScript.cs" />
-    <Compile Include="Assets\GeometricShooter\ProjectilBehavior.cs" />
-    <Compile Include="Assets\GeometricShooter\Shoot.cs" />
-    <Compile Include="Assets\InteractableObject.cs" />
     <Compile Include="Assets\MineCraftPunching\Cell.cs" />
     <Compile Include="Assets\MineCraftPunching\Punch.cs" />
     <Compile Include="Assets\MineCraftPunching\WorldGenerate.cs" />
     <Compile Include="Assets\MineCraftPunching\WorldManager.cs" />
-    <Compile Include="Assets\RotateTest.cs" />
-    <Compile Include="Assets\RotateWithMouse.cs" />
-    <Compile Include="Assets\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\BLINDED_AM_ME package\Shaders\CelShaded_ShadowDetails.shader" />
-    <None Include="Assets\BLINDED_AM_ME package\Shaders\Clip_Plane.shader" />
-    <None Include="Assets\BLINDED_AM_ME package\Shaders\Clip_Radius.shader" />
-    <None Include="Assets\BLINDED_AM_ME package\Shaders\DiffuseOultine.shader" />
-    <None Include="Assets\BLINDED_AM_ME package\Shaders\Portal.shader" />
-    <None Include="Assets\BLINDED_AM_ME package\Shaders\burnThrough.shader" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
   </ItemGroup>

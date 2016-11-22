@@ -43,7 +43,7 @@ public class WorldGenerate : MonoBehaviour {
                         newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
                         newObject.AddComponent<Cell>();
                         poolCount++;
-                    Debug.Log(poolCount);
+                    //Debug.Log(poolCount);
                     }
                 }
             }
