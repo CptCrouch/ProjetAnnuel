@@ -69,10 +69,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\MineCraftPunching\Cell.cs" />
-    <Compile Include="Assets\MineCraftPunching\Punch.cs" />
-    <Compile Include="Assets\MineCraftPunching\WorldGenerate.cs" />
-    <Compile Include="Assets\MineCraftPunching\WorldManager.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\Cell.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadTargetSceneButton.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadingScreenManager.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\PauseInGame.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\Punch.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\WorldGenerate.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\WorldManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />

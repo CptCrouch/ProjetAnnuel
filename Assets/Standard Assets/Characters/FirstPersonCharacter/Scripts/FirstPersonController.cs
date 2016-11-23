@@ -17,7 +17,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private float m_JumpSpeed;
         [SerializeField] private float m_StickToGroundForce;
         [SerializeField] private float m_GravityMultiplier;
-        [SerializeField] private MouseLook m_MouseLook;
+        [SerializeField] public MouseLook m_MouseLook;
         [SerializeField] private bool m_UseFovKick;
         [SerializeField] private FOVKick m_FovKick = new FOVKick();
         [SerializeField] private bool m_UseHeadBob;
@@ -42,6 +42,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+        
+
         // Use this for initialization
         private void Start()
         {
@@ -61,7 +63,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            RotateView();
+            //RotateView();
+            // transferer dans le script PauseIngame
+
+
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
@@ -108,14 +113,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_MoveDir.x = desiredMove.x*speed;
             m_MoveDir.z = desiredMove.z*speed;
 
-            if (Input.GetKey(KeyCode.Q))
+           /* if (Input.GetKey(KeyCode.Q))
                 m_MoveDir.y = 1 * speed;
             if (Input.GetKey(KeyCode.E))
                 m_MoveDir.y = -1 * speed;
             if (Input.GetKeyUp(KeyCode.Q))
                 m_MoveDir.y =0;
             if (Input.GetKeyUp(KeyCode.E))
-                m_MoveDir.y = 0;
+                m_MoveDir.y = 0;*/
 
 
             if (m_CharacterController.isGrounded)
@@ -243,7 +248,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-        private void RotateView()
+        public void RotateView()
         {
             m_MouseLook.LookRotation (transform, m_Camera.transform);
         }
