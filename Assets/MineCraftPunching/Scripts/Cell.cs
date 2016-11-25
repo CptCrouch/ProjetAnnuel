@@ -2,24 +2,11 @@
 using System.Collections;
 
 public class Cell : MonoBehaviour {
-    public float _myPosX;
-    public float _myPosY;
-    public float _myPosZ;
+    
 
     public bool _imMoving;
     
-	// Use this for initialization
-	void Start () {
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        _myPosX = transform.position.x;
-        _myPosY = transform.position.y;
-        _myPosZ = transform.position.z;
-	
-	}
     public IEnumerator ChangeColor()
     {
         GetComponent<MeshRenderer>().material.color = Color.red;
@@ -32,7 +19,7 @@ public class Cell : MonoBehaviour {
         _imMoving = true;
         if (direction.y < 0)
         {
-            while (_myPosY >= firstPos.y + (strength * direction.y))
+            while (transform.position.y >= firstPos.y + (strength * direction.y))
             {
                 transform.Translate(direction * Time.deltaTime * speed);
                 yield return null;
@@ -40,7 +27,7 @@ public class Cell : MonoBehaviour {
         }
         else if (direction.y>0)
         {
-            while (_myPosY <= firstPos.y + (strength * direction.y))
+            while (transform.position.y <= firstPos.y + (strength * direction.y))
             {
                 transform.Translate(direction * Time.deltaTime * speed);
                 yield return null;
@@ -49,7 +36,32 @@ public class Cell : MonoBehaviour {
         _imMoving = false;
 
     }
-    
+    public IEnumerator GetPunchScale(float strength, float speed, Vector3 direction)
+    {
+        Vector3 firstScale = transform.localScale;
+        _imMoving = true;
+        if (direction.y < 0)
+        {
+            while (transform.localScale.y >= firstScale.y + (strength * direction.y))
+            {
+                transform.localScale -= new Vector3(0, speed * Time.deltaTime, 0);
+                transform.localPosition += direction * speed / 2 * Time.deltaTime;
+                yield return null;
+            }
+        }
+        else if (direction.y > 0)
+        {
+            while (transform.localScale.y <= firstScale.y + (strength * direction.y))
+            {
+                transform.localScale += new Vector3(0, speed * Time.deltaTime, 0);
+                transform.localPosition += direction * speed / 2 * Time.deltaTime;
+                yield return null;
+            }
+        }
+        _imMoving = false;
 
-        
+    }
+
+
+
 }

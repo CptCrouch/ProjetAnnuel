@@ -28,16 +28,15 @@ public class WorldGenerate : MonoBehaviour {
     public void GenerateWorld()
     {
        
-            for (int i = 0; i < height; i++)
-            {
                 for (int j = 0; j < length; j++)
                 {
                     for (int k = 0; k < width; k++)
                     {
-                        Vector3 pos = new Vector3(-width / 2 + k, - i, -length / 2 + j);
+                        Vector3 pos = new Vector3(-width / 2 + k, - height, -length / 2 + j);
                     //GameObject newObject = pool.transform.GetChild(poolCount).gameObject;
                     GameObject newObject = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
                         newObject.transform.position = pos;
+                        newObject.transform.localScale = new Vector3(1, height, 1);
                         newObject.transform.SetParent(transform);
                         newObject.SetActive(true);
                         newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
@@ -46,7 +45,7 @@ public class WorldGenerate : MonoBehaviour {
                     //Debug.Log(poolCount);
                     }
                 }
-            }
+            
         
     }
 	

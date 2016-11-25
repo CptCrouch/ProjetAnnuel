@@ -55,33 +55,33 @@ public class LoadingScreenManager : MonoBehaviour {
 	}
 
 	private IEnumerator LoadAsync(int levelNum) {
-		ShowLoadingVisuals();
+		//ShowLoadingVisuals();
 
 		yield return null; 
 
 		FadeIn();
 		StartOperation(levelNum);
 
-		float lastProgress = 0f;
+		//float lastProgress = 0f;
 
 		// operation does not auto-activate scene, so it's stuck at 0.9
 		while (DoneLoading() == false) {
 			yield return null;
 
-			if (Mathf.Approximately(operation.progress, lastProgress) == false) {
+			/*if (Mathf.Approximately(operation.progress, lastProgress) == false) {
 				progressBar.fillAmount = operation.progress;
 				lastProgress = operation.progress;
-			}
+			}*/
 		}
 
 		if (loadSceneMode == LoadSceneMode.Additive)
 			audioListener.enabled = false;
 
-		ShowCompletionVisuals();
+		//ShowCompletionVisuals();
 
 		yield return new WaitForSeconds(waitOnLoadEnd);
 
-		FadeOut();
+		//FadeOut();
 
 		yield return new WaitForSeconds(fadeDuration);
 
