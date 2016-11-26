@@ -25,8 +25,7 @@ public class Punch : MonoBehaviour {
     private float speedSliderBar=10f;
     [SerializeField]
     private bool forceUniform;
-    [SerializeField]
-    private bool testPunchScale;
+    
 
     private PauseInGame pauseScript;
 
@@ -102,6 +101,7 @@ public class Punch : MonoBehaviour {
                                     // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
                                     // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
                                     float distanceFromCenter = Mathf.Abs(worldGenerateObject.transform.GetChild(i).position.x - hitPosX) + Mathf.Abs(worldGenerateObject.transform.GetChild(i).position.z - hitPosZ);
+                                    //Debug.Log(distanceFromCenter);
                                     if (distanceFromCenter == h)
                                     {
 
@@ -146,14 +146,16 @@ public class Punch : MonoBehaviour {
                             {
                                 if (cell.transform.position.z == worldGenerateObject.transform.GetChild(i).position.z)
                                 {
-                                   
-                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up));
-                                    
+
+                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up));
+
                                 }
                             }
+                        }
                             // dans le cas ou l'on a une aire de force supérieur ou égale à 1
                             if (punchArea >= 1)
                             {
+                                Debug.Log(cellTargeted.Count);
                                 // pour chaque strate du cube central visé, la première est représenté avec 4 cube, la deuxième 9 cube, la troisième 12 etc...
                                 for (int h = 1; h <= punchArea; h++)
                                 {
@@ -162,7 +164,7 @@ public class Punch : MonoBehaviour {
                                     {
                                         // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
                                         // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
-                                        if (CheckCellPosValidity(i) == true)
+                                        if (CheckCellPosValidity(j) == true)
                                         {
                                             float distanceFromCenter = Mathf.Abs(worldGenerateObject.transform.GetChild(j).position.x - cell.transform.position.x) + Mathf.Abs(worldGenerateObject.transform.GetChild(j).position.z - cell.transform.position.z);
                                             if (distanceFromCenter == h)
@@ -171,11 +173,11 @@ public class Punch : MonoBehaviour {
                                                 float roundFloat = RoundValue(profondeur / (punchArea + 1), 100);
 
                                                 float modifiedStrength = Mathf.Abs(roundFloat * ((punchArea + 1) - distanceFromCenter));
-
+                                                //Debug.Log("pouet");
                                                 if (forceUniform == false)
-                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, Vector3.up));
+                                                    StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, Vector3.up));
                                                 else 
-                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up));
+                                                    StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up));
                                                 
 
                                             }
@@ -193,7 +195,7 @@ public class Punch : MonoBehaviour {
                 }
             }
         }
-    }
+    
     public bool CheckCellPosValidity(int randomNumber)
     {
         for (int i = 0; i < cellTargeted.Count; i++)

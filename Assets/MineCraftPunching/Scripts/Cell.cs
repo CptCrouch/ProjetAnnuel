@@ -42,10 +42,11 @@ public class Cell : MonoBehaviour {
         _imMoving = true;
         if (direction.y < 0)
         {
-            while (transform.localScale.y >= firstScale.y + (strength * direction.y))
+            while (transform.localScale.y >= firstScale.y + (strength * direction.y) && transform.localScale.y >=1)
             {
-                transform.localScale -= new Vector3(0, speed * Time.deltaTime, 0);
-                transform.localPosition += direction * speed / 2 * Time.deltaTime;
+                transform.localScale += new Vector3(0, -speed * Time.deltaTime, 0);
+                //transform.localPosition += direction * speed / 2 * Time.deltaTime;
+                transform.Translate(direction * Time.deltaTime * (speed / 2));
                 yield return null;
             }
         }
@@ -54,7 +55,8 @@ public class Cell : MonoBehaviour {
             while (transform.localScale.y <= firstScale.y + (strength * direction.y))
             {
                 transform.localScale += new Vector3(0, speed * Time.deltaTime, 0);
-                transform.localPosition += direction * speed / 2 * Time.deltaTime;
+                //transform.localPosition += direction * speed / 2 * Time.deltaTime;
+                transform.Translate(direction * Time.deltaTime *( speed /2));
                 yield return null;
             }
         }
