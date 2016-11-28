@@ -32,7 +32,7 @@ public class WorldGenerate : MonoBehaviour {
                 {
                     for (int k = 0; k < width; k++)
                     {
-                        Vector3 pos = new Vector3(-width / 2 + k, - height, -length / 2 + j);
+                        Vector3 pos = new Vector3(-width / 2 + k, - height/2, -length / 2 + j);
                     //GameObject newObject = pool.transform.GetChild(poolCount).gameObject;
                     GameObject newObject = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
                         newObject.transform.position = pos;

@@ -72,8 +72,10 @@
     <Compile Include="Assets\MineCraftPunching\Scripts\Cell.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadTargetSceneButton.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadingScreenManager.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\MoveOnPlane.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\PauseInGame.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\Punch.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\PunchNotRandom.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\Scale.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\WorldGenerate.cs" />
   </ItemGroup>

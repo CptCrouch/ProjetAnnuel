@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
+using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Collections;
 
-public class Punch : MonoBehaviour {
+public class PunchNotRandom : MonoBehaviour {
+
     [SerializeField]
-    private float rangePunch= 10f;
-    [SerializeField,Range(0, 3)]
+    private float rangePunch = 10f;
+    [SerializeField, Range(0, 3)]
     private float profondeur = 1f;
     [SerializeField, Range(0, 3)]
     private int punchArea = 1;
@@ -14,7 +15,7 @@ public class Punch : MonoBehaviour {
     private float speed = 1f;
     [SerializeField]
     private float intervalleY = 0.5f;
-    
+
     [SerializeField]
     private GameObject worldGenerateObject;
     [SerializeField]
@@ -22,18 +23,21 @@ public class Punch : MonoBehaviour {
     [SerializeField]
     private Slider sliderProfondeur;
     [SerializeField]
-    private float speedSliderBar=10f;
+    private float speedSliderBar = 10f;
     [SerializeField]
     private bool forceUniform;
-    
+
 
     private PauseInGame pauseScript;
+    private bool holdMouseButton;
+    private GameObject lastTargetedCell;
 
     private List<GameObject> cellTargeted = new List<GameObject>();
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         pauseScript = FindObjectOfType<PauseInGame>();
-	}
+    }
 
 
     // Update is called once per frame
@@ -69,16 +73,24 @@ public class Punch : MonoBehaviour {
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (hit.collider.gameObject.GetComponent<Cell>()._imMoving == false)
+                    holdMouseButton = true;
+                }
+               
+                if (holdMouseButton == true)
+                {
+                
+                if (hit.collider.gameObject.GetComponent<Cell>()._imMoving == false && hit.collider.gameObject != lastTargetedCell)
                     {
                         float hitPosX = hit.collider.transform.position.x;
                         float hitPosY = hit.collider.transform.position.y;
                         float hitPosZ = hit.collider.transform.position.z;
 
+                        lastTargetedCell = hit.collider.gameObject;
+
 
                         StartCoroutine(hit.collider.transform.GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.down,false));
                         cellTargeted.Add(hit.collider.gameObject);
-
+                                
                         // dans le cas ou l'on a une aire de force supérieur ou égale à 1
                         if (punchArea >= 1)
                         {
@@ -102,11 +114,12 @@ public class Punch : MonoBehaviour {
                                         Debug.Log(modifiedStrength);
 
                                         if (forceUniform == false)
-                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, Vector3.down, false));
-                                        else 
-                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.down, false));
-                                 
+                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, Vector3.down,false));
+                                        else
+                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.down,false));
+
                                         cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
+
 
                                     }
                                 }
@@ -137,60 +150,66 @@ public class Punch : MonoBehaviour {
                                 if (cell.transform.position.z == worldGenerateObject.transform.GetChild(i).position.z)
                                 {
 
-                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up, true));
+                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up,true));
 
                                 }
                             }
                         }
-                            // dans le cas ou l'on a une aire de force supérieur ou égale à 1
-                            if (punchArea >= 1)
+                        // dans le cas ou l'on a une aire de force supérieur ou égale à 1
+                        if (punchArea >= 1)
+                        {
+                            Debug.Log(cellTargeted.Count);
+                            // pour chaque strate du cube central visé, la première est représenté avec 4 cube, la deuxième 9 cube, la troisième 12 etc...
+                            for (int h = 1; h <= punchArea; h++)
                             {
-                                Debug.Log(cellTargeted.Count);
-                                // pour chaque strate du cube central visé, la première est représenté avec 4 cube, la deuxième 9 cube, la troisième 12 etc...
-                                for (int h = 1; h <= punchArea; h++)
+                                // pour chaque cube présent dans la scène
+                                for (int j = 0; j < worldGenerateObject.transform.childCount; j++)
                                 {
-                                    // pour chaque cube présent dans la scène
-                                    for (int j = 0; j < worldGenerateObject.transform.childCount; j++)
+                                    // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
+                                    // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
+                                    if (CheckCellPosValidity(j) == true)
                                     {
-                                        // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
-                                        // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
-                                        if (CheckCellPosValidity(j) == true)
+                                        float distanceFromCenter = Mathf.Abs(worldGenerateObject.transform.GetChild(j).position.x - cell.transform.position.x) + Mathf.Abs(worldGenerateObject.transform.GetChild(j).position.z - cell.transform.position.z);
+                                        if (distanceFromCenter == h)
                                         {
-                                            float distanceFromCenter = Mathf.Abs(worldGenerateObject.transform.GetChild(j).position.x - cell.transform.position.x) + Mathf.Abs(worldGenerateObject.transform.GetChild(j).position.z - cell.transform.position.z);
-                                            if (distanceFromCenter == h)
-                                            {
-                                                // on calcule comment on va diviser la force pour avoir un effet sismique
-                                                float roundFloat = RoundValue(profondeur / (punchArea + 1), 100);
+                                            // on calcule comment on va diviser la force pour avoir un effet sismique
+                                            float roundFloat = RoundValue(profondeur / (punchArea + 1), 100);
 
-                                                float modifiedStrength = Mathf.Abs(roundFloat * ((punchArea + 1) - distanceFromCenter));
+                                            float modifiedStrength = Mathf.Abs(roundFloat * ((punchArea + 1) - distanceFromCenter));
                                             //Debug.Log("pouet");
                                             if (forceUniform == false)
                                                 StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, Vector3.up, true));
                                             else
-                                                StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up,true));
-                                                
+                                                StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up, true));
 
-                                            }
+
                                         }
                                     }
                                 }
-
                             }
-                            cellTargeted.Clear();
-                            /*sliderProfondeur.value = 0;
-                            profondeur = 0;*/
-                        }
-                    }
 
+                        }
+                        cellTargeted.Clear();
+                        /*sliderProfondeur.value = 0;
+                        profondeur = 0;*/
+                    }
                 }
+                
+
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                holdMouseButton = false;
+                lastTargetedCell = null;
             }
         }
-    
+    }
+
     public bool CheckCellPosValidity(int randomNumber)
     {
         for (int i = 0; i < cellTargeted.Count; i++)
         {
-            if(worldGenerateObject.transform.GetChild(randomNumber).gameObject == cellTargeted[i])
+            if (worldGenerateObject.transform.GetChild(randomNumber).gameObject == cellTargeted[i])
             {
                 return false;
             }
