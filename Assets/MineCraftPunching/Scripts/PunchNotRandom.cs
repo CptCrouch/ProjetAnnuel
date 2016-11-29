@@ -31,6 +31,8 @@ public class PunchNotRandom : MonoBehaviour {
     private PauseInGame pauseScript;
     private bool holdMouseButton;
     private GameObject lastTargetedCell;
+    private Vector3 choosedTool;
+    private Vector3 choosedReaction;
 
     private List<GameObject> cellTargeted = new List<GameObject>();
     // Use this for initialization
@@ -59,6 +61,7 @@ public class PunchNotRandom : MonoBehaviour {
         punchArea = Mathf.RoundToInt(sliderAireForce.value);
         //profondeur = sliderProfondeur.value;
 
+        
         if (pauseScript.isActive == false)
         {
             if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch/*, layerMask*/))
@@ -74,8 +77,16 @@ public class PunchNotRandom : MonoBehaviour {
                 if (Input.GetMouseButtonDown(0))
                 {
                     holdMouseButton = true;
+                    choosedTool = Vector3.down;
+                    choosedReaction = Vector3.up;
                 }
-               
+                if (Input.GetMouseButtonDown(1))
+                {
+                    holdMouseButton = true;
+                    choosedTool = Vector3.up;
+                    choosedReaction = Vector3.down;
+                }
+
                 if (holdMouseButton == true)
                 {
                 
@@ -88,7 +99,7 @@ public class PunchNotRandom : MonoBehaviour {
                         lastTargetedCell = hit.collider.gameObject;
 
 
-                        StartCoroutine(hit.collider.transform.GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.down,false));
+                        StartCoroutine(hit.collider.transform.GetComponent<Cell>().GetPunchScale(profondeur, speed, choosedTool,false));
                         cellTargeted.Add(hit.collider.gameObject);
                                 
                         // dans le cas ou l'on a une aire de force supérieur ou égale à 1
@@ -114,9 +125,9 @@ public class PunchNotRandom : MonoBehaviour {
                                         Debug.Log(modifiedStrength);
 
                                         if (forceUniform == false)
-                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, Vector3.down,false));
+                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, choosedTool,false));
                                         else
-                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.down,false));
+                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, choosedTool,false));
 
                                         cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
 
@@ -150,7 +161,7 @@ public class PunchNotRandom : MonoBehaviour {
                                 if (cell.transform.position.z == worldGenerateObject.transform.GetChild(i).position.z)
                                 {
 
-                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up,true));
+                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, choosedReaction,true));
 
                                 }
                             }
@@ -178,9 +189,9 @@ public class PunchNotRandom : MonoBehaviour {
                                             float modifiedStrength = Mathf.Abs(roundFloat * ((punchArea + 1) - distanceFromCenter));
                                             //Debug.Log("pouet");
                                             if (forceUniform == false)
-                                                StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, Vector3.up, true));
+                                                StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, choosedReaction, true));
                                             else
-                                                StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(profondeur, speed, Vector3.up, true));
+                                                StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(profondeur, speed, choosedReaction, true));
 
 
                                         }
@@ -197,11 +208,12 @@ public class PunchNotRandom : MonoBehaviour {
                 
 
             }
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
             {
                 holdMouseButton = false;
                 lastTargetedCell = null;
             }
+
         }
     }
 
