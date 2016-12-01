@@ -7,14 +7,110 @@ public class Cell : MonoBehaviour {
     public bool _imMoving;
 
     private Vector3 lastScale;
+
+    public GameObject voisinNord;
+    public GameObject voisinSud;
+    public GameObject voisinOuest;
+    public GameObject voisinEst;
+
     
-	
+
+
+
     public IEnumerator ChangeColor()
     {
         GetComponent<MeshRenderer>().material.color = Color.red;
         yield return new WaitForEndOfFrame();
         GetComponent<MeshRenderer>().material.color = Color.white;
     }
+
+    public void GoOnBorder(Vector3 pos)
+    {
+        transform.position = pos;
+        /*voisinEst = null;
+        voisinNord = null;
+        voisinSud = null;
+        voisinOuest = null;*/
+    }
+
+    public void GetNeighbourHood()
+    {
+        RaycastHit hitNord;
+        RaycastHit hitSud;
+        RaycastHit hitOuest;
+        RaycastHit hitEst;
+
+        //if (voisinNord == null)
+        //{
+            if (Physics.Raycast(transform.position, Vector3.forward, out hitNord, 0.75f))
+            {
+                voisinNord = hitNord.collider.gameObject;
+                /*if (voisinNord.GetComponent<Cell>().voisinSud == null)
+                    voisinNord.GetComponent<Cell>().voisinSud = transform.gameObject;*/
+            }
+            else
+            {
+                voisinNord = null;
+            }
+        //}
+        //if (voisinSud == null)
+        //{
+            if (Physics.Raycast(transform.position, Vector3.back, out hitSud, 0.75f))
+            {
+                voisinSud = hitSud.collider.gameObject;
+                /*if (voisinSud.GetComponent<Cell>().voisinNord == null)
+                    voisinSud.GetComponent<Cell>().voisinNord = transform.gameObject;*/
+
+            }
+            else
+            {
+                voisinSud = null;
+            }
+        //}
+        //if (voisinOuest == null)
+        //{
+            if (Physics.Raycast(transform.position, Vector3.left, out hitOuest, 0.75f))
+            {
+                voisinOuest = hitOuest.collider.gameObject;
+                /*if (voisinOuest.GetComponent<Cell>().voisinEst == null)
+                    voisinOuest.GetComponent<Cell>().voisinEst = transform.gameObject;*/
+            }
+            else
+            {
+                voisinOuest = null;
+            }
+        //}
+        //if (voisinEst == null)
+        //{
+            if (Physics.Raycast(transform.position, Vector3.right, out hitEst, 0.75f))
+            {
+                voisinEst = hitEst.collider.gameObject;
+                /*if (voisinEst.GetComponent<Cell>().voisinOuest == null)
+                    voisinEst.GetComponent<Cell>().voisinOuest = transform.gameObject;*/
+            }
+            else
+            {
+                voisinEst = null;
+            }
+        //}
+        
+    }
+
+    void OnDrawGizmos()
+    {
+        Debug.DrawRay(transform.position, Vector3.forward, Color.blue, 0.75f);
+        Debug.DrawRay(transform.position, Vector3.back, Color.yellow, 0.75f);
+        Debug.DrawRay(transform.position, Vector3.left, Color.red, 0.75f);
+        Debug.DrawRay(transform.position, Vector3.right, Color.green, 0.75f);
+    }
+
+
+
+
+
+
+
+
     public IEnumerator GetPunch(float strength,float speed,Vector3 direction)
     {
         Vector3 firstPos = transform.position;

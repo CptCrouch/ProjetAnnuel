@@ -142,9 +142,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
 
             ProgressStepCycle(speed);
-            UpdateCameraPosition(speed);
+            //UpdateCameraPosition(speed);
 
-            m_MouseLook.UpdateCursorLock();
+           // m_MouseLook.UpdateCursorLock();
         }
 
 
@@ -250,7 +250,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public void RotateView()
         {
-            m_MouseLook.LookRotation (transform, m_Camera.transform);
+            //m_MouseLook.LookRotation (transform, m_Camera.transform);
         }
 
 

@@ -7,7 +7,9 @@ public class WorldGenerate : MonoBehaviour {
     public int height;
     public int length;
     public int width;
-    public float sizeCell;
+
+    public int diametreGrille = 100;
+    
 
     [SerializeField]
     private GameObject prefab;
@@ -47,6 +49,11 @@ public class WorldGenerate : MonoBehaviour {
                 }
             
         
+    }
+
+    void OnDrawGizmos()
+    {
+        //Gizmos.DrawCube(Vector3.zero, new Vector3(diametreGrille, diametreGrille, diametreGrille));
     }
 	
 	
