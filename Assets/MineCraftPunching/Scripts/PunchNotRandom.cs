@@ -64,6 +64,18 @@ public class PunchNotRandom : MonoBehaviour {
         
         if (pauseScript.isActive == false)
         {
+            if (Input.GetMouseButtonDown(0))
+            {
+                holdMouseButton = true;
+                choosedTool = Vector3.down;
+                choosedReaction = Vector3.up;
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                holdMouseButton = true;
+                choosedTool = Vector3.up;
+                choosedReaction = Vector3.down;
+            }
             if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch/*, layerMask*/))
             {
 
@@ -74,18 +86,7 @@ public class PunchNotRandom : MonoBehaviour {
                     profondeur = sliderProfondeur.value;
                 }*/
 
-                if (Input.GetMouseButtonDown(0))
-                {
-                    holdMouseButton = true;
-                    choosedTool = Vector3.down;
-                    choosedReaction = Vector3.up;
-                }
-                if (Input.GetMouseButtonDown(1))
-                {
-                    holdMouseButton = true;
-                    choosedTool = Vector3.up;
-                    choosedReaction = Vector3.down;
-                }
+                
 
                 if (holdMouseButton == true)
                 {
