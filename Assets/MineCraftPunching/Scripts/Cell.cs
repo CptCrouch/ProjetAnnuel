@@ -7,11 +7,15 @@ public class Cell : MonoBehaviour {
     public bool _imMoving;
 
     private Vector3 lastScale;
+    private float ecartAvecStartPosY = 0;
 
     public GameObject voisinNord;
     public GameObject voisinSud;
     public GameObject voisinOuest;
     public GameObject voisinEst;
+
+    [HideInInspector]
+    public float startPosY;
 
     
 
@@ -137,6 +141,7 @@ public class Cell : MonoBehaviour {
     public IEnumerator GetPunchScale(float strength, float speed, Vector3 direction, bool isBlue)
     {
         Vector3 firstScale = transform.localScale;
+        Vector3 firstPos = transform.position;
         
         _imMoving = true;
         if(isBlue)
@@ -156,8 +161,14 @@ public class Cell : MonoBehaviour {
                 //Debug.Log("pouet");
                 yield return null;
             }
+            if (transform.localScale.y >= 1)
+            {
+                transform.localScale = new Vector3(transform.localScale.x, firstScale.y + (strength * direction.y), transform.localScale.z);
+                if(strength == 1)
+                transform.position = new Vector3(transform.position.x, firstPos.y + (0.5f * direction.y), transform.position.z);
+            }
             //transform.localScale = new Vector3 (transform.localScale.x, firstScale.y + (strength * direction.y), transform.localScale.z);
-            
+
         }
         else if (direction.y > 0)
         {
@@ -170,8 +181,10 @@ public class Cell : MonoBehaviour {
                 
                 yield return null;
             }
-            //transform.localScale = new Vector3(transform.localScale.x, firstScale.y + (strength * direction.y), transform.localScale.z);
-            
+            transform.localScale = new Vector3(transform.localScale.x, firstScale.y + (strength * direction.y), transform.localScale.z);
+            if(strength == 1)
+            transform.position = new Vector3(transform.position.x, firstPos.y + (0.5f * direction.y), transform.position.z);
+
         }
         _imMoving = false;
         GetComponent<Renderer>().material.color = Color.white;

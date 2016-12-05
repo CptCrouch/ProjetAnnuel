@@ -26,6 +26,8 @@ public class PunchNotRandom : MonoBehaviour {
     private float speedSliderBar = 10f;
     [SerializeField]
     private bool forceUniform;
+    [SerializeField]
+    private bool feedBackAireForce = true;
 
 
     private PauseInGame pauseScript;
@@ -80,11 +82,27 @@ public class PunchNotRandom : MonoBehaviour {
             {
 
                 StartCoroutine(hit.collider.gameObject.GetComponent<Cell>().ChangeColor());
-                /*if(Input.GetMouseButton(0))
+                if (feedBackAireForce)
                 {
-                    sliderProfondeur.value += Time.deltaTime * speedSliderBar;
-                    profondeur = sliderProfondeur.value;
-                }*/
+                    if (punchArea >= 1)
+                    {
+                        for (int h = 1; h <= punchArea; h++)
+                        {
+                            // pour chaque cube présent dans la scène
+                            for (int i = 0; i < worldGenerateObject.transform.childCount; i++)
+                            {
+                                // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
+                                // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
+                                float distanceFromCenter = Mathf.Abs(worldGenerateObject.transform.GetChild(i).position.x - hit.collider.transform.position.x) + Mathf.Abs(worldGenerateObject.transform.GetChild(i).position.z - hit.collider.transform.position.z);
+                                //Debug.Log(distanceFromCenter);
+                                if (distanceFromCenter == h)
+                                {
+                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ChangeColor());
+                                }
+                            }
+                        }
+                    }
+                }
 
                 
 
