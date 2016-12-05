@@ -145,7 +145,7 @@ public class PunchNotRandom : MonoBehaviour {
                         /// REAction
                         /// 
                         ///
-                        List<GameObject> cellToReactWith = new List<GameObject>();
+                        /*List<GameObject> cellToReactWith = new List<GameObject>();
                         for (int i = 0; i < worldGenerateObject.transform.childCount; i++)
                         {
                                 if(worldGenerateObject.transform.GetChild(i).localScale.y <= -(hit.collider.transform.localScale.y-worldGenerateObject.GetComponent<WorldGenerate>().height)+0.20f 
@@ -214,8 +214,9 @@ public class PunchNotRandom : MonoBehaviour {
 
                         }
                         cellTargeted.Clear();
-                        /*sliderProfondeur.value = 0;
-                        profondeur = 0;*/
+                        
+                        //sliderProfondeur.value = 0;
+                        //profondeur = 0;*/
                     }
                 }
                 
