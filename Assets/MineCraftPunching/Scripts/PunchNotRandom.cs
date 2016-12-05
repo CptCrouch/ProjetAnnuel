@@ -100,7 +100,7 @@ public class PunchNotRandom : MonoBehaviour {
                         lastTargetedCell = hit.collider.gameObject;
 
 
-                        StartCoroutine(hit.collider.transform.GetComponent<Cell>().GetPunchScale(profondeur, speed, choosedTool,false));
+                        StartCoroutine(hit.collider.transform.GetComponent<Cell>().GetPunchScale(profondeur+punchArea, speed, choosedTool,false));
                         cellTargeted.Add(hit.collider.gameObject);
                                 
                         // dans le cas ou l'on a une aire de force supérieur ou égale à 1
@@ -128,7 +128,7 @@ public class PunchNotRandom : MonoBehaviour {
                                         if (forceUniform == false)
                                             StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, choosedTool,false));
                                         else
-                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, choosedTool,false));
+                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur+punchArea-h, speed, choosedTool,false));
 
                                         cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
 
@@ -142,15 +142,27 @@ public class PunchNotRandom : MonoBehaviour {
 
 
 
-                        /// REMONTEE
+                        /// REAction
                         /// 
                         ///
+                        List<GameObject> cellToReactWith = new List<GameObject>();
+                        for (int i = 0; i < worldGenerateObject.transform.childCount; i++)
+                        {
+                                if(worldGenerateObject.transform.GetChild(i).localScale.y <= -(hit.collider.transform.localScale.y-worldGenerateObject.GetComponent<WorldGenerate>().height)+0.20f 
+                                    && worldGenerateObject.transform.GetChild(i).localScale.y >= -(hit.collider.transform.localScale.y - worldGenerateObject.GetComponent<WorldGenerate>().height) - 0.20f)
+                                {
+                                    cellToReactWith.Add(worldGenerateObject.transform.GetChild(i).gameObject);
+                                }
+
+                        }
+                        Debug.Log(cellToReactWith.Count);
+
                         int randomCell = Random.Range(0, worldGenerateObject.transform.childCount);
 
                         //Si false alors on recalcule un autre numero random
                         while (CheckCellPosValidity(randomCell) == false)
                         {
-                            randomCell = Random.Range(0, worldGenerateObject.transform.childCount);
+                            randomCell = Random.Range(0, cellToReactWith.Count);
                         }
 
 
@@ -162,7 +174,7 @@ public class PunchNotRandom : MonoBehaviour {
                                 if (cell.transform.position.z == worldGenerateObject.transform.GetChild(i).position.z)
                                 {
 
-                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur, speed, choosedReaction,true));
+                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur+punchArea, speed, choosedReaction,true));
 
                                 }
                             }
@@ -170,7 +182,7 @@ public class PunchNotRandom : MonoBehaviour {
                         // dans le cas ou l'on a une aire de force supérieur ou égale à 1
                         if (punchArea >= 1)
                         {
-                            Debug.Log(cellTargeted.Count);
+                            
                             // pour chaque strate du cube central visé, la première est représenté avec 4 cube, la deuxième 9 cube, la troisième 12 etc...
                             for (int h = 1; h <= punchArea; h++)
                             {
@@ -192,7 +204,7 @@ public class PunchNotRandom : MonoBehaviour {
                                             if (forceUniform == false)
                                                 StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, choosedReaction, true));
                                             else
-                                                StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(profondeur, speed, choosedReaction, true));
+                                                StartCoroutine(worldGenerateObject.transform.GetChild(j).GetComponent<Cell>().GetPunchScale(profondeur+punchArea-h, speed, choosedReaction, true));
 
 
                                         }

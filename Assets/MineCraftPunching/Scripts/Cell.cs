@@ -96,13 +96,13 @@ public class Cell : MonoBehaviour {
         
     }
 
-    void OnDrawGizmos()
+    /*void OnDrawGizmos()
     {
         Debug.DrawRay(transform.position, Vector3.forward, Color.blue, 0.75f);
         Debug.DrawRay(transform.position, Vector3.back, Color.yellow, 0.75f);
         Debug.DrawRay(transform.position, Vector3.left, Color.red, 0.75f);
         Debug.DrawRay(transform.position, Vector3.right, Color.green, 0.75f);
-    }
+    }*/
 
 
 

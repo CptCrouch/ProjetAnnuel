@@ -8,6 +8,8 @@ public class WorldGenerate : MonoBehaviour {
     public int length;
     public int width;
 
+    public int howManyCellBonusInPool;
+
     public int diametreGrille = 100;
     
 
@@ -47,6 +49,13 @@ public class WorldGenerate : MonoBehaviour {
                     //Debug.Log(poolCount);
                     }
                 }
+
+        for (int i = 0; i < howManyCellBonusInPool; i++)
+        {
+            GameObject newObject = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
+            newObject.transform.SetParent(pool.transform);
+            newObject.SetActive(false);
+        }
             
         
     }

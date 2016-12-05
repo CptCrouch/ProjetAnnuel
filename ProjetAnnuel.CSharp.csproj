@@ -70,9 +70,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\MineCraftPunching\MushroomLike\CloudMove.cs" />
+    <Compile Include="Assets\MineCraftPunching\MushroomLike\CloudPlateformer.cs" />
     <Compile Include="Assets\MineCraftPunching\MushroomLike\OscarCameraScripts\Controller.cs" />
     <Compile Include="Assets\MineCraftPunching\MushroomLike\OscarCameraScripts\camFollow.cs" />
     <Compile Include="Assets\MineCraftPunching\MushroomLike\OscarCameraScripts\cameraDamping.cs" />
+    <Compile Include="Assets\MineCraftPunching\MushroomLike\PlayerOnWire.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\Cell.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadTargetSceneButton.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadingScreenManager.cs" />
