@@ -16,6 +16,8 @@ public class WorldGenerate : MonoBehaviour {
     [SerializeField]
     private GameObject prefab;
     [SerializeField]
+    private GameObject prefabWall;
+    [SerializeField]
     private GameObject pool;
 
     private int poolCount;
@@ -55,6 +57,36 @@ public class WorldGenerate : MonoBehaviour {
             GameObject newObject = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
             newObject.transform.SetParent(pool.transform);
             newObject.SetActive(false);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            
+            GameObject newObject = Instantiate(prefabWall, Vector3.zero, Quaternion.identity) as GameObject;
+            if (i == 0)
+            {
+                Vector3 pos = new Vector3(0,0,length/2+width/2);
+                newObject.transform.position = pos;
+                newObject.transform.localScale = new Vector3(width, 1000, width);
+            }
+            if (i == 1)
+            {
+                Vector3 pos = new Vector3(length / 2 + width / 2, 0, 0);
+                newObject.transform.position = pos;
+                newObject.transform.localScale = new Vector3(length, 1000, length);
+
+            }
+            if (i == 2)
+            {
+                Vector3 pos = new Vector3(0, 0, -(length / 2 + width / 2));
+                newObject.transform.position = pos;
+                newObject.transform.localScale = new Vector3(width, 1000, width);
+            }
+            if (i == 3)
+            {
+                Vector3 pos = new Vector3(-(length / 2 + width / 2), 0, 0);
+                newObject.transform.position = pos;
+                newObject.transform.localScale = new Vector3(length, 1000, length);
+            }
         }
             
         

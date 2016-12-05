@@ -47,8 +47,8 @@ public class PunchNotRandom : MonoBehaviour {
     {
         Vector3 cameraCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
         RaycastHit hit;
-        /*int layer = 8;
-        LayerMask layerMask = 1 << layer;*/
+        int layer = 8;
+        LayerMask layerMask = 1 << layer;
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             sliderAireForce.value--;
@@ -76,7 +76,7 @@ public class PunchNotRandom : MonoBehaviour {
                 choosedTool = Vector3.up;
                 choosedReaction = Vector3.down;
             }
-            if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch/*, layerMask*/))
+            if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch, layerMask))
             {
 
                 StartCoroutine(hit.collider.gameObject.GetComponent<Cell>().ChangeColor());

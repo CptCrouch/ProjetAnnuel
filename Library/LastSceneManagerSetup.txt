@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/MineCraftPunching/MushroomLike/Scene3.unity
+- path: Assets/MineCraftPunching/Scenes/Scene1.unity
   isLoaded: 1
   isActive: 1
