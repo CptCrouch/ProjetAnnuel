@@ -75,6 +75,7 @@
     <Compile Include="Assets\MineCraftPunching\MushroomLike\OscarCameraScripts\camFollow.cs" />
     <Compile Include="Assets\MineCraftPunching\MushroomLike\OscarCameraScripts\cameraDamping.cs" />
     <Compile Include="Assets\MineCraftPunching\MushroomLike\PlayerOnWire.cs" />
+    <Compile Include="Assets\MineCraftPunching\Scripts\BallBehavior.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\Cell.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadTargetSceneButton.cs" />
     <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadingScreenManager.cs" />

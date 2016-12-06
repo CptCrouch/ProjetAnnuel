@@ -5,6 +5,8 @@ public class Cell : MonoBehaviour {
     
 
     public bool _imMoving;
+    public bool _imReturningStartPos;
+    public bool imAtStartPos = true;
 
     private Vector3 lastScale;
     private float ecartAvecStartPosY = 0;
@@ -16,8 +18,12 @@ public class Cell : MonoBehaviour {
 
     [HideInInspector]
     public float startPosY;
-
+    [HideInInspector]
+    public float startScaleY;
+   
     
+
+
 
 
 
@@ -110,7 +116,37 @@ public class Cell : MonoBehaviour {
 
 
 
-
+    public IEnumerator ReturnToStartScale (float speed)
+    {
+        Vector3 firstScale = transform.localScale;
+        _imMoving = true;
+        _imReturningStartPos = true;
+        GetComponent<Renderer>().material.color = Color.green;
+        if (firstScale.y > startScaleY)
+        {
+            while(transform.localScale.y >startScaleY)
+            {
+                transform.localScale += new Vector3(0, -speed * Time.deltaTime, 0);
+                transform.Translate(Vector3.down * Time.deltaTime * (speed / 2));
+                yield return null;
+            }
+        }
+        else if(firstScale.y < startScaleY)
+        {
+            while (transform.localScale.y < startScaleY)
+            {
+                transform.localScale += new Vector3(0, speed * Time.deltaTime, 0);
+                transform.Translate(Vector3.up * Time.deltaTime * (speed / 2));
+                yield return null;
+            }
+        }
+        transform.localScale = new Vector3(transform.localScale.x, startScaleY, transform.localScale.z);
+        transform.position = new Vector3(transform.position.x, startPosY, transform.position.z);
+        _imMoving = false;
+        imAtStartPos = true;
+        _imReturningStartPos = false;
+        GetComponent<Renderer>().material.color = Color.white;
+    }
 
 
 
@@ -156,7 +192,7 @@ public class Cell : MonoBehaviour {
                 
                 transform.localScale += new Vector3(0, -speed * Time.deltaTime, 0);
                
-                //transform.localPosition += direction * speed / 2 * Time.deltaTime;
+                
                 transform.Translate(direction * Time.deltaTime * (speed / 2));
                 //Debug.Log("pouet");
                 yield return null;
@@ -175,8 +211,6 @@ public class Cell : MonoBehaviour {
             while (transform.localScale.y <= firstScale.y + (strength * direction.y))
             {
                 transform.localScale += new Vector3(0, speed * Time.deltaTime, 0);
-                
-                //transform.localPosition += direction * speed / 2 * Time.deltaTime;
                 transform.Translate(direction * Time.deltaTime *( speed /2));
                 
                 yield return null;
@@ -187,11 +221,13 @@ public class Cell : MonoBehaviour {
 
         }
         _imMoving = false;
+        imAtStartPos = false;
         GetComponent<Renderer>().material.color = Color.white;
 
 
 
     }
+
     
 
 

@@ -12,12 +12,12 @@ public class PunchNotRandom : MonoBehaviour {
     [SerializeField, Range(0, 3)]
     private int punchArea = 1;
     [SerializeField]
-    private float speed = 1f;
+    public float speed = 1f;
     [SerializeField]
     private float intervalleY = 0.5f;
 
     [SerializeField]
-    private GameObject worldGenerateObject;
+    public GameObject worldGenerateObject;
     [SerializeField]
     private Slider sliderAireForce;
     [SerializeField]
@@ -66,12 +66,12 @@ public class PunchNotRandom : MonoBehaviour {
         
         if (pauseScript.isActive == false)
         {
-            if (Input.GetMouseButtonDown(0))
+            /*if (Input.GetMouseButtonDown(0))
             {
                 holdMouseButton = true;
                 choosedTool = Vector3.down;
                 choosedReaction = Vector3.up;
-            }
+            }*/
             if (Input.GetMouseButtonDown(1))
             {
                 holdMouseButton = true;
@@ -80,8 +80,9 @@ public class PunchNotRandom : MonoBehaviour {
             }
             if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch, layerMask))
             {
-
+                //if(hit.collider.gameObject.GetComponent<Cell>()._imReturningStartPos == false)
                 StartCoroutine(hit.collider.gameObject.GetComponent<Cell>().ChangeColor());
+
                 if (feedBackAireForce)
                 {
                     if (punchArea >= 1)
@@ -97,6 +98,7 @@ public class PunchNotRandom : MonoBehaviour {
                                 //Debug.Log(distanceFromCenter);
                                 if (distanceFromCenter == h)
                                 {
+                                    //if(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>()._imReturningStartPos == false)
                                     StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ChangeColor());
                                 }
                             }

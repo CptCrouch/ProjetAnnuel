@@ -48,6 +48,7 @@ public class WorldGenerate : MonoBehaviour {
                         newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
                         newObject.AddComponent<Cell>();
                         newObject.GetComponent<Cell>().startPosY = -height / 2;
+                        newObject.GetComponent<Cell>().startScaleY = height;
                         poolCount++;
                         //Debug.Log(poolCount);
                     }
