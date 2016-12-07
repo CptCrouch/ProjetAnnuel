@@ -9,12 +9,12 @@ public class PunchNotRandom : MonoBehaviour {
     private float rangePunch = 10f;
     [SerializeField, Range(0, 3)]
     private float profondeur = 1f;
-    [SerializeField, Range(0, 3)]
+    [SerializeField, Range(0, 4)]
     private int punchArea = 1;
     [SerializeField]
     public float speed = 1f;
     [SerializeField]
-    private float intervalleY = 0.5f;
+    private float forceShootBall = 10f;
 
     [SerializeField]
     public GameObject worldGenerateObject;
@@ -49,8 +49,10 @@ public class PunchNotRandom : MonoBehaviour {
     {
         Vector3 cameraCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
         RaycastHit hit;
-        int layer = 8;
-        LayerMask layerMask = 1 << layer;
+        int layerCell = 8;
+        LayerMask layerMaskCell = 1 << layerCell;
+        int layerBall = 9;
+        LayerMask layerMaskBall = 1 << layerBall;
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             sliderAireForce.value--;
@@ -72,13 +74,23 @@ public class PunchNotRandom : MonoBehaviour {
                 choosedTool = Vector3.down;
                 choosedReaction = Vector3.up;
             }*/
+            if(Input.GetMouseButtonDown(0))
+            {
+                if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch, layerMaskBall))
+                {
+                    Vector3 direction = (hit.collider.transform.position - transform.position).normalized;
+                    hit.collider.GetComponent<BallBehavior>().ShootOnBall(direction, forceShootBall);
+                }
+
+
+            }
             if (Input.GetMouseButtonDown(1))
             {
                 holdMouseButton = true;
                 choosedTool = Vector3.up;
                 choosedReaction = Vector3.down;
             }
-            if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch, layerMask))
+            if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch, layerMaskCell))
             {
                 //if(hit.collider.gameObject.GetComponent<Cell>()._imReturningStartPos == false)
                 StartCoroutine(hit.collider.gameObject.GetComponent<Cell>().ChangeColor());

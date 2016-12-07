@@ -68,26 +68,26 @@ public class WorldGenerate : MonoBehaviour {
             {
                 Vector3 pos = new Vector3(-0.5f,0,length/2+width/2-0.5f);
                 newObject.transform.position = pos;
-                newObject.transform.localScale = new Vector3(width, 1000, width);
+                newObject.transform.localScale = new Vector3(width*3, 1000, width);
             }
             if (i == 1)
             {
                 Vector3 pos = new Vector3(length / 2 + width / 2 -0.5f, 0, -0.5f);
                 newObject.transform.position = pos;
-                newObject.transform.localScale = new Vector3(length, 1000, length);
+                newObject.transform.localScale = new Vector3(length, 1000, length*3);
 
             }
             if (i == 2)
             {
                 Vector3 pos = new Vector3(-0.5f, 0, -(length / 2 + width / 2 + 0.5f));
                 newObject.transform.position = pos;
-                newObject.transform.localScale = new Vector3(width, 1000, width);
+                newObject.transform.localScale = new Vector3(width*3, 1000, width);
             }
             if (i == 3)
             {
                 Vector3 pos = new Vector3(-(length / 2 + width / 2 + 0.5f), 0, -0.5f);
                 newObject.transform.position = pos;
-                newObject.transform.localScale = new Vector3(length, 1000, length);
+                newObject.transform.localScale = new Vector3(length, 1000, length*3);
             }
         }
             

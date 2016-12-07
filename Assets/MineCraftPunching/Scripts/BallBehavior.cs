@@ -4,23 +4,33 @@ using System.Collections;
 public class BallBehavior : MonoBehaviour {
     WorldGenerate worldGenerate;
     PunchNotRandom punchNotRandom;
+    Rigidbody rb;
 
     [SerializeField]
     public float puissanceMinimumArea1 = 4f;
+    [SerializeField]
     public float puissanceMinimumArea2 = 5f;
+    [SerializeField]
     public float puissanceMinimumArea3 = 7f;
+    [SerializeField]
     public float puissanceMinimumArea4 = 10f;
 
     // Use this for initialization
     void Start () {
         punchNotRandom = FindObjectOfType<PunchNotRandom>();
         worldGenerate = FindObjectOfType<WorldGenerate>();
+        rb = GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    public void ShootOnBall(Vector3 direction, float strength)
+    {
+        rb.AddForce(direction * strength, ForceMode.Impulse);
+    }
 
     void OnCollisionEnter(Collision collision)
     {
