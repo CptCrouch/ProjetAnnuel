@@ -87,6 +87,7 @@
     <Compile Include="Assets\MineCraftPunching\Scripts\WorldGenerate.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\MineCraftPunching\Shaders\HighlightBall.shader" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
   </ItemGroup>

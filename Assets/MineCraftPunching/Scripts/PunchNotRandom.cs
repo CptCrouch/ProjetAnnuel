@@ -6,13 +6,15 @@ using System.Collections.Generic;
 public class PunchNotRandom : MonoBehaviour {
 
     [SerializeField]
-    private float rangePunch = 10f;
+    private float rangeEarthTool = 10f;
+    [SerializeField]
+    private float rangeBallTool = 10f;
     [SerializeField, Range(0, 3)]
     private float profondeur = 1f;
     [SerializeField, Range(0, 4)]
     private int punchArea = 1;
     [SerializeField]
-    public float speed = 1f;
+    public float speedScaleCell = 1f;
     [SerializeField]
     private float forceShootBall = 10f;
 
@@ -74,25 +76,29 @@ public class PunchNotRandom : MonoBehaviour {
                 choosedTool = Vector3.down;
                 choosedReaction = Vector3.up;
             }*/
-            if(Input.GetMouseButtonDown(0))
+            if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangeBallTool, layerMaskBall))
             {
-                if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch, layerMaskBall))
+                StartCoroutine(hit.collider.GetComponent<BallBehavior>().ChangeMaterialHighlight());
+                if (Input.GetMouseButtonDown(1))
                 {
                     Vector3 direction = (hit.collider.transform.position - transform.position).normalized;
                     hit.collider.GetComponent<BallBehavior>().ShootOnBall(direction, forceShootBall);
                 }
-
-
             }
-            if (Input.GetMouseButtonDown(1))
+           
+                
+
+
+            
+            if (Input.GetMouseButtonDown(0))
             {
                 holdMouseButton = true;
                 choosedTool = Vector3.up;
                 choosedReaction = Vector3.down;
             }
-            if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangePunch, layerMaskCell))
+            if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangeEarthTool, layerMaskCell))
             {
-                //if(hit.collider.gameObject.GetComponent<Cell>()._imReturningStartPos == false)
+                if(hit.collider.gameObject.GetComponent<Cell>()._imReturningStartPos == false)
                 StartCoroutine(hit.collider.gameObject.GetComponent<Cell>().ChangeColor());
 
                 if (feedBackAireForce)
@@ -110,7 +116,7 @@ public class PunchNotRandom : MonoBehaviour {
                                 //Debug.Log(distanceFromCenter);
                                 if (distanceFromCenter == h)
                                 {
-                                    //if(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>()._imReturningStartPos == false)
+                                    if(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>()._imReturningStartPos == false)
                                     StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ChangeColor());
                                 }
                             }
@@ -132,7 +138,7 @@ public class PunchNotRandom : MonoBehaviour {
                         lastTargetedCell = hit.collider.gameObject;
 
 
-                        StartCoroutine(hit.collider.transform.GetComponent<Cell>().GetPunchScale(profondeur+punchArea, speed, choosedTool,false));
+                        StartCoroutine(hit.collider.transform.GetComponent<Cell>().GetPunchScale(profondeur+punchArea, speedScaleCell, choosedTool,false));
                         cellTargeted.Add(hit.collider.gameObject);
                                 
                         // dans le cas ou l'on a une aire de force supérieur ou égale à 1
@@ -158,9 +164,9 @@ public class PunchNotRandom : MonoBehaviour {
                                         Debug.Log(modifiedStrength);
 
                                         if (forceUniform == false)
-                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speed, choosedTool,false));
+                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speedScaleCell, choosedTool,false));
                                         else
-                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur+punchArea-h, speed, choosedTool,false));
+                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur+punchArea-h, speedScaleCell, choosedTool,false));
 
                                         cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
 

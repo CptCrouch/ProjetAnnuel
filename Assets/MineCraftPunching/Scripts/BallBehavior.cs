@@ -27,6 +27,13 @@ public class BallBehavior : MonoBehaviour {
 	
 	}
 
+    public IEnumerator ChangeMaterialHighlight()
+    {
+        
+        GetComponent<MeshRenderer>().material.SetFloat("_Emission", 0.2f);
+        yield return new WaitForEndOfFrame();
+        GetComponent<MeshRenderer>().material.SetFloat("_Emission", 0f); 
+    }
     public void ShootOnBall(Vector3 direction, float strength)
     {
         rb.AddForce(direction * strength, ForceMode.Impulse);
@@ -42,7 +49,7 @@ public class BallBehavior : MonoBehaviour {
             Debug.Log(puissanceCollision);
             if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
             {
-                StartCoroutine(cellCollided.ReturnToStartScale(punchNotRandom.speed));
+                StartCoroutine(cellCollided.ReturnToStartScale(punchNotRandom.speedScaleCell));
                 if (puissanceCollision >= puissanceMinimumArea1 && puissanceCollision < puissanceMinimumArea2)
                     GetAreaOfCell(1, cellCollided.transform);
                 if (puissanceCollision >= puissanceMinimumArea2 && puissanceCollision < puissanceMinimumArea3)
@@ -71,7 +78,7 @@ public class BallBehavior : MonoBehaviour {
                 if (distanceFromCenter == h)
                 {
                     if (punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>()._imMoving == false && punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().imAtStartPos == false)
-                        StartCoroutine(punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ReturnToStartScale(punchNotRandom.speed));
+                        StartCoroutine(punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ReturnToStartScale(punchNotRandom.speedScaleCell));
                 }
             }
         }
