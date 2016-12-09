@@ -119,6 +119,7 @@ public class Cell : MonoBehaviour {
     public IEnumerator ReturnToStartScale (float speed)
     {
         Vector3 firstScale = transform.localScale;
+        //Vector3 lastScale = transform.localScale;
         _imMoving = true;
         _imReturningStartPos = true;
         GetComponent<Renderer>().material.color = Color.green;
@@ -128,6 +129,8 @@ public class Cell : MonoBehaviour {
             {
                 transform.localScale += new Vector3(0, -speed * Time.deltaTime, 0);
                 transform.Translate(Vector3.down * Time.deltaTime * (speed / 2));
+
+                //lastScale = transform.localScale;
                 yield return null;
             }
         }

@@ -8,19 +8,32 @@ public class WorldGenerate : MonoBehaviour {
     public int length;
     public int width;
 
+
+    // doit etre un nombre impair
+    public int diametreWorldHexagon;
+    
+
+    public float increaseZ = 1.3f;
+    public float increaseX = 0.75f;
+
     public int howManyCellBonusInPool;
 
-    public int diametreGrille = 100;
+    //public int diametreGrille = 10;
+
+    public bool isHexagonWorld = false;
     
 
     [SerializeField]
     private GameObject prefab;
+    [SerializeField]
+    private GameObject prefabHexagon;
     [SerializeField]
     private GameObject prefabWall;
     [SerializeField]
     private GameObject pool;
 
     private int poolCount;
+    private int rayon;
     //public List<GameObject> cells;
     
     
@@ -28,7 +41,13 @@ public class WorldGenerate : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        GenerateWorld();
+        rayon = (diametreWorldHexagon-1) / 2;
+        Debug.Log(rayon);
+        if (isHexagonWorld == false)
+            GenerateWorld();
+        else
+            GenerateHexagonWorld();
+
 
 	}
     public void GenerateWorld()
@@ -92,6 +111,56 @@ public class WorldGenerate : MonoBehaviour {
         }
             
         
+    }
+
+    public void GenerateHexagonWorld()
+    {
+        for (int i = -rayon; i <= rayon; i++)
+        {
+            int pouet = diametreWorldHexagon - Mathf.Abs(i);
+            if(pouet % 2 == 0)
+            {
+                for (int j = -pouet+1; j <= pouet -1; j=j+2)
+                {
+                    Vector3 pos = new Vector3(j  * increaseX, -height, i * increaseZ);
+                    
+                    GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
+
+                    newObject.transform.position = pos;
+                    newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
+                    newObject.transform.SetParent(transform);
+                    newObject.SetActive(true);
+                    newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
+                    newObject.AddComponent<Cell>();
+                    newObject.GetComponent<Cell>().startPosY = -height / 2;
+                    newObject.GetComponent<Cell>().startScaleY = height;
+                    poolCount++;
+                }
+            }
+                //pair
+                else
+            {
+                //impair
+                int lel = (pouet - 1) / 2;
+                for (int j = -lel; j <= lel; j++)
+                {
+                    Vector3 pos = new Vector3(j * increaseX *2, -height, i * increaseZ);
+                    
+                    GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
+                   
+                    newObject.transform.position = pos;
+                    newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
+                    newObject.transform.SetParent(transform);
+                    newObject.SetActive(true);
+                    newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
+                    newObject.AddComponent<Cell>();
+                    newObject.GetComponent<Cell>().startPosY = -height / 2;
+                    newObject.GetComponent<Cell>().startScaleY = height;
+                    poolCount++;
+                }
+            }
+                
+        }
     }
 
     void OnDrawGizmos()

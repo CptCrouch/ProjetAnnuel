@@ -31,13 +31,13 @@ public class MoveOnPlane : MonoBehaviour {
             else
                 characController.enabled = false;
         }
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             
             speed = speedRun;
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.E))
         {
 
             speed = speedNormal;

@@ -49,7 +49,7 @@ public class BallBehavior : MonoBehaviour {
             Debug.Log(puissanceCollision);
             if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
             {
-                StartCoroutine(cellCollided.ReturnToStartScale(punchNotRandom.speedScaleCell));
+                StartCoroutine(cellCollided.ReturnToStartScale(punchNotRandom.speedScaleCellUp));
                 if (puissanceCollision >= puissanceMinimumArea1 && puissanceCollision < puissanceMinimumArea2)
                     GetAreaOfCell(1, cellCollided.transform);
                 if (puissanceCollision >= puissanceMinimumArea2 && puissanceCollision < puissanceMinimumArea3)
@@ -78,7 +78,7 @@ public class BallBehavior : MonoBehaviour {
                 if (distanceFromCenter == h)
                 {
                     if (punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>()._imMoving == false && punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().imAtStartPos == false)
-                        StartCoroutine(punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ReturnToStartScale(punchNotRandom.speedScaleCell));
+                        StartCoroutine(punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ReturnToStartScale(punchNotRandom.speedScaleCellUp));
                 }
             }
         }
