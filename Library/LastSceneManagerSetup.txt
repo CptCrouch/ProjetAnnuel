@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/MineCraftPunching/Scenes/Scene1Hexagon.unity
+- path: Assets/Project/Scenes/Scene1Hexagon.unity
   isLoaded: 1
   isActive: 1

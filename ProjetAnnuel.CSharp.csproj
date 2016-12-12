@@ -69,25 +69,32 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\MineCraftPunching\MushroomLike\CloudMove.cs" />
-    <Compile Include="Assets\MineCraftPunching\MushroomLike\CloudPlateformer.cs" />
-    <Compile Include="Assets\MineCraftPunching\MushroomLike\OscarCameraScripts\Controller.cs" />
-    <Compile Include="Assets\MineCraftPunching\MushroomLike\OscarCameraScripts\camFollow.cs" />
-    <Compile Include="Assets\MineCraftPunching\MushroomLike\OscarCameraScripts\cameraDamping.cs" />
-    <Compile Include="Assets\MineCraftPunching\MushroomLike\PlayerOnWire.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\BallBehavior.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\Cell.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadTargetSceneButton.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\LoadingScene\LoadingScreenManager.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\MoveOnPlane.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\PauseInGame.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\Punch.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\PunchNotRandom.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\Scale.cs" />
-    <Compile Include="Assets\MineCraftPunching\Scripts\WorldGenerate.cs" />
+    <Compile Include="Assets\Project\MushroomLike\CloudMove.cs" />
+    <Compile Include="Assets\Project\MushroomLike\CloudPlateformer.cs" />
+    <Compile Include="Assets\Project\MushroomLike\OscarCameraScripts\Controller.cs" />
+    <Compile Include="Assets\Project\MushroomLike\OscarCameraScripts\camFollow.cs" />
+    <Compile Include="Assets\Project\MushroomLike\OscarCameraScripts\cameraDamping.cs" />
+    <Compile Include="Assets\Project\MushroomLike\PlayerOnWire.cs" />
+    <Compile Include="Assets\Project\Scripts\BallBehavior.cs" />
+    <Compile Include="Assets\Project\Scripts\Cell.cs" />
+    <Compile Include="Assets\Project\Scripts\GenerateInEditor.cs" />
+    <Compile Include="Assets\Project\Scripts\LoadingScene\LoadTargetSceneButton.cs" />
+    <Compile Include="Assets\Project\Scripts\LoadingScene\LoadingScreenManager.cs" />
+    <Compile Include="Assets\Project\Scripts\MaterialPropertyBlockAdder.cs" />
+    <Compile Include="Assets\Project\Scripts\MoveOnPlane.cs" />
+    <Compile Include="Assets\Project\Scripts\PauseInGame.cs" />
+    <Compile Include="Assets\Project\Scripts\Punch.cs" />
+    <Compile Include="Assets\Project\Scripts\PunchHexagon.cs" />
+    <Compile Include="Assets\Project\Scripts\PunchNotRandom.cs" />
+    <Compile Include="Assets\Project\Scripts\Scale.cs" />
+    <Compile Include="Assets\Project\Scripts\WallDisapear.cs" />
+    <Compile Include="Assets\Project\Scripts\WorldGenerate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\MineCraftPunching\Shaders\HighlightBall.shader" />
+    <None Include="Assets\Project\Shaders\CloakSurfaceShader.shader" />
+    <None Include="Assets\Project\Shaders\HighlightBall.shader" />
+    <None Include="Assets\Project\Shaders\Include\snoise.cginc" />
+    <None Include="Assets\Project\Shaders\MergeTextureAvecBruitClassique.shader" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
   </ItemGroup>

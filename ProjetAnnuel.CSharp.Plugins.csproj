@@ -104,7 +104,10 @@
     <Compile Include="Assets\Standard Assets\Utility\WaypointProgressTracker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\MineCraftPunching\Shaders\HighlightBall.shader" />
+    <None Include="Assets\Project\Shaders\CloakSurfaceShader.shader" />
+    <None Include="Assets\Project\Shaders\HighlightBall.shader" />
+    <None Include="Assets\Project\Shaders\Include\snoise.cginc" />
+    <None Include="Assets\Project\Shaders\MergeTextureAvecBruitClassique.shader" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
   </ItemGroup>
