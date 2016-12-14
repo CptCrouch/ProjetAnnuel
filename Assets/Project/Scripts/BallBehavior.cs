@@ -18,6 +18,10 @@ public class BallBehavior : MonoBehaviour {
     [SerializeField]
     public float puissanceMinimumArea4 = 10f;
 
+    [SerializeField]
+    public float multiplicateurVelocityCollide = 100f;
+    [SerializeField]
+    public float velocityMax= 15f;
     // Use this for initialization
     void Start() {
         punchNotRandom = FindObjectOfType<PunchNotRandom>();
@@ -53,6 +57,7 @@ public class BallBehavior : MonoBehaviour {
         if (collision.collider.transform.tag == "Cell")
         {
             Cell cellCollided;
+            
             if (collision.collider.transform.childCount > 0)
             {
                  cellCollided = collision.collider.GetComponent<Cell>();
@@ -62,6 +67,7 @@ public class BallBehavior : MonoBehaviour {
                  cellCollided = collision.collider.transform.parent.GetComponent<Cell>();
             }
                 float puissanceCollision = collision.relativeVelocity.magnitude;
+            
                 //Debug.Log(puissanceCollision);
                 if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
                 {
@@ -69,20 +75,58 @@ public class BallBehavior : MonoBehaviour {
                         StartCoroutine(cellCollided.ReturnToStartScale(punchNotRandom.speedScaleCellUp));
                     else
                     {
-                        if (puissanceCollision > puissanceMinimale)
-                            StartCoroutine(cellCollided.ReturnToStartScale(punchHexagon.speedScaleCellUp));
+                    if (puissanceCollision > puissanceMinimale)
+                    {
+                        StartCoroutine(cellCollided.ReturnToStartScale(punchHexagon.speedScaleCellUp));
+                        if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
+                        {
+                            Debug.Log("Avant  " + rb.velocity);
+                            rb.velocity *= multiplicateurVelocityCollide*1.2f;
+                            Debug.Log("Après  " + rb.velocity);
+                        }
+                    }
                     }
 
-                    if (puissanceCollision >= puissanceMinimumArea1 && puissanceCollision < puissanceMinimumArea2)
-                        GetAreaOfCell(1, cellCollided.transform);
-                    if (puissanceCollision >= puissanceMinimumArea2 && puissanceCollision < puissanceMinimumArea3)
-                        GetAreaOfCell(2, cellCollided.transform);
-                    if (puissanceCollision >= puissanceMinimumArea3 && puissanceCollision < puissanceMinimumArea4)
-                        GetAreaOfCell(3, cellCollided.transform);
-                    if (puissanceCollision >= puissanceMinimumArea4)
-                        GetAreaOfCell(4, cellCollided.transform);
+                if (puissanceCollision >= puissanceMinimumArea1 && puissanceCollision < puissanceMinimumArea2)
+                {
+                    GetAreaOfCell(1, cellCollided.transform);
+                    if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
+                    {
+                        Debug.Log("Avant  " + rb.velocity);
+                        rb.velocity *= multiplicateurVelocityCollide*0.2f;
+                        Debug.Log("Après  " + rb.velocity);
+                    }
 
                 }
+                if (puissanceCollision >= puissanceMinimumArea2 && puissanceCollision < puissanceMinimumArea3)
+                {
+                    GetAreaOfCell(2, cellCollided.transform);
+                    if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
+                    {
+                        Debug.Log("Avant  " + rb.velocity);
+                        rb.velocity *= multiplicateurVelocityCollide*0.1f;
+                        Debug.Log("Après  " + rb.velocity);
+                    }
+
+                }
+                if (puissanceCollision >= puissanceMinimumArea3 && puissanceCollision < puissanceMinimumArea4)
+                {
+                    GetAreaOfCell(3, cellCollided.transform);
+                    if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
+                    {
+                        Debug.Log("Avant  " + rb.velocity);
+                        rb.velocity *= multiplicateurVelocityCollide * 0.1f;
+                        Debug.Log("Après  " + rb.velocity);
+                    }
+                }
+                if (puissanceCollision >= puissanceMinimumArea4)
+                {
+                    GetAreaOfCell(4, cellCollided.transform);
+                    
+                }
+
+                //rb.velocity *= multiplicateurVelocityCollide;
+            }
            }
           
     }

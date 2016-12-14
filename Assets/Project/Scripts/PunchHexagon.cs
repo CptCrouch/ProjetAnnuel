@@ -230,30 +230,34 @@ public class PunchHexagon : MonoBehaviour {
                                         // pour chaque cube présent dans la scène
                                         for (int i = 0; i < worldGenerateObject.transform.childCount; i++)
                                         {
-                                            // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
-                                            // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
-                                            Vector3 hitVector = new Vector3(hit.collider.transform.parent.position.x, 0, hit.collider.transform.parent.position.z);
-                                            Vector3 targetVector = new Vector3(worldGenerateObject.transform.GetChild(i).position.x, 0, worldGenerateObject.transform.GetChild(i).position.z);
-                                            float distanceFromCenter = Vector3.Distance(hitVector, targetVector);
 
-
-                                            if (distanceFromCenter < 1.6f * h)
+                                            if (worldGenerateObject.transform.GetChild(i).GetComponent<Cell>()._imMoving == false)
                                             {
-
-                                                // on calcule comment on va diviser la force pour avoir un effet sismique
-                                                float roundFloat = RoundValue(profondeur / (punchArea + 1), 100);
-                                                //Debug.Log(roundFloat);
-                                                float modifiedStrength = Mathf.Abs(roundFloat * ((punchArea + 1) - distanceFromCenter));
-                                                Debug.Log(modifiedStrength);
-
-                                                if (forceUniform == false)
-                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speedScaleCellUp, choosedTool, false));
-                                                else
-                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur + punchArea - h, speedScaleCellUp, choosedTool, false));
-
-                                                //cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
+                                                // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
+                                                // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
+                                                Vector3 hitVector = new Vector3(hit.collider.transform.parent.position.x, 0, hit.collider.transform.parent.position.z);
+                                                Vector3 targetVector = new Vector3(worldGenerateObject.transform.GetChild(i).position.x, 0, worldGenerateObject.transform.GetChild(i).position.z);
+                                                float distanceFromCenter = Vector3.Distance(hitVector, targetVector);
 
 
+                                                if (distanceFromCenter < 1.6f * h)
+                                                {
+
+                                                    // on calcule comment on va diviser la force pour avoir un effet sismique
+                                                    float roundFloat = RoundValue(profondeur / (punchArea + 1), 100);
+                                                    //Debug.Log(roundFloat);
+                                                    float modifiedStrength = Mathf.Abs(roundFloat * ((punchArea + 1) - distanceFromCenter));
+                                                    //Debug.Log(modifiedStrength);
+
+                                                    if (forceUniform == false)
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speedScaleCellUp, choosedTool, false));
+                                                    else
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur + punchArea - h, speedScaleCellUp, choosedTool, false));
+
+                                                    //cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
+
+
+                                                }
                                             }
                                         }
                                     }

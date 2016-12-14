@@ -20,11 +20,15 @@ public class Cell : MonoBehaviour {
     public float startPosY;
     
     public float startScaleY;
-   
+
+    public Color startColor;
+
+    public Color colorGoDown;
+
+    public float timeToGoBackToStartColor= 2f;
     
 
-
-
+    
 
 
     public IEnumerator ChangeColor()
@@ -32,12 +36,22 @@ public class Cell : MonoBehaviour {
         GetComponent<MeshRenderer>().material.color = Color.red;
         if(transform.childCount >0)
             transform.GetChild(0).GetComponent<MeshRenderer>().material.color = Color.red;
-        
         yield return new WaitForEndOfFrame();
-
         GetComponent<MeshRenderer>().material.color = Color.white;
         if (transform.childCount > 0)
             transform.GetChild(0).GetComponent<MeshRenderer>().material.color = Color.white;
+        yield return new WaitForSeconds(timeToGoBackToStartColor);
+        /*while (GetComponent<MeshRenderer>().material.color != startColor)
+        {
+            Color lerpedColor = Color.Lerp(Color.white, startColor, Time.deltaTime * 10);
+            GetComponent<MeshRenderer>().material.color = lerpedColor;
+            if (transform.childCount > 0)
+                transform.GetChild(0).GetComponent<MeshRenderer>().material.color = lerpedColor;
+        }*/
+
+        GetComponent<MeshRenderer>().material.color = startColor;
+        if (transform.childCount > 0)
+            transform.GetChild(0).GetComponent<MeshRenderer>().material.color = startColor;
 
     }
 
@@ -129,9 +143,9 @@ public class Cell : MonoBehaviour {
         //Vector3 lastScale = transform.localScale;
         _imMoving = true;
         _imReturningStartPos = true;
-        GetComponent<Renderer>().material.color = Color.green;
+        GetComponent<Renderer>().material.color = colorGoDown;
         if(transform.childCount >0)
-        transform.GetChild(0).GetComponent<Renderer>().material.color = Color.green;
+        transform.GetChild(0).GetComponent<Renderer>().material.color = colorGoDown;
         if (firstScale.y > startScaleY)
         {
             while(transform.localScale.y >startScaleY)
@@ -157,9 +171,9 @@ public class Cell : MonoBehaviour {
         _imMoving = false;
         imAtStartPos = true;
         _imReturningStartPos = false;
-        GetComponent<Renderer>().material.color = Color.white;
+        GetComponent<Renderer>().material.color = startColor;
         if (transform.childCount > 0)
-            transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
+            transform.GetChild(0).GetComponent<Renderer>().material.color = startColor;
     }
 
 
@@ -194,10 +208,10 @@ public class Cell : MonoBehaviour {
         Vector3 firstPos = transform.position;
         
         _imMoving = true;
-        if(isBlue)
+        /*if(isBlue)
         GetComponent<Renderer>().material.color = Color.blue;
         else
-        GetComponent<Renderer>().material.color = Color.red;
+        GetComponent<Renderer>().material.color = Color.red;*/
 
         if (direction.y < 0)
         {
@@ -236,7 +250,7 @@ public class Cell : MonoBehaviour {
         }
         _imMoving = false;
         imAtStartPos = false;
-        GetComponent<Renderer>().material.color = Color.white;
+        //GetComponent<Renderer>().material.color = Color.white;
 
 
 

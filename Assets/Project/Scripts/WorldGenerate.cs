@@ -18,6 +18,9 @@ public class WorldGenerate : MonoBehaviour {
 
     public int howManyCellBonusInPool;
 
+    public Color startCellColor;
+    public Color goDownCellColor;
+
     //public int diametreGrille = 10;
 
     public bool isHexagonWorld = false;
@@ -137,25 +140,25 @@ public class WorldGenerate : MonoBehaviour {
                 {
                     Vector3 pos = new Vector3(j  * increaseX, -height, i * increaseZ);
 
-                    /*if (i == -rayon || i == rayon || j == -posX + 1 || i == posX - 1)
-                    {
-                        //SpawnWallHexagon(pos);
-                    }
-                    else
-                    {*/
-                        GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
-                        newObject.transform.position = pos;
-                        newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
-                        //newObject.GetComponent<MaterialPropertyBlockAdder>().PropertyVectors[0].PropertyValue.y = height * 0.66f;
                     
-                        newObject.transform.SetParent(transform);
-                        newObject.SetActive(true);
-                        newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
-                        newObject.AddComponent<Cell>();
-                        newObject.GetComponent<Cell>().startPosY = -height;
-                        newObject.GetComponent<Cell>().startScaleY = height;
-                        poolCount++;
-                    //}
+                    GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
+                    newObject.transform.position = pos;
+                    newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
+                    //newObject.GetComponent<MaterialPropertyBlockAdder>().PropertyVectors[0].PropertyValue.y = height * 0.66f;
+                    
+                    newObject.transform.SetParent(transform);
+                    newObject.SetActive(true);
+                    newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
+                    newObject.AddComponent<Cell>();
+                    newObject.GetComponent<Cell>().startPosY = -height;
+                    newObject.GetComponent<Cell>().startScaleY = height;
+                    newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    newObject.GetComponent<Cell>().startColor = startCellColor;
+                    newObject.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    newObject.GetComponent<Cell>().colorGoDown = goDownCellColor;
+
+                    poolCount++;
+                    
                 }
             }
                 //pair
@@ -166,26 +169,24 @@ public class WorldGenerate : MonoBehaviour {
                 for (int j = -lel; j <= lel; j++)
                 {
                     Vector3 pos = new Vector3(j * increaseX *2, -height, i * increaseZ);
-                    /*if (i == -rayon || i == rayon || j == -lel || i == lel)
-                    {
-                        //SpawnWallHexagon(pos);
-                    }
-                    else
-                    {*/
 
+                    GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
+                    newObject.transform.position = pos;
+                    newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
+                    //newObject.GetComponent<MaterialPropertyBlockAdder>().PropertyVectors[0].PropertyValue.y = height * 0.66f;
+                    newObject.transform.SetParent(transform);
+                    newObject.SetActive(true);
+                    newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
+                    newObject.AddComponent<Cell>();
+                    newObject.GetComponent<Cell>().startPosY = -height;
+                    newObject.GetComponent<Cell>().startScaleY = height;
+                    newObject.GetComponent<Cell>().colorGoDown = goDownCellColor;
+                    newObject.GetComponent<Cell>().startColor = startCellColor;
+                    newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    newObject.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
 
-                        GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
-                        newObject.transform.position = pos;
-                        newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
-                        //newObject.GetComponent<MaterialPropertyBlockAdder>().PropertyVectors[0].PropertyValue.y = height * 0.66f;
-                        newObject.transform.SetParent(transform);
-                        newObject.SetActive(true);
-                        newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
-                        newObject.AddComponent<Cell>();
-                        newObject.GetComponent<Cell>().startPosY = -height;
-                        newObject.GetComponent<Cell>().startScaleY = height;
-                        poolCount++;
-                    //}
+                    poolCount++;
+                    
                 }
             }
                 

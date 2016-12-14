@@ -98,9 +98,14 @@
       <Project>{7DC5BBAD-368E-32BD-8907-404D55E65F49}</Project>
       <Name>ProjetAnnuel.CSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="ProjetAnnuel.CSharp.Editor.Plugins.csproj">
+      <Project>{86F29CC9-659A-4CDA-2130-AB0CC62EEFE0}</Project>
+      <Name>ProjetAnnuel.CSharp.Editor.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
+    <Compile Include="Assets\Editor\FMODMigrationUtil.cs" />
     <Compile Include="Assets\Editor\MaterialPropertyBlockAdderCustomInspector.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +115,21 @@
     <None Include="Assets\Project\Shaders\MergeTextureAvecBruitClassique.shader" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\FXAA\Resources\FXAA.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\FXAA\Resources\FXAA3.cginc" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\SMAA\Resources\SMAA.cginc" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\SMAA\Resources\SMAA.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\AmbientOcclusion\Resources\AmbientOcclusion.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\Bloom\Resources\Bloom.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\DepthOfField\Resources\BokehSplatting.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\DepthOfField\Resources\DepthOfField.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\DepthOfField\Resources\MedianFilter.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\LensAberrations\Resources\LensAberrations.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\ScreenSpaceReflection\Resources\ScreenSpaceRaytrace.cginc" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\ScreenSpaceReflection\Resources\ScreenSpaceReflection.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\TonemappingColorGrading\Resources\HistogramCompute.compute" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\TonemappingColorGrading\Resources\HistogramRender.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\TonemappingColorGrading\Resources\TonemappingColorGrading.cginc" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

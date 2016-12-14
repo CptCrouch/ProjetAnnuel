@@ -63,6 +63,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Plugins\FMOD\BankRefAttribute.cs" />
+    <Compile Include="Assets\Plugins\FMOD\EventRefAttribute.cs" />
+    <Compile Include="Assets\Plugins\FMOD\FMODAsset.cs" />
+    <Compile Include="Assets\Plugins\FMOD\FMOD_Listener.cs" />
+    <Compile Include="Assets\Plugins\FMOD\FMOD_StudioEventEmitter.cs" />
+    <Compile Include="Assets\Plugins\FMOD\OneshotList.cs" />
+    <Compile Include="Assets\Plugins\FMOD\ParamRef.cs" />
+    <Compile Include="Assets\Plugins\FMOD\RuntimeManager.cs" />
+    <Compile Include="Assets\Plugins\FMOD\RuntimeUtils.cs" />
+    <Compile Include="Assets\Plugins\FMOD\Settings.cs" />
+    <Compile Include="Assets\Plugins\FMOD\StudioBankLoader.cs" />
+    <Compile Include="Assets\Plugins\FMOD\StudioEventEmitter.cs" />
+    <Compile Include="Assets\Plugins\FMOD\StudioListener.cs" />
+    <Compile Include="Assets\Plugins\FMOD\StudioParameterTrigger.cs" />
+    <Compile Include="Assets\Plugins\FMOD\Wrapper\fmod.cs" />
+    <Compile Include="Assets\Plugins\FMOD\Wrapper\fmod_dsp.cs" />
+    <Compile Include="Assets\Plugins\FMOD\Wrapper\fmod_errors.cs" />
+    <Compile Include="Assets\Plugins\FMOD\Wrapper\fmod_studio.cs" />
     <Compile Include="Assets\Standard Assets\Characters\FirstPersonCharacter\Scripts\FirstPersonController.cs" />
     <Compile Include="Assets\Standard Assets\Characters\FirstPersonCharacter\Scripts\HeadBob.cs" />
     <Compile Include="Assets\Standard Assets\Characters\FirstPersonCharacter\Scripts\MouseLook.cs" />
@@ -78,6 +96,21 @@
     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TiltInput.cs" />
     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TouchPad.cs" />
     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\VirtualInput.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\AntiAliasing.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\FXAA\FXAA.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\IAntiAliasing.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\SMAA\SMAA.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\AmbientOcclusion\AmbientOcclusion.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\AmbientOcclusion\Helpers\PropertyObserver.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\AmbientOcclusion\Helpers\Settings.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\Bloom\Bloom.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\Common\ImageEffectHelper.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\Common\MinAttribute.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\Common\RenderTextureUtility.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\DepthOfField\DepthOfField.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\LensAberrations\LensAberrations.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\ScreenSpaceReflection\ScreenSpaceReflection.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\TonemappingColorGrading\TonemappingColorGrading.cs" />
     <Compile Include="Assets\Standard Assets\Utility\ActivateTrigger.cs" />
     <Compile Include="Assets\Standard Assets\Utility\AlphaButtonClickMask.cs" />
     <Compile Include="Assets\Standard Assets\Utility\AutoMobileShaderSwitch.cs" />
@@ -110,6 +143,21 @@
     <None Include="Assets\Project\Shaders\MergeTextureAvecBruitClassique.shader" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\FXAA\Resources\FXAA.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\FXAA\Resources\FXAA3.cginc" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\SMAA\Resources\SMAA.cginc" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(ALPHA)\AntiAliasing\SMAA\Resources\SMAA.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\AmbientOcclusion\Resources\AmbientOcclusion.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\Bloom\Resources\Bloom.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\DepthOfField\Resources\BokehSplatting.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\DepthOfField\Resources\DepthOfField.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\DepthOfField\Resources\MedianFilter.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\LensAberrations\Resources\LensAberrations.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\ScreenSpaceReflection\Resources\ScreenSpaceRaytrace.cginc" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\ScreenSpaceReflection\Resources\ScreenSpaceReflection.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\TonemappingColorGrading\Resources\HistogramCompute.compute" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\TonemappingColorGrading\Resources\HistogramRender.shader" />
+    <None Include="Assets\Standard Assets\Effects\CinematicEffects(BETA)\TonemappingColorGrading\Resources\TonemappingColorGrading.cginc" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

@@ -19,10 +19,14 @@ public class MoveOnPlane : MonoBehaviour {
         float axisX = Input.GetAxis("Horizontal");
         float axisZ = Input.GetAxis("Vertical");
         float axisY = Input.GetAxis("UpDown");
-        if (transform.position.y > 0.5)
-            transform.Translate(new Vector3(axisX, axisY, axisZ) * speed * Time.deltaTime);
-        else
-            transform.position = new Vector3(transform.position.x, 0.6f, transform.position.z);
+
+        Vector3 pos = transform.position;
+        pos.y = Mathf.Clamp(transform.position.y, 0.5f, 1000f);
+        transform.position = pos;
+        //if (transform.position.y > 0.5)
+        transform.Translate(new Vector3(axisX, axisY, axisZ) * speed * Time.deltaTime);
+        //else
+            //transform.position = new Vector3(transform.position.x, 0.6f, transform.position.z);
 
         if(Input.GetKeyDown(activeGravity))
         {
