@@ -107,10 +107,9 @@ public class PunchHexagon : MonoBehaviour {
                 if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangeEarthTool, layerMaskCell))
                 {
                     //if (hit.collider.gameObject.GetComponent<Renderer>().material.color == Color.white)
-                    if(hit.collider.transform.childCount > 0)
-                        StartCoroutine(hit.collider.gameObject.GetComponent<Cell>().ChangeColor());
-                    else
-                        StartCoroutine(hit.collider.transform.parent.GetComponent<Cell>().ChangeColor());
+                    
+                    StartCoroutine(hit.collider.gameObject.GetComponent<CellTwo>().ChangeColor());
+                    
 
                     if (feedBackAireForce)
                     {
@@ -133,7 +132,7 @@ public class PunchHexagon : MonoBehaviour {
                                     {
                                         
                                         //if (worldGenerateObject.transform.GetChild(i).GetComponent<Renderer>().material.color == Color.white)
-                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ChangeColor());
+                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().ChangeColor());
                                     }
                                 }
                             }
@@ -149,7 +148,7 @@ public class PunchHexagon : MonoBehaviour {
                     {
                         if (hit.collider.transform.childCount > 0)
                         {
-                            if (hit.collider.gameObject.GetComponent<Cell>()._imMoving == false && hit.collider.gameObject != lastTargetedCell)
+                            if (hit.collider.gameObject.GetComponent<CellTwo>()._imMoving == false && hit.collider.gameObject != lastTargetedCell)
                             {
                                 float hitPosX = hit.collider.transform.position.x;
                                 float hitPosY = hit.collider.transform.position.y;
@@ -158,9 +157,9 @@ public class PunchHexagon : MonoBehaviour {
                                 lastTargetedCell = hit.collider.gameObject;
 
                                 if (punchArea >= 1)
-                                    StartCoroutine(hit.collider.transform.GetComponent<Cell>().GetPunchScale(profondeur + punchArea - 1, speedScaleCellUp, choosedTool, false));
+                                    StartCoroutine(hit.collider.transform.GetComponent<CellTwo>().GetPunch(profondeur + punchArea - 1, speedScaleCellUp, choosedTool));
                                 else
-                                    StartCoroutine(hit.collider.transform.GetComponent<Cell>().GetPunchScale(profondeur + punchArea, speedScaleCellUp, choosedTool, false));
+                                    StartCoroutine(hit.collider.transform.GetComponent<CellTwo>().GetPunch(profondeur + punchArea, speedScaleCellUp, choosedTool));
 
                                 cellTargeted.Add(hit.collider.gameObject);
 
@@ -190,9 +189,9 @@ public class PunchHexagon : MonoBehaviour {
                                                 Debug.Log(modifiedStrength);
 
                                                 if (forceUniform == false)
-                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speedScaleCellUp, choosedTool, false));
+                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(modifiedStrength, speedScaleCellUp, choosedTool));
                                                 else
-                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur + punchArea - h, speedScaleCellUp, choosedTool, false));
+                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool));
 
                                                 //cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
 
@@ -206,18 +205,18 @@ public class PunchHexagon : MonoBehaviour {
                         }
                         else
                         {
-                            if (hit.collider.transform.parent.GetComponent<Cell>()._imMoving == false && hit.collider.gameObject != lastTargetedCell)
+                            if (hit.collider.GetComponent<CellTwo>()._imMoving == false && hit.collider.gameObject != lastTargetedCell)
                             {
-                                float hitPosX = hit.collider.transform.parent.position.x;
-                                float hitPosY = hit.collider.transform.parent.position.y;
-                                float hitPosZ = hit.collider.transform.parent.position.z;
+                                float hitPosX = hit.collider.transform.position.x;
+                                float hitPosY = hit.collider.transform.position.y;
+                                float hitPosZ = hit.collider.transform.position.z;
 
-                                lastTargetedCell = hit.collider.transform.parent.gameObject;
+                                lastTargetedCell = hit.collider.transform.gameObject;
 
                                 if (punchArea >= 1)
-                                    StartCoroutine(hit.collider.transform.parent.GetComponent<Cell>().GetPunchScale(profondeur + punchArea - 1, speedScaleCellUp, choosedTool, false));
+                                    StartCoroutine(hit.collider.GetComponent<CellTwo>().GetPunch(profondeur + punchArea - 1, speedScaleCellUp, choosedTool));
                                 else
-                                    StartCoroutine(hit.collider.transform.parent.GetComponent<Cell>().GetPunchScale(profondeur + punchArea, speedScaleCellUp, choosedTool, false));
+                                    StartCoroutine(hit.collider.GetComponent<CellTwo>().GetPunch(profondeur + punchArea, speedScaleCellUp, choosedTool));
 
                                 cellTargeted.Add(hit.collider.gameObject);
 
@@ -231,11 +230,11 @@ public class PunchHexagon : MonoBehaviour {
                                         for (int i = 0; i < worldGenerateObject.transform.childCount; i++)
                                         {
 
-                                            if (worldGenerateObject.transform.GetChild(i).GetComponent<Cell>()._imMoving == false)
+                                            if (worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>()._imMoving == false)
                                             {
                                                 // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
                                                 // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
-                                                Vector3 hitVector = new Vector3(hit.collider.transform.parent.position.x, 0, hit.collider.transform.parent.position.z);
+                                                Vector3 hitVector = new Vector3(hit.collider.transform.position.x, 0, hit.collider.transform.position.z);
                                                 Vector3 targetVector = new Vector3(worldGenerateObject.transform.GetChild(i).position.x, 0, worldGenerateObject.transform.GetChild(i).position.z);
                                                 float distanceFromCenter = Vector3.Distance(hitVector, targetVector);
 
@@ -250,9 +249,9 @@ public class PunchHexagon : MonoBehaviour {
                                                     //Debug.Log(modifiedStrength);
 
                                                     if (forceUniform == false)
-                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(modifiedStrength, speedScaleCellUp, choosedTool, false));
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(modifiedStrength, speedScaleCellUp, choosedTool));
                                                     else
-                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().GetPunchScale(profondeur + punchArea - h, speedScaleCellUp, choosedTool, false));
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool));
 
                                                     //cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
 

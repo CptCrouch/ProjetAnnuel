@@ -8,6 +8,8 @@ public class WorldGenerate : MonoBehaviour {
     public int length;
     public int width;
 
+    public float tailleYBigHexagon;
+
 
    
     public int diametreWorldHexagon;
@@ -138,24 +140,26 @@ public class WorldGenerate : MonoBehaviour {
             {
                 for (int j = -posX+1; j <= posX -1; j=j+2)
                 {
-                    Vector3 pos = new Vector3(j  * increaseX, -height, i * increaseZ);
+                    Vector3 pos = new Vector3(j  * increaseX, /*-height*/ (tailleYBigHexagon * 100) / 2, i * increaseZ);
 
                     
                     GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
                     newObject.transform.position = pos;
-                    newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
+                    //newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
                     //newObject.GetComponent<MaterialPropertyBlockAdder>().PropertyVectors[0].PropertyValue.y = height * 0.66f;
                     
                     newObject.transform.SetParent(transform);
                     newObject.SetActive(true);
                     newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
-                    newObject.AddComponent<Cell>();
-                    newObject.GetComponent<Cell>().startPosY = -height;
-                    newObject.GetComponent<Cell>().startScaleY = height;
+                    newObject.AddComponent<CellTwo>();
+                    CellTwo cell = newObject.GetComponent<CellTwo>();
+                    cell.startPosY = /*-height*/ (tailleYBigHexagon * 100) / 2;
+                    cell.startScaleY = height;
                     newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
-                    newObject.GetComponent<Cell>().startColor = startCellColor;
+                    cell.startColor = startCellColor;
+                    if(cell.transform.childCount>0)
                     newObject.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
-                    newObject.GetComponent<Cell>().colorGoDown = goDownCellColor;
+                    cell.colorGoDown = goDownCellColor;
 
                     poolCount++;
                     
@@ -168,22 +172,24 @@ public class WorldGenerate : MonoBehaviour {
                 int lel = (posX - 1) / 2;
                 for (int j = -lel; j <= lel; j++)
                 {
-                    Vector3 pos = new Vector3(j * increaseX *2, -height, i * increaseZ);
+                    Vector3 pos = new Vector3(j * increaseX *2, /*-height*/ (tailleYBigHexagon * 100) / 2, i * increaseZ);
 
                     GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
                     newObject.transform.position = pos;
-                    newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
+                    //newObject.transform.localScale = new Vector3(newObject.transform.localScale.x, height, newObject.transform.localScale.z);
                     //newObject.GetComponent<MaterialPropertyBlockAdder>().PropertyVectors[0].PropertyValue.y = height * 0.66f;
                     newObject.transform.SetParent(transform);
                     newObject.SetActive(true);
                     newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
-                    newObject.AddComponent<Cell>();
-                    newObject.GetComponent<Cell>().startPosY = -height;
-                    newObject.GetComponent<Cell>().startScaleY = height;
-                    newObject.GetComponent<Cell>().colorGoDown = goDownCellColor;
-                    newObject.GetComponent<Cell>().startColor = startCellColor;
+                    newObject.AddComponent<CellTwo>();
+                    CellTwo cell = newObject.GetComponent<CellTwo>();
+                    cell.startPosY = /*-height*/ (tailleYBigHexagon * 100) / 2;
+                    cell.startScaleY = height;
                     newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
-                    newObject.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    cell.startColor = startCellColor;
+                    if (cell.transform.childCount > 0)
+                        newObject.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    cell.colorGoDown = goDownCellColor;
 
                     poolCount++;
                     
@@ -198,6 +204,7 @@ public class WorldGenerate : MonoBehaviour {
         for (int i = 0; i < transform.childCount; i++)
         {
             DestroyImmediate(gameObject.transform.GetChild(i).gameObject);
+            //Debug.Log(i);
         }
     }
 

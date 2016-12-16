@@ -56,28 +56,21 @@ public class BallBehavior : MonoBehaviour {
         //Debug.Log("pouet");
         if (collision.collider.transform.tag == "Cell")
         {
-            Cell cellCollided;
+            CellTwo cellCollided = collision.collider.GetComponent<CellTwo>();
             
-            if (collision.collider.transform.childCount > 0)
-            {
-                 cellCollided = collision.collider.GetComponent<Cell>();
-            }
-            else
-            {
-                 cellCollided = collision.collider.transform.parent.GetComponent<Cell>();
-            }
+            
                 float puissanceCollision = collision.relativeVelocity.magnitude;
             
                 //Debug.Log(puissanceCollision);
                 if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
                 {
                     if (punchHexagon == null)
-                        StartCoroutine(cellCollided.ReturnToStartScale(punchNotRandom.speedScaleCellUp));
+                        StartCoroutine(cellCollided.ReturnToStartPos(punchNotRandom.speedScaleCellUp));
                     else
                     {
                     if (puissanceCollision > puissanceMinimale)
                     {
-                        StartCoroutine(cellCollided.ReturnToStartScale(punchHexagon.speedScaleCellUp));
+                        StartCoroutine(cellCollided.ReturnToStartPos(punchHexagon.speedScaleCellUp));
                         if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
                         {
                             Debug.Log("Avant  " + rb.velocity);
@@ -145,8 +138,8 @@ public class BallBehavior : MonoBehaviour {
 
                     if (distanceFromCenter == h)
                     {
-                        if (punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>()._imMoving == false && punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().imAtStartPos == false)
-                            StartCoroutine(punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ReturnToStartScale(punchNotRandom.speedScaleCellUp));
+                        if (punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>()._imMoving == false && punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().imAtStartPos == false)
+                            StartCoroutine(punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().ReturnToStartPos(punchNotRandom.speedScaleCellUp));
                     }
                 }
                 
@@ -161,8 +154,8 @@ public class BallBehavior : MonoBehaviour {
                         float distanceFromCenterHexagon = Vector3.Distance(hitVector, targetVector);
                         if (distanceFromCenterHexagon < 1.6f * h)
                         {
-                            if (punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>()._imMoving == false && punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().imAtStartPos == false)
-                                StartCoroutine(punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<Cell>().ReturnToStartScale(punchHexagon.speedScaleCellUp));
+                            if (punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>()._imMoving == false && punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().imAtStartPos == false)
+                                StartCoroutine(punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().ReturnToStartPos(punchHexagon.speedScaleCellUp));
                         }
                     }
                 }

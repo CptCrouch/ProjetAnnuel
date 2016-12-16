@@ -10,7 +10,10 @@ public class GenerateInEditor : MonoBehaviour {
 	void Update () {
         if (cleanWorld == true)
         {
-            worldGenerate.CleanEditorWorld();
+            while (worldGenerate.transform.childCount > 0)
+            {
+                worldGenerate.CleanEditorWorld();
+            }
             cleanWorld = false;
         }
         if (generateInput == true)

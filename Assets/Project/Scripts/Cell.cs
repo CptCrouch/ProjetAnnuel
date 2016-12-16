@@ -40,7 +40,7 @@ public class Cell : MonoBehaviour {
         GetComponent<MeshRenderer>().material.color = Color.white;
         if (transform.childCount > 0)
             transform.GetChild(0).GetComponent<MeshRenderer>().material.color = Color.white;
-        yield return new WaitForSeconds(timeToGoBackToStartColor);
+        yield return new WaitForSeconds(1f);
         /*while (GetComponent<MeshRenderer>().material.color != startColor)
         {
             Color lerpedColor = Color.Lerp(Color.white, startColor, Time.deltaTime * 10);
@@ -175,6 +175,7 @@ public class Cell : MonoBehaviour {
         if (transform.childCount > 0)
             transform.GetChild(0).GetComponent<Renderer>().material.color = startColor;
     }
+    
 
 
 
