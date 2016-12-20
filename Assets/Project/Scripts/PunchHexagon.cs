@@ -37,6 +37,7 @@ public class PunchHexagon : MonoBehaviour {
     private PauseInGame pauseScript;
     private bool holdMouseButton;
     private GameObject lastTargetedCell;
+    private List<GameObject> lastFeedBackCell = new List<GameObject>();
     private Vector3 choosedTool;
     private Vector3 choosedReaction;
 
@@ -107,8 +108,12 @@ public class PunchHexagon : MonoBehaviour {
                 if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangeEarthTool, layerMaskCell))
                 {
                     //if (hit.collider.gameObject.GetComponent<Renderer>().material.color == Color.white)
-                    
-                    StartCoroutine(hit.collider.gameObject.GetComponent<CellTwo>().ChangeColor());
+
+                    //if (CheckCellFeedBackValidity(hit.collider.gameObject) == true)
+                    //{
+                        StartCoroutine(hit.collider.gameObject.GetComponent<CellTwo>().ChangeColor());
+                        //lastFeedBackCell.Add(hit.collider.gameObject);
+                    //}
                     
 
                     if (feedBackAireForce)
@@ -283,6 +288,17 @@ public class PunchHexagon : MonoBehaviour {
         for (int i = 0; i < cellTargeted.Count; i++)
         {
             if (worldGenerateObject.transform.GetChild(randomNumber).gameObject == cellTargeted[i])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    public bool CheckCellFeedBackValidity(GameObject cell)
+    {
+        for (int i = 0; i < lastFeedBackCell.Count; i++)
+        {
+            if (worldGenerateObject.transform.GetChild(i).gameObject == cell)
             {
                 return false;
             }

@@ -29,7 +29,7 @@ public class CellTwo : MonoBehaviour
     public float timeToGoBackToStartColor = 2f;
 
 
-
+    
 
 
     public IEnumerator ChangeColor()
@@ -41,7 +41,7 @@ public class CellTwo : MonoBehaviour
         GetComponent<MeshRenderer>().material.color = Color.white;
         if (transform.childCount > 0)
             transform.GetChild(0).GetComponent<MeshRenderer>().material.color = Color.white;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         /*while (GetComponent<MeshRenderer>().material.color != startColor)
         {
             Color lerpedColor = Color.Lerp(Color.white, startColor, Time.deltaTime * 10);
@@ -129,13 +129,34 @@ public class CellTwo : MonoBehaviour
     }
 
 
-    public IEnumerator ReturnToStartPos(float speed)
+    public IEnumerator ReturnToStartPos(float speed,GameObject prefabDissolve,int numberToDissolve)
     {
         Vector3 firstPos = transform.position;
+        transform.position = new Vector3(transform.position.x, startPosY, transform.position.z);
+        imAtStartPos = true;
+        GameObject feedBackDissolve = Instantiate(prefabDissolve, firstPos,Quaternion.identity) as GameObject;
+        Renderer mat = feedBackDissolve.GetComponent<Renderer>();
+        mat.sharedMaterial.SetFloat("_Didi", 1);
+        //Debug.Log(mat.sharedMaterial.GetFloat("_Didi"));
+        while (mat.sharedMaterial.GetFloat("_Didi") >=0)
+        {
+            //Debug.Log(mat.sharedMaterial.GetFloat("_Didi"));
+            float time = mat.sharedMaterial.GetFloat("_Didi") - Time.deltaTime * (speed/numberToDissolve);
+            mat.sharedMaterial.SetFloat("_Didi",time);
+            yield return null;
+        }
+        Destroy(feedBackDissolve);
+
+
+
+
+
+
+        /*//Vector3 firstPos = transform.position;
         //Vector3 lastScale = transform.localScale;
         _imMoving = true;
         _imReturningStartPos = true;
-        GetComponent<Renderer>().material.color = colorGoDown;
+        //GetComponent<Renderer>().material.color = colorGoDown;
         if (transform.childCount > 0)
             transform.GetChild(0).GetComponent<Renderer>().material.color = colorGoDown;
 
@@ -156,7 +177,7 @@ public class CellTwo : MonoBehaviour
         _imReturningStartPos = false;
         GetComponent<Renderer>().material.color = startColor;
         if (transform.childCount > 0)
-            transform.GetChild(0).GetComponent<Renderer>().material.color = startColor;
+            transform.GetChild(0).GetComponent<Renderer>().material.color = startColor;*/
     }
 
 

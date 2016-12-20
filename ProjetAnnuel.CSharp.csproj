@@ -52,6 +52,9 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Advertisements">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -66,6 +69,9 @@
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Purchasing">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
@@ -93,18 +99,20 @@
     <Compile Include="Assets\Project\Scripts\GenerateInEditor.cs" />
     <Compile Include="Assets\Project\Scripts\LoadingScene\LoadTargetSceneButton.cs" />
     <Compile Include="Assets\Project\Scripts\LoadingScene\LoadingScreenManager.cs" />
-    <Compile Include="Assets\Project\Scripts\MaterialPropertyBlockAdder.cs" />
     <Compile Include="Assets\Project\Scripts\MoveOnPlane.cs" />
     <Compile Include="Assets\Project\Scripts\PauseInGame.cs" />
     <Compile Include="Assets\Project\Scripts\Punch.cs" />
     <Compile Include="Assets\Project\Scripts\PunchHexagon.cs" />
     <Compile Include="Assets\Project\Scripts\PunchNotRandom.cs" />
     <Compile Include="Assets\Project\Scripts\Scale.cs" />
+    <Compile Include="Assets\Project\Scripts\Shaderscale.cs" />
     <Compile Include="Assets\Project\Scripts\WallDisapear.cs" />
     <Compile Include="Assets\Project\Scripts\WorldGenerate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Project\Shaders\CloakSurfaceShader.shader" />
+    <None Include="Assets\Project\Shaders\Dissolve - Copie.shader" />
+    <None Include="Assets\Project\Shaders\Dissolve.shader" />
     <None Include="Assets\Project\Shaders\HighlightBall.shader" />
     <None Include="Assets\Project\Shaders\Include\snoise.cginc" />
     <None Include="Assets\Project\Shaders\InvisibleShadowCaster.shader" />

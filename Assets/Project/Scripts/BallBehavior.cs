@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BallBehavior : MonoBehaviour {
     WorldGenerate worldGenerate;
@@ -22,6 +23,17 @@ public class BallBehavior : MonoBehaviour {
     public float multiplicateurVelocityCollide = 100f;
     [SerializeField]
     public float velocityMax= 15f;
+
+    [SerializeField]
+    public float speedFeedbackDissolve = 0.5f;
+    [SerializeField]
+    public GameObject prefabDissolve;
+
+    private List<GameObject> objectToDissolve = new List<GameObject>();
+
+
+
+    private float currentVelocityY;
     // Use this for initialization
     void Start() {
         punchNotRandom = FindObjectOfType<PunchNotRandom>();
@@ -35,6 +47,9 @@ public class BallBehavior : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        currentVelocityY = rb.velocity.y;
+        currentVelocityY = Mathf.Clamp(rb.velocity.y, -1000, 10);
+        rb.velocity = new Vector3(rb.velocity.x, currentVelocityY, rb.velocity.z);
 
     }
 
@@ -65,12 +80,12 @@ public class BallBehavior : MonoBehaviour {
                 if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
                 {
                     if (punchHexagon == null)
-                        StartCoroutine(cellCollided.ReturnToStartPos(punchNotRandom.speedScaleCellUp));
+                        StartCoroutine(cellCollided.ReturnToStartPos(speedFeedbackDissolve,prefabDissolve,1));
                     else
                     {
                     if (puissanceCollision > puissanceMinimale)
                     {
-                        StartCoroutine(cellCollided.ReturnToStartPos(punchHexagon.speedScaleCellUp));
+                        objectToDissolve.Add(cellCollided.gameObject);
                         if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
                         {
                             Debug.Log("Avant  " + rb.velocity);
@@ -119,6 +134,7 @@ public class BallBehavior : MonoBehaviour {
                 }
 
                 //rb.velocity *= multiplicateurVelocityCollide;
+                LaunchDissolve();
             }
            }
           
@@ -139,7 +155,7 @@ public class BallBehavior : MonoBehaviour {
                     if (distanceFromCenter == h)
                     {
                         if (punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>()._imMoving == false && punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().imAtStartPos == false)
-                            StartCoroutine(punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().ReturnToStartPos(punchNotRandom.speedScaleCellUp));
+                            StartCoroutine(punchNotRandom.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().ReturnToStartPos(speedFeedbackDissolve,prefabDissolve,1));
                     }
                 }
                 
@@ -155,13 +171,22 @@ public class BallBehavior : MonoBehaviour {
                         if (distanceFromCenterHexagon < 1.6f * h)
                         {
                             if (punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>()._imMoving == false && punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().imAtStartPos == false)
-                                StartCoroutine(punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().ReturnToStartPos(punchHexagon.speedScaleCellUp));
+                                objectToDissolve.Add(punchHexagon.worldGenerateObject.transform.GetChild(i).gameObject);
                         }
                     }
                 }
             }
        
         }
+    }
+    void LaunchDissolve()
+    {
+        Debug.Log(objectToDissolve.Count);
+        for (int i = 0; i < objectToDissolve.Count; i++)
+        {
+            StartCoroutine(objectToDissolve[i].GetComponent<CellTwo>().ReturnToStartPos(speedFeedbackDissolve, prefabDissolve, objectToDissolve.Count));
+        }
+        objectToDissolve.Clear();
     }
 }
            
