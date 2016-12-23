@@ -24,7 +24,9 @@ public class CellTwo : MonoBehaviour
 
     public Color startColor;
 
-    public Color colorGoDown;
+    public Color colorFeedback;
+
+    public Color colorWhenGrow;
 
     public float timeToGoBackToStartColor = 2f;
 
@@ -34,14 +36,17 @@ public class CellTwo : MonoBehaviour
 
     public IEnumerator ChangeColor()
     {
-        GetComponent<MeshRenderer>().material.color = Color.red;
+        GetComponent<MeshRenderer>().material.color = colorFeedback;
         if (transform.childCount > 0)
-            transform.GetChild(0).GetComponent<MeshRenderer>().material.color = Color.red;
+            transform.GetChild(0).GetComponent<MeshRenderer>().material.color = colorFeedback;
         yield return new WaitForEndOfFrame();
-        GetComponent<MeshRenderer>().material.color = Color.white;
-        if (transform.childCount > 0)
-            transform.GetChild(0).GetComponent<MeshRenderer>().material.color = Color.white;
-        yield return new WaitForSeconds(0.5f);
+        if (_imMoving == false)
+        {
+            GetComponent<MeshRenderer>().material.color = startColor;
+            if (transform.childCount > 0)
+                transform.GetChild(0).GetComponent<MeshRenderer>().material.color = startColor;
+        }
+        //yield return new WaitForSeconds(0.5f);
         /*while (GetComponent<MeshRenderer>().material.color != startColor)
         {
             Color lerpedColor = Color.Lerp(Color.white, startColor, Time.deltaTime * 10);
@@ -50,9 +55,9 @@ public class CellTwo : MonoBehaviour
                 transform.GetChild(0).GetComponent<MeshRenderer>().material.color = lerpedColor;
         }*/
 
-        GetComponent<MeshRenderer>().material.color = startColor;
+        /*GetComponent<MeshRenderer>().material.color = startColor;
         if (transform.childCount > 0)
-            transform.GetChild(0).GetComponent<MeshRenderer>().material.color = startColor;
+            transform.GetChild(0).GetComponent<MeshRenderer>().material.color = startColor;*/
 
     }
 
@@ -136,13 +141,14 @@ public class CellTwo : MonoBehaviour
         imAtStartPos = true;
         GameObject feedBackDissolve = Instantiate(prefabDissolve, firstPos,Quaternion.identity) as GameObject;
         Renderer mat = feedBackDissolve.GetComponent<Renderer>();
-        mat.sharedMaterial.SetFloat("_Didi", 1);
+        mat.material.SetFloat("_Didi", 1);
+        mat.material.SetVector("_ObjectPosition", new Vector4(transform.position.x, 1, transform.position.z,1));
         //Debug.Log(mat.sharedMaterial.GetFloat("_Didi"));
-        while (mat.sharedMaterial.GetFloat("_Didi") >=0)
+        while (mat.material.GetFloat("_Didi") >=0)
         {
             //Debug.Log(mat.sharedMaterial.GetFloat("_Didi"));
-            float time = mat.sharedMaterial.GetFloat("_Didi") - Time.deltaTime * (speed/numberToDissolve);
-            mat.sharedMaterial.SetFloat("_Didi",time);
+            float time = mat.material.GetFloat("_Didi") - Time.deltaTime * speed;
+            mat.material.SetFloat("_Didi",time);
             yield return null;
         }
         Destroy(feedBackDissolve);
@@ -187,9 +193,9 @@ public class CellTwo : MonoBehaviour
         //Vector3 lastScale = transform.localScale;
         _imMoving = true;
         _imReturningStartPos = true;
-        GetComponent<Renderer>().material.color = colorGoDown;
+        GetComponent<Renderer>().material.color = colorFeedback;
         if (transform.childCount > 0)
-            transform.GetChild(0).GetComponent<Renderer>().material.color = colorGoDown;
+            transform.GetChild(0).GetComponent<Renderer>().material.color = colorFeedback;
         if (firstScale.y > startScaleY)
         {
             while (transform.localScale.y > startScaleY)
@@ -226,6 +232,7 @@ public class CellTwo : MonoBehaviour
     public IEnumerator GetPunch(float strength, float speed, Vector3 direction)
     {
         Vector3 firstPos = transform.position;
+        GetComponent<MeshRenderer>().material.color = colorWhenGrow;
         _imMoving = true;
        
         while (transform.position.y <= firstPos.y + (strength * direction.y))
@@ -238,6 +245,8 @@ public class CellTwo : MonoBehaviour
         
         _imMoving = false;
         imAtStartPos = false;
+        //yield return new WaitForSeconds(0.5f);
+        GetComponent<MeshRenderer>().material.color = startColor;
 
     }
     public IEnumerator GetPunchScale(float strength, float speed, Vector3 direction, bool isBlue)

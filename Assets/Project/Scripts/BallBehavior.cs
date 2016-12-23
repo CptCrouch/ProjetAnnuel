@@ -22,7 +22,13 @@ public class BallBehavior : MonoBehaviour {
     [SerializeField]
     public float multiplicateurVelocityCollide = 100f;
     [SerializeField]
-    public float velocityMax= 15f;
+    public float velocityMaxToAddBounce= 15f;
+    [SerializeField]
+    private float angleMaxVelocityY = 5f;
+    [SerializeField]
+    private float minimumSpeedToAutoMove = 5f;
+    [SerializeField]
+    private float speedAutoMove = 5f;
 
     [SerializeField]
     public float speedFeedbackDissolve = 0.5f;
@@ -31,9 +37,15 @@ public class BallBehavior : MonoBehaviour {
 
     private List<GameObject> objectToDissolve = new List<GameObject>();
 
+    [HideInInspector]
+    public Transform currentCellTarget;
+
 
 
     private float currentVelocityY;
+    private bool currentlyMovingTowardCell = false;
+
+
     // Use this for initialization
     void Start() {
         punchNotRandom = FindObjectOfType<PunchNotRandom>();
@@ -46,17 +58,25 @@ public class BallBehavior : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
         currentVelocityY = rb.velocity.y;
-        currentVelocityY = Mathf.Clamp(rb.velocity.y, -1000, 10);
+        currentVelocityY = Mathf.Clamp(rb.velocity.y, -1000, angleMaxVelocityY);
         rb.velocity = new Vector3(rb.velocity.x, currentVelocityY, rb.velocity.z);
+        Debug.Log(rb.velocity.magnitude);
+
+        /*if(rb.velocity.magnitude <minimumSpeedToAutoMove && currentlyMovingTowardCell == false)
+        {
+            currentCellTarget = GetClosestCell(worldGenerate.transform);
+            currentlyMovingTowardCell = true;
+        }
+        if(currentlyMovingTowardCell)*/
 
     }
 
     public IEnumerator ChangeMaterialHighlight()
     {
 
-        GetComponent<MeshRenderer>().material.SetFloat("_Emission", 0.2f);
+        GetComponent<MeshRenderer>().material.SetFloat("_Emission", 0.4f);
         yield return new WaitForEndOfFrame();
         GetComponent<MeshRenderer>().material.SetFloat("_Emission", 0f);
     }
@@ -86,10 +106,10 @@ public class BallBehavior : MonoBehaviour {
                     if (puissanceCollision > puissanceMinimale)
                     {
                         objectToDissolve.Add(cellCollided.gameObject);
-                        if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
+                        if (rb.velocity.magnitude< velocityMaxToAddBounce)
                         {
                             Debug.Log("Avant  " + rb.velocity);
-                            rb.velocity *= multiplicateurVelocityCollide*1.2f;
+                            rb.velocity *= multiplicateurVelocityCollide*1.5f;
                             Debug.Log("Après  " + rb.velocity);
                         }
                     }
@@ -98,7 +118,7 @@ public class BallBehavior : MonoBehaviour {
                 if (puissanceCollision >= puissanceMinimumArea1 && puissanceCollision < puissanceMinimumArea2)
                 {
                     GetAreaOfCell(1, cellCollided.transform);
-                    if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
+                    if (rb.velocity.magnitude < velocityMaxToAddBounce)
                     {
                         Debug.Log("Avant  " + rb.velocity);
                         rb.velocity *= multiplicateurVelocityCollide*0.2f;
@@ -109,7 +129,7 @@ public class BallBehavior : MonoBehaviour {
                 if (puissanceCollision >= puissanceMinimumArea2 && puissanceCollision < puissanceMinimumArea3)
                 {
                     GetAreaOfCell(2, cellCollided.transform);
-                    if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
+                    if (rb.velocity.magnitude < velocityMaxToAddBounce)
                     {
                         Debug.Log("Avant  " + rb.velocity);
                         rb.velocity *= multiplicateurVelocityCollide*0.1f;
@@ -120,7 +140,7 @@ public class BallBehavior : MonoBehaviour {
                 if (puissanceCollision >= puissanceMinimumArea3 && puissanceCollision < puissanceMinimumArea4)
                 {
                     GetAreaOfCell(3, cellCollided.transform);
-                    if (rb.velocity.x < velocityMax && rb.velocity.y < velocityMax && rb.velocity.z < velocityMax)
+                    if (rb.velocity.magnitude < velocityMaxToAddBounce)
                     {
                         Debug.Log("Avant  " + rb.velocity);
                         rb.velocity *= multiplicateurVelocityCollide * 0.1f;
@@ -140,7 +160,20 @@ public class BallBehavior : MonoBehaviour {
           
     }
     
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.collider.transform.tag == "Cell")
+        {
+            CellTwo cellCollided = collision.collider.GetComponent<CellTwo>();
+            if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
+            {
+                objectToDissolve.Add(cellCollided.gameObject);
+                LaunchDissolve();
+                rb.velocity *= multiplicateurVelocityCollide;
+            }
 
+        }
+    }
     void GetAreaOfCell(int areaForce, Transform center)
     {
         for (int h = 1; h <= areaForce; h++)
@@ -187,6 +220,27 @@ public class BallBehavior : MonoBehaviour {
             StartCoroutine(objectToDissolve[i].GetComponent<CellTwo>().ReturnToStartPos(speedFeedbackDissolve, prefabDissolve, objectToDissolve.Count));
         }
         objectToDissolve.Clear();
+    }
+    Transform GetClosestCell(Transform worldGen)
+    {
+        Transform closestTarget = null;
+        float closestDistance = Mathf.Infinity;
+        Vector3 currentBallPos = transform.position;
+        for (int i = 0; i < worldGen.childCount; i++)
+        {
+            if (worldGen.GetChild(i).GetComponent<Cell>().imAtStartPos == false)
+            {
+                Vector3 directionToTarget = new Vector3(worldGen.GetChild(i).position.x, currentBallPos.y, worldGen.GetChild(i).position.z) - currentBallPos;
+                float dSqrToTarget = directionToTarget.sqrMagnitude;
+                if (dSqrToTarget < closestDistance)
+                {
+                    closestDistance = dSqrToTarget;
+                    closestTarget = worldGen.GetChild(i);
+                }
+            }
+        }
+
+        return closestTarget;
     }
 }
            

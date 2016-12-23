@@ -37,7 +37,8 @@ public class PunchHexagon : MonoBehaviour {
     private PauseInGame pauseScript;
     private bool holdMouseButton;
     private GameObject lastTargetedCell;
-    private List<GameObject> lastFeedBackCell = new List<GameObject>();
+    private GameObject lastTargetedFeedbackCell;
+    private List<GameObject> lastFeedBackCells = new List<GameObject>();
     private Vector3 choosedTool;
     private Vector3 choosedReaction;
 
@@ -111,8 +112,10 @@ public class PunchHexagon : MonoBehaviour {
 
                     //if (CheckCellFeedBackValidity(hit.collider.gameObject) == true)
                     //{
+                    if(hit.collider.gameObject.GetComponent<CellTwo>()._imMoving == false)
                         StartCoroutine(hit.collider.gameObject.GetComponent<CellTwo>().ChangeColor());
-                        //lastFeedBackCell.Add(hit.collider.gameObject);
+                        //lastFeedBackCells.Add(hit.collider.gameObject);
+                        //lastTargetedFeedbackCell = hit.collider.gameObject;
                     //}
                     
 
@@ -133,11 +136,12 @@ public class PunchHexagon : MonoBehaviour {
                                     float distanceFromCenter = Vector3.Distance(hitVector, targetVector);
                                     
                                     
-                                    if (distanceFromCenter < 1.6f * h)
+                                    if (distanceFromCenter < 1.6f * h && worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>()._imMoving == false)
                                     {
                                         
                                         //if (worldGenerateObject.transform.GetChild(i).GetComponent<Renderer>().material.color == Color.white)
                                             StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().ChangeColor());
+                                            //lastFeedBackCells.Add(worldGenerateObject.transform.GetChild(i).gameObject);
                                     }
                                 }
                             }
@@ -278,6 +282,11 @@ public class PunchHexagon : MonoBehaviour {
                     holdMouseButton = false;
                     lastTargetedCell = null;
                 }
+                if(Input.GetMouseButton(0)== false)
+                {
+                    holdMouseButton = false;
+                    lastTargetedCell = null;
+                }
 
             }
         }
@@ -296,7 +305,7 @@ public class PunchHexagon : MonoBehaviour {
     }
     public bool CheckCellFeedBackValidity(GameObject cell)
     {
-        for (int i = 0; i < lastFeedBackCell.Count; i++)
+        for (int i = 0; i < lastFeedBackCells.Count; i++)
         {
             if (worldGenerateObject.transform.GetChild(i).gameObject == cell)
             {

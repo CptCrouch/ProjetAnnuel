@@ -11,6 +11,7 @@
 		_Scale("Scale", vector) = (1, 1, 1, 1)
 		_EtirementScale("EtirementScale",float) = 2
 		_IlluminationTexture("IllumTex",float) = 0.7
+		_ObjectPosition("ObjectPos",vector) = (0,0,0,1)
 	}
 		SubShader
 	{
@@ -55,6 +56,7 @@
 	float4 _Scale;
 	float _EtirementScale;
 	float _IlluminationTexture;
+	float3 _ObjectPosition;
 
 
 	v2f vert(appdata_full v)
@@ -80,8 +82,8 @@
 
 		col.rgb *= dot(normalize(i.normal), normalize(i.viewDir)) * _IlluminationTexture + 0.5;	//plus l'angle de la face est different de la vue de la camera, plus c'est assombri (+ Augmentation de la luminance de l'objet faute de savoir faire un rendu metallique)
 
-		float2 screenUV = i.screenUV.xy / i.screenUV.w ;	//normalise les coordonnées UV (parce q'unity ne les fait pas aller de 0 à 1 par défaut)
-		float lum = Luminance(tex2D(_Dissolution, i.uv*	(_Scale.x + _Scale.y + _Scale.z)/_EtirementScale));	//recup le grayscale en fonction de l'uv et multiplie par la moyenne des trois composantes de la scale pour étaler la texture sur l'objet et eviter qu'elle ne soit trop étirée
+			
+		float lum = Luminance(tex2D(_Dissolution, i.uv/**(_ObjectPosition.x + _ObjectPosition.z)/_EtirementScale)*/));	//recup le grayscale en fonction de l'uv et multiplie par la moyenne des trois composantes de la scale pour étaler la texture sur l'objet et eviter qu'elle ne soit trop étirée
 
 		col.a *= lerp(1, 0, step(_Didi, lum));	//lerp alpha hard grace a un seuil de luminance
 	

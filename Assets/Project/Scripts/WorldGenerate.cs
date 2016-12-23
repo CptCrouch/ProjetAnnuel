@@ -21,7 +21,8 @@ public class WorldGenerate : MonoBehaviour {
     public int howManyCellBonusInPool;
 
     public Color startCellColor;
-    public Color goDownCellColor;
+    public Color feedBackCellColor = Color.red;
+    public Color colorWhenGrow = Color.white;
 
     //public int diametreGrille = 10;
 
@@ -155,11 +156,16 @@ public class WorldGenerate : MonoBehaviour {
                     CellTwo cell = newObject.GetComponent<CellTwo>();
                     cell.startPosY = /*-height*/ (tailleYBigHexagon * 100) / 2;
                     cell.startScaleY = height;
+
                     newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    //newObject.GetComponent<MeshRenderer>().material.SetVector("_ObjectPosition", new Vector3(transform.position.x, 1, transform.position.z));
+
+
                     cell.startColor = startCellColor;
                     if(cell.transform.childCount>0)
                     newObject.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
-                    cell.colorGoDown = goDownCellColor;
+                    cell.colorFeedback = feedBackCellColor;
+                    cell.colorWhenGrow = colorWhenGrow;
 
                     poolCount++;
                     
@@ -185,11 +191,15 @@ public class WorldGenerate : MonoBehaviour {
                     CellTwo cell = newObject.GetComponent<CellTwo>();
                     cell.startPosY = /*-height*/ (tailleYBigHexagon * 100) / 2;
                     cell.startScaleY = height;
+
                     newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    //newObject.GetComponent<MeshRenderer>().material.SetVector("_ObjectPosition", new Vector3(transform.position.x, 1, transform.position.z));
+
                     cell.startColor = startCellColor;
                     if (cell.transform.childCount > 0)
                         newObject.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
-                    cell.colorGoDown = goDownCellColor;
+                    cell.colorFeedback = feedBackCellColor;
+                    cell.colorWhenGrow = colorWhenGrow;
 
                     poolCount++;
                     
