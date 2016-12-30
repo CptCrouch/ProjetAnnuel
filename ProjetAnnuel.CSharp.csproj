@@ -91,10 +91,6 @@
     <Compile Include="Assets\Project\Scripts\Cell.cs" />
     <Compile Include="Assets\Project\Scripts\CellTwo.cs" />
     <Compile Include="Assets\Project\Scripts\EditorScripts\CellType.cs" />
-    <Compile Include="Assets\Project\Scripts\EditorScripts\CustomCellsEditor.cs" />
-    <Compile Include="Assets\Project\Scripts\EditorScripts\DrawGUILayout.cs" />
-    <Compile Include="Assets\Project\Scripts\EditorScripts\EditorGUIHelper.cs" />
-    <Compile Include="Assets\Project\Scripts\EditorScripts\GenerateInEditor.cs" />
     <Compile Include="Assets\Project\Scripts\LoadingScene\LoadTargetSceneButton.cs" />
     <Compile Include="Assets\Project\Scripts\LoadingScene\LoadingScreenManager.cs" />
     <Compile Include="Assets\Project\Scripts\MoveOnPlane.cs" />

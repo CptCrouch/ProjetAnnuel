@@ -58,7 +58,7 @@ public class WorldGenerate : MonoBehaviour {
         {
             if (Application.isEditor ==  false)
             {
-                GenerateHexagonWorld(rayon);
+                //GenerateHexagonWorld(rayon);
                 
             }
             else
