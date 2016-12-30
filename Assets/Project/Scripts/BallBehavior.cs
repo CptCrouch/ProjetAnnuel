@@ -8,6 +8,7 @@ public class BallBehavior : MonoBehaviour {
     PunchHexagon punchHexagon;
     Rigidbody rb;
 
+    [Header ("[ ForceArea On Collision ]")]
     [SerializeField]
     public float puissanceMinimale = 2f;
     [SerializeField]
@@ -19,17 +20,24 @@ public class BallBehavior : MonoBehaviour {
     [SerializeField]
     public float puissanceMinimumArea4 = 10f;
 
+
+    [Space(10)]
+    [Header("[ Clamp Ball ]")]
     [SerializeField]
     public float multiplicateurVelocityCollide = 100f;
     [SerializeField]
     public float velocityMaxToAddBounce= 15f;
     [SerializeField]
     private float angleMaxVelocityY = 5f;
+    [Space(10)]
+    [Header("[ Move Auto ]")]
     [SerializeField]
     private float minimumSpeedToAutoMove = 5f;
     [SerializeField]
-    private float speedAutoMove = 5f;
+    private float speedAutoMove = 2f;
 
+    [Space(10)]
+    [Header("[ FeedbackDissolve ]")]
     [SerializeField]
     public float speedFeedbackDissolve = 0.5f;
     [SerializeField]
@@ -39,11 +47,12 @@ public class BallBehavior : MonoBehaviour {
 
     [HideInInspector]
     public Transform currentCellTarget;
-
-
+    [HideInInspector]
+    public bool imGrounded = false;
 
     private float currentVelocityY;
     private bool currentlyMovingTowardCell = false;
+    
 
 
     // Use this for initialization
@@ -62,8 +71,15 @@ public class BallBehavior : MonoBehaviour {
         currentVelocityY = rb.velocity.y;
         currentVelocityY = Mathf.Clamp(rb.velocity.y, -1000, angleMaxVelocityY);
         rb.velocity = new Vector3(rb.velocity.x, currentVelocityY, rb.velocity.z);
-        Debug.Log(rb.velocity.magnitude);
+        //Debug.Log(rb.velocity.magnitude);
 
+
+        if (rb.velocity.magnitude < minimumSpeedToAutoMove && currentCellTarget != null && imGrounded == true)
+        {
+            Vector3 direction = new Vector3(currentCellTarget.position.x, 0, currentCellTarget.position.z) - transform.position;
+            Debug.Log(direction.normalized);
+            rb.velocity = direction.normalized*speedAutoMove;
+        }
         /*if(rb.velocity.magnitude <minimumSpeedToAutoMove && currentlyMovingTowardCell == false)
         {
             currentCellTarget = GetClosestCell(worldGenerate.transform);
@@ -91,15 +107,19 @@ public class BallBehavior : MonoBehaviour {
         //Debug.Log("pouet");
         if (collision.collider.transform.tag == "Cell")
         {
+
             CellTwo cellCollided = collision.collider.GetComponent<CellTwo>();
             
             
-                float puissanceCollision = collision.relativeVelocity.magnitude;
+                
             
                 //Debug.Log(puissanceCollision);
                 if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
                 {
-                    if (punchHexagon == null)
+                
+                float puissanceCollision = collision.relativeVelocity.magnitude;
+
+                if (punchHexagon == null)
                         StartCoroutine(cellCollided.ReturnToStartPos(speedFeedbackDissolve,prefabDissolve,1));
                     else
                     {
@@ -155,6 +175,11 @@ public class BallBehavior : MonoBehaviour {
 
                 //rb.velocity *= multiplicateurVelocityCollide;
                 LaunchDissolve();
+
+                if (cellCollided.transform == currentCellTarget)
+                {
+                    currentCellTarget = null;
+                }
             }
            }
           
@@ -170,10 +195,28 @@ public class BallBehavior : MonoBehaviour {
                 objectToDissolve.Add(cellCollided.gameObject);
                 LaunchDissolve();
                 rb.velocity *= multiplicateurVelocityCollide;
+                if (cellCollided.transform == currentCellTarget)
+                {
+                    currentCellTarget = null;
+                }
             }
 
         }
+        else if(collision.collider.transform.tag == "Ground")
+        {
+            imGrounded = true;
+        }
     }
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.transform.tag == "Ground")
+        {
+            imGrounded = false;
+
+        }
+    }
+
+
     void GetAreaOfCell(int areaForce, Transform center)
     {
         for (int h = 1; h <= areaForce; h++)
@@ -212,15 +255,23 @@ public class BallBehavior : MonoBehaviour {
        
         }
     }
+
+
     void LaunchDissolve()
     {
         Debug.Log(objectToDissolve.Count);
         for (int i = 0; i < objectToDissolve.Count; i++)
         {
             StartCoroutine(objectToDissolve[i].GetComponent<CellTwo>().ReturnToStartPos(speedFeedbackDissolve, prefabDissolve, objectToDissolve.Count));
+            if(objectToDissolve[i].transform == currentCellTarget)
+            {
+                currentCellTarget = null;
+            }
         }
         objectToDissolve.Clear();
     }
+
+
     Transform GetClosestCell(Transform worldGen)
     {
         Transform closestTarget = null;

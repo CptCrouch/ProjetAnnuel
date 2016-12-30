@@ -4,31 +4,31 @@ using System.Collections;
 
 public class WorldGenerate : MonoBehaviour {
 
-    public int height;
+   
+    [Header("[ Create Box World ]")]
     public int length;
     public int width;
 
+    [Space(10)]
+    [Header("[ Create Hexagon World ]")]
+    public bool isHexagonWorld = false;
+    public int height;
     public float tailleYBigHexagon;
-
-
-   
     public int diametreWorldHexagon;
-    
-
     public float increaseZ = 1.3f;
     public float increaseX = 0.75f;
 
-    public int howManyCellBonusInPool;
 
+    [Space(10)]
+    [Header("[ Feedback Colors ]")]
     public Color startCellColor;
     public Color feedBackCellColor = Color.red;
     public Color colorWhenGrow = Color.white;
 
     //public int diametreGrille = 10;
 
-    public bool isHexagonWorld = false;
-    
 
+    [Space(10)]
     [SerializeField]
     private GameObject prefab;
     [SerializeField]
@@ -39,6 +39,7 @@ public class WorldGenerate : MonoBehaviour {
     private GameObject prefabWallHexagon;
     [SerializeField]
     private GameObject pool;
+    public int howManyCellBonusInPool;
 
     private int poolCount;
     private int rayon;
@@ -151,19 +152,18 @@ public class WorldGenerate : MonoBehaviour {
                     
                     newObject.transform.SetParent(transform);
                     newObject.SetActive(true);
-                    newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
+                    newObject.name = "Cell";
                     newObject.AddComponent<CellTwo>();
                     CellTwo cell = newObject.GetComponent<CellTwo>();
-                    cell.startPosY = /*-height*/ (tailleYBigHexagon * 100) / 2;
-                    cell.startScaleY = height;
+                    cell.startPosYbyWorldGenerate = /*-height*/ (tailleYBigHexagon * 100) / 2;
+                    //cell.startScaleY = height;
 
                     newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
                     //newObject.GetComponent<MeshRenderer>().material.SetVector("_ObjectPosition", new Vector3(transform.position.x, 1, transform.position.z));
 
 
-                    cell.startColor = startCellColor;
-                    if(cell.transform.childCount>0)
-                    newObject.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    cell.startColorbyWorldGenerate = startCellColor;
+                    
                     cell.colorFeedback = feedBackCellColor;
                     cell.colorWhenGrow = colorWhenGrow;
 
@@ -186,18 +186,17 @@ public class WorldGenerate : MonoBehaviour {
                     //newObject.GetComponent<MaterialPropertyBlockAdder>().PropertyVectors[0].PropertyValue.y = height * 0.66f;
                     newObject.transform.SetParent(transform);
                     newObject.SetActive(true);
-                    newObject.name = newObject.transform.position.x + " / " + newObject.transform.position.y + " / " + newObject.transform.position.z;
+                    newObject.name = "Cell";
                     newObject.AddComponent<CellTwo>();
                     CellTwo cell = newObject.GetComponent<CellTwo>();
-                    cell.startPosY = /*-height*/ (tailleYBigHexagon * 100) / 2;
-                    cell.startScaleY = height;
+                    cell.startPosYbyWorldGenerate = /*-height*/ (tailleYBigHexagon * 100) / 2;
+                    //cell.startScaleY = height;
 
                     newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
                     //newObject.GetComponent<MeshRenderer>().material.SetVector("_ObjectPosition", new Vector3(transform.position.x, 1, transform.position.z));
 
-                    cell.startColor = startCellColor;
-                    if (cell.transform.childCount > 0)
-                        newObject.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    cell.startColorbyWorldGenerate = startCellColor;
+                   
                     cell.colorFeedback = feedBackCellColor;
                     cell.colorWhenGrow = colorWhenGrow;
 
