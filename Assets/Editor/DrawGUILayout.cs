@@ -12,10 +12,6 @@ public class DrawGUILayout : Editor {
         get { return EditorPrefs.GetInt("SelectedType", 0); }
         set { EditorPrefs.SetInt("SelectedType", value); }
     }
-    
-    
-
-   
 
     static DrawGUILayout()
     {
@@ -63,7 +59,7 @@ public class DrawGUILayout : Editor {
         
         if(GUILayout.Button("Apply CellType To Selection",EditorStyles.toolbarButton))
         {
-            generateInEditor.ApplyNewCellType(SelectedType,Selection.gameObjects);
+            ApplyNewCellType(SelectedType, Selection.gameObjects);
         }
         GUILayout.FlexibleSpace();
             
@@ -112,7 +108,27 @@ public class DrawGUILayout : Editor {
             SelectedType = index;
     }
 
+    public static void ApplyNewCellType(int indexCellTypes, GameObject[] selection)
+    {
+        for (int i = 0; i < selection.Length; i++)
+        {
+            if (selection[i].tag == "Cell")
+            {
+                CellTwo cellTwo = selection[i].GetComponent<CellTwo>();
+                Undo.RecordObject(cellTwo, "Update Cell");
 
+                cellTwo.cellType.name = generateInEditor.cellTypes[indexCellTypes].name;
+                cellTwo.cellType.color = generateInEditor.cellTypes[indexCellTypes].color;
+                cellTwo.cellType.speedUp = generateInEditor.cellTypes[indexCellTypes].speedUp;
+                cellTwo.cellType.diffWithBasePosY = generateInEditor.cellTypes[indexCellTypes].diffWithBasePosY;
+                cellTwo.cellType.imAppliedToCell = true;
+
+
+                cellTwo.UpdateCellType();
+                EditorUtility.SetDirty(cellTwo);
+            }
+        }
+    }
 
 
 }

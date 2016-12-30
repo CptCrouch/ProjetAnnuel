@@ -133,7 +133,6 @@
     <Compile Include="Assets\Editor\DrawGUILayout.cs" />
     <Compile Include="Assets\Editor\EditorGUIHelper.cs" />
     <Compile Include="Assets\Editor\FMODMigrationUtil.cs" />
-    <Compile Include="Assets\Editor\GenerateInEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Project\Shaders\CloakSurfaceShader.shader" />

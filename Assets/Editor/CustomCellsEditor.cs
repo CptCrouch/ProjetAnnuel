@@ -83,7 +83,7 @@ public class CustomCellsEditor : Editor {
                 m_targetedScript.cellTypes[index].diffWithBasePosY = newStartY;
 
                 EditorUtility.SetDirty(m_targetedScript);
-                m_targetedScript.UpdateAllCellTypes();
+                UpdateAllCellTypes();
                 
             }
             EditorGUIHelper.SetBoldDefaultFont(false);
@@ -110,6 +110,33 @@ public class CustomCellsEditor : Editor {
             m_targetedScript.cellTypes.Add(new CellType { name = "New CellType" });
 
             EditorUtility.SetDirty(m_targetedScript);
+        }
+    }
+
+   
+    public void UpdateAllCellTypes()
+    {
+        for (int i = 0; i < m_targetedScript.worldGenerate.transform.childCount; i++)
+        {
+            if (m_targetedScript.worldGenerate.transform.GetChild(i).name != "Cell")
+            {
+                for (int j = 0; j < m_targetedScript.cellTypes.Count; j++)
+                {
+                    if (m_targetedScript.worldGenerate.transform.GetChild(i).GetComponent<CellTwo>().cellType.name == m_targetedScript.cellTypes[j].name)
+                    {
+                        CellTwo cellTwoTemp = m_targetedScript.worldGenerate.transform.GetChild(i).GetComponent<CellTwo>();
+                        CellType cellTypeTemp = m_targetedScript.cellTypes[j];
+
+                        Undo.RecordObject(cellTwoTemp, "Update Cell");
+                        cellTwoTemp.cellType.color = cellTypeTemp.color;
+                        cellTwoTemp.cellType.speedUp = cellTypeTemp.speedUp;
+                        cellTwoTemp.cellType.diffWithBasePosY = cellTypeTemp.diffWithBasePosY;
+                        cellTwoTemp.UpdateCellType();
+                        EditorUtility.SetDirty(cellTwoTemp);
+
+                    }
+                }
+            }
         }
     }
 
