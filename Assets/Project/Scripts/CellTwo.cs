@@ -119,7 +119,10 @@ public class CellTwo : MonoBehaviour
         _imMoving = false;
         imAtStartPos = false;
         //yield return new WaitForSeconds(0.5f);
-        GetComponent<MeshRenderer>().material.color = startColorbyWorldGenerate;
+        if(cellType.imAppliedToCell == false)
+            GetComponent<MeshRenderer>().material.color = startColorbyWorldGenerate;
+        else
+            GetComponent<MeshRenderer>().material.color = cellType.color;
 
     }
    

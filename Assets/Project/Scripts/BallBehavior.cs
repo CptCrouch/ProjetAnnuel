@@ -79,6 +79,7 @@ public class BallBehavior : MonoBehaviour {
             Vector3 direction = new Vector3(currentCellTarget.position.x, 0, currentCellTarget.position.z) - transform.position;
             Debug.Log(direction.normalized);
             rb.velocity = direction.normalized*speedAutoMove;
+            //rb.velocity = Vector3.Lerp(rb.velocity, direction.normalized * speedAutoMove, Time.deltaTime);
         }
         /*if(rb.velocity.magnitude <minimumSpeedToAutoMove && currentlyMovingTowardCell == false)
         {
