@@ -21,7 +21,7 @@ public class CustomCellsEditor : Editor {
         GUILayout.Space(5);
         GUILayout.Label("Cell Types", EditorStyles.boldLabel);
         GUILayout.Space(5);
-        GUILayout.Label("Order : Name / StartColor / SpeedUp / Altitude");
+        GUILayout.Label("Order : Name / IsWithFeedBackEmission / Material / Altitude");
         GUILayout.Space(5);
         for (int i = 0; i < m_targetedScript.cellTypes.Count; i++)
         {
@@ -61,15 +61,20 @@ public class CustomCellsEditor : Editor {
                 EditorGUIHelper.SetBoldDefaultFont(listIterator.GetArrayElementAtIndex(index).prefabOverride);
             }*/
 
-            GUILayout.Label("Name", EditorStyles.label, GUILayout.Width(50));
+            //GUILayout.Label("Name", EditorStyles.label, GUILayout.Width(50));
 
             // BeginChangeCheck et EndChangeCheck permet de voir si la variable a été modifié
             EditorGUI.BeginChangeCheck();
             string newName = GUILayout.TextField(m_targetedScript.cellTypes[index].name, GUILayout.Width(120));
-            
-            Color newColor = EditorGUILayout.ColorField("",m_targetedScript.cellTypes[index].color, GUILayout.Width(120));
+            Texture tex = null;
+
+            //Color newColor = EditorGUILayout.ColorField("",m_targetedScript.cellTypes[index].color, GUILayout.Width(120));
+
+            bool newBoolFeedbakcEmission = GUILayout.Toggle(m_targetedScript.cellTypes[index].feedBackOnEmission,tex, GUILayout.Width(20));
+
+            Material newMaterial = (Material)EditorGUILayout.ObjectField( m_targetedScript.cellTypes[index].mat, typeof(Material), true, GUILayout.Width(120));
            
-            float newSpeedUp = EditorGUILayout.FloatField("", m_targetedScript.cellTypes[index].speedUp, GUILayout.Width(80));
+            //float newSpeedUp = EditorGUILayout.FloatField("", m_targetedScript.cellTypes[index].speedUp, GUILayout.Width(80));
             
             int newStartY = EditorGUILayout.IntField("", m_targetedScript.cellTypes[index].diffWithBasePosY, GUILayout.Width(80));
 
@@ -78,9 +83,11 @@ public class CustomCellsEditor : Editor {
                 Undo.RecordObject(m_targetedScript, "Modified CellType");
 
                 m_targetedScript.cellTypes[index].name = newName;
-                m_targetedScript.cellTypes[index].color = newColor;
-                m_targetedScript.cellTypes[index].speedUp = newSpeedUp;
+                //m_targetedScript.cellTypes[index].color = newColor;
+                //m_targetedScript.cellTypes[index].speedUp = newSpeedUp;
+                m_targetedScript.cellTypes[index].mat = newMaterial;
                 m_targetedScript.cellTypes[index].diffWithBasePosY = newStartY;
+                m_targetedScript.cellTypes[index].feedBackOnEmission = newBoolFeedbakcEmission;
 
                 EditorUtility.SetDirty(m_targetedScript);
                 UpdateAllCellTypes();
@@ -128,9 +135,10 @@ public class CustomCellsEditor : Editor {
                         CellType cellTypeTemp = m_targetedScript.cellTypes[j];
 
                         Undo.RecordObject(cellTwoTemp, "Update Cell");
-                        cellTwoTemp.cellType.color = cellTypeTemp.color;
-                        cellTwoTemp.cellType.speedUp = cellTypeTemp.speedUp;
+                        //cellTwoTemp.cellType.color = cellTypeTemp.color;
+                        //cellTwoTemp.cellType.speedUp = cellTypeTemp.speedUp;
                         cellTwoTemp.cellType.diffWithBasePosY = cellTypeTemp.diffWithBasePosY;
+                        cellTwoTemp.cellType.feedBackOnEmission = cellTypeTemp.feedBackOnEmission;
                         cellTwoTemp.UpdateCellType();
                         EditorUtility.SetDirty(cellTwoTemp);
 

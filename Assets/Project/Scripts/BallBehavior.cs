@@ -6,7 +6,8 @@ public class BallBehavior : MonoBehaviour {
     WorldGenerate worldGenerate;
     PunchNotRandom punchNotRandom;
     PunchHexagon punchHexagon;
-    Rigidbody rb;
+    [HideInInspector]
+    public Rigidbody rb;
 
     [Header ("[ ForceArea On Collision ]")]
     [SerializeField]
@@ -29,6 +30,8 @@ public class BallBehavior : MonoBehaviour {
     public float velocityMaxToAddBounce= 15f;
     [SerializeField]
     private float angleMaxVelocityY = 5f;
+    [SerializeField]
+    private float minimumSpeedToStop = 1f;
     [Space(10)]
     [Header("[ Move Auto ]")]
     [SerializeField]
@@ -81,12 +84,9 @@ public class BallBehavior : MonoBehaviour {
             rb.velocity = direction.normalized*speedAutoMove;
             //rb.velocity = Vector3.Lerp(rb.velocity, direction.normalized * speedAutoMove, Time.deltaTime);
         }
-        /*if(rb.velocity.magnitude <minimumSpeedToAutoMove && currentlyMovingTowardCell == false)
-        {
-            currentCellTarget = GetClosestCell(worldGenerate.transform);
-            currentlyMovingTowardCell = true;
-        }
-        if(currentlyMovingTowardCell)*/
+        
+        if (imGrounded && rb.velocity.magnitude < minimumSpeedToStop)
+            rb.velocity = Vector3.zero;
 
     }
 

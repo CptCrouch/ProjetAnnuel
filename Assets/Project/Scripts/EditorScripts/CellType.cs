@@ -7,8 +7,10 @@ public class CellType {
 
     public string name;
     public Color color = new Color(0,0,0,1);
+    public Material mat;
     public float speedUp;
     public int diffWithBasePosY;
     public bool imAppliedToCell = false;
+    public bool feedBackOnEmission = false;
 	
 }

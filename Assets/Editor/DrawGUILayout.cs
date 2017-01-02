@@ -118,9 +118,11 @@ public class DrawGUILayout : Editor {
                 Undo.RecordObject(cellTwo, "Update Cell");
 
                 cellTwo.cellType.name = generateInEditor.cellTypes[indexCellTypes].name;
-                cellTwo.cellType.color = generateInEditor.cellTypes[indexCellTypes].color;
-                cellTwo.cellType.speedUp = generateInEditor.cellTypes[indexCellTypes].speedUp;
+                //cellTwo.cellType.color = generateInEditor.cellTypes[indexCellTypes].color;
+                //cellTwo.cellType.speedUp = generateInEditor.cellTypes[indexCellTypes].speedUp;
                 cellTwo.cellType.diffWithBasePosY = generateInEditor.cellTypes[indexCellTypes].diffWithBasePosY;
+                cellTwo.GetComponent<MeshRenderer>().material = generateInEditor.cellTypes[indexCellTypes].mat;
+                cellTwo.cellType.feedBackOnEmission = generateInEditor.cellTypes[indexCellTypes].feedBackOnEmission;
                 cellTwo.cellType.imAppliedToCell = true;
 
 

@@ -31,12 +31,22 @@ public class CellTwo : MonoBehaviour
     [HideInInspector]
     public float speedUpByCellType;
 
+    private Color startColor;
+    private Material mat;
+
+    void Start()
+    {
+        mat = GetComponent<MeshRenderer>().material;
+        startColor = mat.color;
+    }
+
 
 
     public void UpdateCellType()
     {
         transform.name = cellType.name;
-        GetComponent<MeshRenderer>().material.color = cellType.color;
+        //mat.set
+        //GetComponent<MeshRenderer>().material.color = cellType.color;
 
         float lastDifference = transform.position.y - startPosYbyWorldGenerate;
         transform.position = new Vector3(transform.position.x, transform.position.y + cellType.diffWithBasePosY-lastDifference, transform.position.z);
@@ -45,30 +55,22 @@ public class CellTwo : MonoBehaviour
 
     public IEnumerator ChangeColor()
     {
-        GetComponent<MeshRenderer>().material.color = colorFeedback;
+        Color startEmissionColor = mat.GetColor("_EmissionColor");
+        if (cellType.feedBackOnEmission == false)
+            mat.color = colorFeedback;
+        else
+            mat.SetColor("_EmissionColor", colorFeedback);
         
         yield return new WaitForEndOfFrame();
         if (_imMoving == false)
         {
-            if(cellType.imAppliedToCell == false)
-                GetComponent<MeshRenderer>().material.color = startColorbyWorldGenerate;
+            if (cellType.feedBackOnEmission == false)
+                mat.color = startColor;
             else
-                GetComponent<MeshRenderer>().material.color = cellType.color;
-            
+                mat.SetColor("_EmissionColor", startEmissionColor);
+
         }
-        //yield return new WaitForSeconds(0.5f);
-        /*while (GetComponent<MeshRenderer>().material.color != startColor)
-        {
-            Color lerpedColor = Color.Lerp(Color.white, startColor, Time.deltaTime * 10);
-            GetComponent<MeshRenderer>().material.color = lerpedColor;
-            if (transform.childCount > 0)
-                transform.GetChild(0).GetComponent<MeshRenderer>().material.color = lerpedColor;
-        }*/
-
-        /*GetComponent<MeshRenderer>().material.color = startColor;
-        if (transform.childCount > 0)
-            transform.GetChild(0).GetComponent<MeshRenderer>().material.color = startColor;*/
-
+        
     }
 
     
@@ -105,7 +107,15 @@ public class CellTwo : MonoBehaviour
     public IEnumerator GetPunch(float strength, float speed, Vector3 direction)
     {
         Vector3 firstPos = transform.position;
-        GetComponent<MeshRenderer>().material.color = colorWhenGrow;
+        Color startEmissionColor = mat.GetColor("_EmissionColor");
+
+        if(cellType.feedBackOnEmission == false)
+            mat.color = colorWhenGrow;
+        else
+            mat.SetColor("_EmissionColor", colorWhenGrow);
+        
+
+
         _imMoving = true;
        
         while (transform.position.y <= firstPos.y + (strength * direction.y))
@@ -118,11 +128,12 @@ public class CellTwo : MonoBehaviour
         
         _imMoving = false;
         imAtStartPos = false;
-        //yield return new WaitForSeconds(0.5f);
-        if(cellType.imAppliedToCell == false)
-            GetComponent<MeshRenderer>().material.color = startColorbyWorldGenerate;
+
+        if(cellType.feedBackOnEmission == false)
+            mat.color = startColor;
         else
-            GetComponent<MeshRenderer>().material.color = cellType.color;
+            mat.SetColor("_EmissionColor", startEmissionColor);
+        
 
     }
    
