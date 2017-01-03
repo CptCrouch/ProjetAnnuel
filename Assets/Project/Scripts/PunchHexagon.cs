@@ -152,7 +152,7 @@ public class PunchHexagon : MonoBehaviour {
                         }
                     }
                     /// 
-                    /// PARTIE FEEDBACK
+                    /// End PARTIE FEEDBACK
 
 
 
@@ -175,6 +175,7 @@ public class PunchHexagon : MonoBehaviour {
                                 StartCoroutine(hit.collider.GetComponent<CellTwo>().GetPunch(profondeur + punchArea, speedScaleCellUp, choosedTool));
 
                             cellTargeted.Add(hit.collider.gameObject);
+                            hit.collider.GetComponent<CellTwo>().EmittGrowSound();
 
                             // dans le cas ou l'on a une aire de force supérieur ou égale à 1
                             if (punchArea >= 1)

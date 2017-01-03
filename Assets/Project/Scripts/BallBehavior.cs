@@ -80,7 +80,7 @@ public class BallBehavior : MonoBehaviour {
         if (rb.velocity.magnitude < minimumSpeedToAutoMove && currentCellTarget != null && imGrounded == true)
         {
             Vector3 direction = new Vector3(currentCellTarget.position.x, 0, currentCellTarget.position.z) - transform.position;
-            Debug.Log(direction.normalized);
+            //Debug.Log(direction.normalized);
             rb.velocity = direction.normalized*speedAutoMove;
             //rb.velocity = Vector3.Lerp(rb.velocity, direction.normalized * speedAutoMove, Time.deltaTime);
         }

@@ -32,12 +32,15 @@ public class CellTwo : MonoBehaviour
     public float speedUpByCellType;
 
     private Color startColor;
+    private Color startEmissionColor;
     private Material mat;
 
     void Start()
     {
         mat = GetComponent<MeshRenderer>().material;
         startColor = mat.color;
+        startEmissionColor = mat.GetColor("_EmissionColor");
+
     }
 
 
@@ -55,7 +58,7 @@ public class CellTwo : MonoBehaviour
 
     public IEnumerator ChangeColor()
     {
-        Color startEmissionColor = mat.GetColor("_EmissionColor");
+        
         if (cellType.feedBackOnEmission == false)
             mat.color = colorFeedback;
         else
@@ -107,7 +110,6 @@ public class CellTwo : MonoBehaviour
     public IEnumerator GetPunch(float strength, float speed, Vector3 direction)
     {
         Vector3 firstPos = transform.position;
-        Color startEmissionColor = mat.GetColor("_EmissionColor");
 
         if(cellType.feedBackOnEmission == false)
             mat.color = colorWhenGrow;
@@ -135,6 +137,12 @@ public class CellTwo : MonoBehaviour
             mat.SetColor("_EmissionColor", startEmissionColor);
         
 
+    }
+
+    public void EmittGrowSound()
+    {
+        float playerPosY = GameObject.FindGameObjectWithTag("Player").transform.position.y;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/tileUp", new Vector3(transform.position.x,playerPosY,transform.position.z));
     }
    
 }
