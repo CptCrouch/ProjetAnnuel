@@ -21,7 +21,7 @@ public class CustomCellsEditor : Editor {
         GUILayout.Space(5);
         GUILayout.Label("Cell Types", EditorStyles.boldLabel);
         GUILayout.Space(5);
-        GUILayout.Label("Order : Name / IsWithFeedBackEmission / Material / Altitude");
+        GUILayout.Label("Order : Name / IsWithFeedBackEmission/ IsWithFeedBackMaterial / Material / Altitude");
         GUILayout.Space(5);
         for (int i = 0; i < m_targetedScript.cellTypes.Count; i++)
         {
@@ -70,13 +70,23 @@ public class CustomCellsEditor : Editor {
 
             //Color newColor = EditorGUILayout.ColorField("",m_targetedScript.cellTypes[index].color, GUILayout.Width(120));
 
-            bool newBoolFeedbakcEmission = GUILayout.Toggle(m_targetedScript.cellTypes[index].feedBackOnEmission,tex, GUILayout.Width(20));
+            bool newBoolFeedbackEmission = GUILayout.Toggle(m_targetedScript.cellTypes[index].feedBackOnEmission,tex, GUILayout.Width(20));
+            bool newBoolFeedbackMaterial = GUILayout.Toggle(m_targetedScript.cellTypes[index].feedBackOnMaterial, tex, GUILayout.Width(20));
 
             Material newMaterial = (Material)EditorGUILayout.ObjectField( m_targetedScript.cellTypes[index].mat, typeof(Material), true, GUILayout.Width(120));
            
             //float newSpeedUp = EditorGUILayout.FloatField("", m_targetedScript.cellTypes[index].speedUp, GUILayout.Width(80));
             
             int newStartY = EditorGUILayout.IntField("", m_targetedScript.cellTypes[index].diffWithBasePosY, GUILayout.Width(80));
+
+            if(newBoolFeedbackEmission == true)
+            {
+                newBoolFeedbackMaterial = false;
+            }
+            if(newBoolFeedbackMaterial ==true)
+            {
+                newBoolFeedbackEmission = false;
+            }
 
             if(EditorGUI.EndChangeCheck())
             {
@@ -87,7 +97,8 @@ public class CustomCellsEditor : Editor {
                 //m_targetedScript.cellTypes[index].speedUp = newSpeedUp;
                 m_targetedScript.cellTypes[index].mat = newMaterial;
                 m_targetedScript.cellTypes[index].diffWithBasePosY = newStartY;
-                m_targetedScript.cellTypes[index].feedBackOnEmission = newBoolFeedbakcEmission;
+                m_targetedScript.cellTypes[index].feedBackOnEmission = newBoolFeedbackEmission;
+                m_targetedScript.cellTypes[index].feedBackOnMaterial = newBoolFeedbackMaterial;
 
                 EditorUtility.SetDirty(m_targetedScript);
                 UpdateAllCellTypes();

@@ -22,8 +22,12 @@ public class WorldGenerate : MonoBehaviour {
     [Space(10)]
     [Header("[ Feedback Colors ]")]
     public Color startCellColor;
-    public Color feedBackCellColor = Color.red;
     public Color colorWhenGrow = Color.white;
+    public Material materialWhenGrow;
+    [Space(10)]
+    public Color feedBackCellColor = Color.red;
+    public Material feedbackCellMaterial;
+   
 
     //public int diametreGrille = 10;
 
@@ -163,9 +167,12 @@ public class WorldGenerate : MonoBehaviour {
 
 
                     cell.startColorbyWorldGenerate = startCellColor;
-                    
                     cell.colorFeedback = feedBackCellColor;
                     cell.colorWhenGrow = colorWhenGrow;
+
+                    
+                    cell.matFeedback = feedbackCellMaterial;
+                    cell.matWhenGrow = materialWhenGrow;
 
                     poolCount++;
                     
@@ -196,9 +203,12 @@ public class WorldGenerate : MonoBehaviour {
                     //newObject.GetComponent<MeshRenderer>().material.SetVector("_ObjectPosition", new Vector3(transform.position.x, 1, transform.position.z));
 
                     cell.startColorbyWorldGenerate = startCellColor;
-                   
                     cell.colorFeedback = feedBackCellColor;
                     cell.colorWhenGrow = colorWhenGrow;
+
+                    
+                    cell.matFeedback = feedbackCellMaterial;
+                    cell.matWhenGrow = materialWhenGrow;
 
                     poolCount++;
                     

@@ -11,6 +11,7 @@ public class CellType {
     public float speedUp;
     public int diffWithBasePosY;
     public bool imAppliedToCell = false;
+    public bool feedBackOnMaterial = false;
     public bool feedBackOnEmission = false;
 	
 }

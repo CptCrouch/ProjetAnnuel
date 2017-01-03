@@ -26,6 +26,16 @@ public class CellTwo : MonoBehaviour
     public Color colorFeedback;
     [HideInInspector]
     public Color colorWhenGrow;
+    
+    [HideInInspector]
+    public Material matFeedback;
+    [HideInInspector]
+    public Material matWhenGrow;
+
+
+
+
+
     [HideInInspector]
     public float timeToGoBackToStartColor = 2f;
     [HideInInspector]
@@ -58,19 +68,25 @@ public class CellTwo : MonoBehaviour
 
     public IEnumerator ChangeColor()
     {
+
         
-        if (cellType.feedBackOnEmission == false)
+
+        if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
             mat.color = colorFeedback;
-        else
+        else if (cellType.feedBackOnMaterial == false)
             mat.SetColor("_EmissionColor", colorFeedback);
+        else
+            GetComponent<MeshRenderer>().material = matFeedback;
         
         yield return new WaitForEndOfFrame();
         if (_imMoving == false)
         {
-            if (cellType.feedBackOnEmission == false)
+            if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
                 mat.color = startColor;
-            else
+            else if (cellType.feedBackOnMaterial == false)
                 mat.SetColor("_EmissionColor", startEmissionColor);
+            else
+                GetComponent<MeshRenderer>().material = mat;
 
         }
         
@@ -111,10 +127,12 @@ public class CellTwo : MonoBehaviour
     {
         Vector3 firstPos = transform.position;
 
-        if(cellType.feedBackOnEmission == false)
+        if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
             mat.color = colorWhenGrow;
-        else
+        else if (cellType.feedBackOnMaterial == false)
             mat.SetColor("_EmissionColor", colorWhenGrow);
+        else
+            GetComponent<MeshRenderer>().material = matWhenGrow;
         
 
 
@@ -131,10 +149,13 @@ public class CellTwo : MonoBehaviour
         _imMoving = false;
         imAtStartPos = false;
 
-        if(cellType.feedBackOnEmission == false)
+        if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
             mat.color = startColor;
-        else
+        else if (cellType.feedBackOnMaterial == false)
             mat.SetColor("_EmissionColor", startEmissionColor);
+        else
+            GetComponent<MeshRenderer>().material = mat;
+
         
 
     }

@@ -16,9 +16,11 @@ public class PauseInGame : MonoBehaviour {
     [HideInInspector]
     public bool isActive;
 
+    private PunchHexagon punchHexa;
+
     // Use this for initialization
     void Start () {
-	
+        punchHexa = FindObjectOfType<PunchHexagon>();
 	}
 	
 	// Update is called once per frame
@@ -26,7 +28,8 @@ public class PauseInGame : MonoBehaviour {
         if(isActive == true)
         {
             menuPauseObject.SetActive(true);
-            sliderAireForce.SetActive(false);
+            if(punchHexa.punchAireForceActivate == true)
+                sliderAireForce.SetActive(false);
            
             firstPersonController.m_MouseLook.CursorIsLocked = false;
             firstPersonController.m_MouseLook.UpdateCursorLock();
@@ -36,7 +39,8 @@ public class PauseInGame : MonoBehaviour {
         else
         {
             menuPauseObject.SetActive(false);
-            sliderAireForce.SetActive(true);
+            if (punchHexa.punchAireForceActivate == true)
+                sliderAireForce.SetActive(true);
            
             firstPersonController.m_MouseLook.CursorIsLocked = true;
             firstPersonController.RotateView();

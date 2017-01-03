@@ -31,7 +31,7 @@ public class PunchHexagon : MonoBehaviour {
     [SerializeField]
     private bool forceUniform;
     [SerializeField]
-    private bool feedBackAireForce = true;
+    public bool punchAireForceActivate = true;
     [SerializeField]
     public BallBehavior ballBehavior;
 
@@ -50,6 +50,8 @@ public class PunchHexagon : MonoBehaviour {
     void Start()
     {
         pauseScript = FindObjectOfType<PauseInGame>();
+        if(punchAireForceActivate == true)
+        sliderAireForce.gameObject.SetActive(true);
         //ballBehavior = FindObjectOfType<BallBehavior>();
     }
 
@@ -63,16 +65,19 @@ public class PunchHexagon : MonoBehaviour {
         LayerMask layerMaskCell = 1 << layerCell;
         int layerBall = 9;
         LayerMask layerMaskBall = 1 << layerBall;
-        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        if (punchAireForceActivate == true)
         {
-            sliderAireForce.value--;
-        }
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
-        {
-            sliderAireForce.value++;
-        }
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                sliderAireForce.value--;
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                sliderAireForce.value++;
+            }
 
-        punchArea = Mathf.RoundToInt(sliderAireForce.value);
+            punchArea = Mathf.RoundToInt(sliderAireForce.value);
+        }
         //profondeur = sliderProfondeur.value;
 
 
@@ -123,7 +128,7 @@ public class PunchHexagon : MonoBehaviour {
                     //}
                     
 
-                    if (feedBackAireForce)
+                    if (punchAireForceActivate)
                     {
                         if (punchArea >= 1)
                         {
@@ -178,46 +183,49 @@ public class PunchHexagon : MonoBehaviour {
                             hit.collider.GetComponent<CellTwo>().EmittGrowSound();
 
                             // dans le cas ou l'on a une aire de force supérieur ou égale à 1
-                            if (punchArea >= 1)
+                            if (punchAireForceActivate == true)
                             {
-                                // pour chaque strate du cube central visé, la première est représenté avec 4 cube, la deuxième 9 cube, la troisième 12 etc...
-                                for (int h = 1; h <= punchArea; h++)
+                                if (punchArea >= 1)
                                 {
-                                    // pour chaque cube présent dans la scène
-                                    for (int i = 0; i < worldGenerateObject.transform.childCount; i++)
+                                    // pour chaque strate du cube central visé, la première est représenté avec 4 cube, la deuxième 9 cube, la troisième 12 etc...
+                                    for (int h = 1; h <= punchArea; h++)
                                     {
-
-                                        if (worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>()._imMoving == false)
+                                        // pour chaque cube présent dans la scène
+                                        for (int i = 0; i < worldGenerateObject.transform.childCount; i++)
                                         {
-                                            // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
-                                            // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
-                                            Vector3 hitVector = new Vector3(hit.collider.transform.position.x, 0, hit.collider.transform.position.z);
-                                            Vector3 targetVector = new Vector3(worldGenerateObject.transform.GetChild(i).position.x, 0, worldGenerateObject.transform.GetChild(i).position.z);
-                                            float distanceFromCenter = Vector3.Distance(hitVector, targetVector);
 
-
-                                            if (distanceFromCenter < 1.6f * h)
+                                            if (worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>()._imMoving == false)
                                             {
-
-                                                // on calcule comment on va diviser la force pour avoir un effet sismique
-                                                float roundFloat = RoundValue(profondeur / (punchArea + 1), 100);
-                                                //Debug.Log(roundFloat);
-                                                float modifiedStrength = Mathf.Abs(roundFloat * ((punchArea + 1) - distanceFromCenter));
-                                                //Debug.Log(modifiedStrength);
-
-                                                if (forceUniform == false)
-                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(modifiedStrength, speedScaleCellUp, choosedTool));
-                                                else
-                                                    StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool));
-
-                                                //cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
+                                                // Ici on va calculer la distance du cube dans le tableau avec le cube centrale visé par le curseur, pour cela on compare en soustrayant leurs positions x entre elles et leurs positions z entre elles
+                                                // On les additionne en valeur absolue pour toujours avoir un nombre toujours positif, pour obtenir la distance en cube avec le cube centrale et détecté qu'il va subir une force aussi.
+                                                Vector3 hitVector = new Vector3(hit.collider.transform.position.x, 0, hit.collider.transform.position.z);
+                                                Vector3 targetVector = new Vector3(worldGenerateObject.transform.GetChild(i).position.x, 0, worldGenerateObject.transform.GetChild(i).position.z);
+                                                float distanceFromCenter = Vector3.Distance(hitVector, targetVector);
 
 
+                                                if (distanceFromCenter < 1.6f * h)
+                                                {
+
+                                                    // on calcule comment on va diviser la force pour avoir un effet sismique
+                                                    float roundFloat = RoundValue(profondeur / (punchArea + 1), 100);
+                                                    //Debug.Log(roundFloat);
+                                                    float modifiedStrength = Mathf.Abs(roundFloat * ((punchArea + 1) - distanceFromCenter));
+                                                    //Debug.Log(modifiedStrength);
+
+                                                    if (forceUniform == false)
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(modifiedStrength, speedScaleCellUp, choosedTool));
+                                                    else
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool));
+
+                                                    //cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
+
+
+                                                }
                                             }
                                         }
                                     }
-                                }
 
+                                }
                             }
                         }
                         
