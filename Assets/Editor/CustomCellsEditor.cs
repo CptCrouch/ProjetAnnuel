@@ -6,8 +6,12 @@ using UnityEditor;
 [CustomEditor(typeof(GenerateInEditor))]
 public class CustomCellsEditor : Editor {
 
+    //Ce script correspond à la partie inspecteur du tool, on va modifier le script GenerateInEditor pour qu'il affiche ce que l'on veut
+
+    //Correspond au script sur lequel on va appliquer la GUI a chaque instant
     GenerateInEditor m_targetedScript;
 
+    // Forme d'update qui va appeler les principales fonction de GUI à chaque frame
     public override void OnInspectorGUI()
     {
         m_targetedScript = (GenerateInEditor)target;
@@ -15,19 +19,26 @@ public class CustomCellsEditor : Editor {
         DrawCellsEditInspector();
     }
 
+    // principale Fonction qui va appeler le reste à chaque update
     void DrawCellsEditInspector()
     {
+        // On draw les boutons de creation du monde
         DrawCreateCleanWorld();
         GUILayout.Space(5);
         GUILayout.Label("Cell Types", EditorStyles.boldLabel);
         GUILayout.Space(5);
-        GUILayout.Label("Order : Name / IsWithFeedBackEmission/ IsWithFeedBackMaterial / Material / Altitude");
+        GUILayout.Label("Order : Name / IsWithFeedBackEmission/ IsWithFeedBackMaterial / Material / SpeedGrow / Altitude");
+        
         GUILayout.Space(5);
+
+        // On draw autant de cellType qu'il y en a dans la liste du GenerateInEditor
         for (int i = 0; i < m_targetedScript.cellTypes.Count; i++)
         {
             DrawCellType(i);
                 
         }
+
+        // On draw le bouton permettant de créer un nouveau CellType
         DrawAddNewCellTypeButton();
     }
 
@@ -44,24 +55,19 @@ public class CustomCellsEditor : Editor {
             m_targetedScript.CleanWorld();
         }
     }
+
+    // A chaque ligne, on va draw la liste des variables ciblées de CellType sous la forme de GUI pouvant etre modifié
     void DrawCellType(int index)
     {
+        // permet de ne rien faire si la liste de CellType dans Generate un Editor est vide
         if(index < 0 || index >= m_targetedScript.cellTypes.Count)
         {
             return;
         }
 
-        //SerializedProperty listIterator = serializedObject.FindProperty("CellType");
-
+        // On commence le draw
         GUILayout.BeginHorizontal();
         {
-            // permet de mettre en gras si c'est modifié
-            /*if(listIterator.isInstantiatedPrefab == true)
-            {
-                EditorGUIHelper.SetBoldDefaultFont(listIterator.GetArrayElementAtIndex(index).prefabOverride);
-            }*/
-
-            //GUILayout.Label("Name", EditorStyles.label, GUILayout.Width(50));
 
             // BeginChangeCheck et EndChangeCheck permet de voir si la variable a été modifié
             EditorGUI.BeginChangeCheck();
@@ -75,7 +81,7 @@ public class CustomCellsEditor : Editor {
 
             Material newMaterial = (Material)EditorGUILayout.ObjectField( m_targetedScript.cellTypes[index].mat, typeof(Material), true, GUILayout.Width(120));
            
-            //float newSpeedUp = EditorGUILayout.FloatField("", m_targetedScript.cellTypes[index].speedUp, GUILayout.Width(80));
+            float newSpeedUp = EditorGUILayout.FloatField("", m_targetedScript.cellTypes[index].speedUp, GUILayout.Width(80));
             
             int newStartY = EditorGUILayout.IntField("", m_targetedScript.cellTypes[index].diffWithBasePosY, GUILayout.Width(80));
 
@@ -88,13 +94,14 @@ public class CustomCellsEditor : Editor {
                 newBoolFeedbackEmission = false;
             }
 
+            // si une variable entre le Begin et le End a été modifié, on update Toute les cellules
             if(EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(m_targetedScript, "Modified CellType");
 
                 m_targetedScript.cellTypes[index].name = newName;
-                //m_targetedScript.cellTypes[index].color = newColor;
-                //m_targetedScript.cellTypes[index].speedUp = newSpeedUp;
+               // m_targetedScript.cellTypes[index].color = newColor;
+                m_targetedScript.cellTypes[index].speedUp = newSpeedUp;
                 m_targetedScript.cellTypes[index].mat = newMaterial;
                 m_targetedScript.cellTypes[index].diffWithBasePosY = newStartY;
                 m_targetedScript.cellTypes[index].feedBackOnEmission = newBoolFeedbackEmission;
@@ -106,6 +113,7 @@ public class CustomCellsEditor : Editor {
             }
             EditorGUIHelper.SetBoldDefaultFont(false);
 
+            // Pour finir, on draw le bouton remove et affiche une fenetre de confirmation
             if(GUILayout.Button("Remove"))
             {
                 EditorApplication.Beep();
@@ -117,8 +125,10 @@ public class CustomCellsEditor : Editor {
                 }
             }
         }
+        // On finis le draw
         GUILayout.EndHorizontal();
     }
+    // fonction permettant de draw le bouton pour creer un nouveau CellType et de l'ajouter à la mainList
     void DrawAddNewCellTypeButton()
     {
         if(GUILayout.Button("Add New CellType", GUILayout.Height(30)))
@@ -131,7 +141,7 @@ public class CustomCellsEditor : Editor {
         }
     }
 
-   
+   // Ici On update toute les cellules lorsque une variable a été modifié dans la GUI
     public void UpdateAllCellTypes()
     {
         for (int i = 0; i < m_targetedScript.worldGenerate.transform.childCount; i++)
@@ -147,7 +157,7 @@ public class CustomCellsEditor : Editor {
 
                         Undo.RecordObject(cellTwoTemp, "Update Cell");
                         //cellTwoTemp.cellType.color = cellTypeTemp.color;
-                        //cellTwoTemp.cellType.speedUp = cellTypeTemp.speedUp;
+                        cellTwoTemp.cellType.speedUp = cellTypeTemp.speedUp;
                         cellTwoTemp.cellType.diffWithBasePosY = cellTypeTemp.diffWithBasePosY;
                         cellTwoTemp.cellType.feedBackOnEmission = cellTypeTemp.feedBackOnEmission;
                         cellTwoTemp.UpdateCellType();

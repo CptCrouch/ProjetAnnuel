@@ -5,14 +5,18 @@ using UnityEngine;
 [InitializeOnLoad]
 public class DrawGUILayout : Editor {
 
+    // Script permettant d'avoir de la GUI dans la scène
+
     public static GenerateInEditor generateInEditor;
  
+    
     public static int SelectedType
     {
         get { return EditorPrefs.GetInt("SelectedType", 0); }
         set { EditorPrefs.SetInt("SelectedType", value); }
     }
 
+    // A chaque fois que la class DrawGUILayout est appelé, effectue cette fonction
     static DrawGUILayout()
     {
         SceneView.onSceneGUIDelegate -= OnSceneGUI;
@@ -20,12 +24,14 @@ public class DrawGUILayout : Editor {
        
     }
 
+    // Forme d'update
     static void OnSceneGUI(SceneView _sceneView)
     {
         if(generateInEditor == null)
         {
             generateInEditor = FindObjectOfType<GenerateInEditor>();
         }
+        // Ici on va afficher la GUI uniquement si on a selectionner des cellules uniquement
         if (Selection.gameObjects.Length >0 && CheckObjectSelection(Selection.gameObjects) == true )
         {
             DrawToolsMenu(_sceneView.position);
@@ -35,8 +41,9 @@ public class DrawGUILayout : Editor {
         }
         
 
-        //HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
+        
     }
+    // Check si tous les objets selectionné sont bien des cellules 
     static bool CheckObjectSelection(GameObject[] objSelected)
     {
         for (int i = 0; i < objSelected.Length; i++)
@@ -50,7 +57,7 @@ public class DrawGUILayout : Editor {
     }
     static void DrawToolsMenu(Rect _position)
     {
-        //By using Handles.BeginGUI() we can start drawing regular GUI elements into the SceneView
+        //On commence à dessiner dans la scène
         Handles.BeginGUI();
 
         //Here we draw a toolbar at the bottom edge of the SceneView
@@ -91,23 +98,23 @@ public class DrawGUILayout : Editor {
     static void DrawCustomBlockButton(int index)
     {
         bool _isActive = index == SelectedType;
-
-        //By passing a Prefab or GameObject into AssetPreview.GetAssetPreview you get a texture that shows this object
-        //Texture2D _previewImage = AssetPreview.GetAssetPreview(_allPrefabs.allPrefabs[_index].prefab);
-        //GUIContent _buttonContent = new GUIContent(_previewImage);
+ 
         GUIStyle toggleStyle = GUI.skin.button;
 
-        GUIStyle _text = GUIStyle.none;
-        _text.normal.textColor = generateInEditor.cellTypes[index].color;
+        GUIStyle _text = EditorStyles.boldLabel;
+        _text.normal.textColor = generateInEditor.cellTypes[index].mat.color;
         GUI.Label(new Rect(12, index * 98 + 8, 100, 20), generateInEditor.cellTypes[index].name, _text);
-        bool _isToggleDown = GUI.Toggle(new Rect(12, index * 98 + 25, 60, 60), _isActive, "",toggleStyle);
-        //Color _whatColor = EditorGUILayout.ColorField(Color.white,new Rect())
 
-        //If this button is clicked but it wasn't clicked before (ie. if the user has just pressed the button)
+        bool _isToggleDown = GUI.Toggle(new Rect(12, index * 98 + 25, 60, 60), _isActive, "",toggleStyle);
+        
+
+        //check si l'utilisateur a appuyer sur un nouveau CellType
         if (_isToggleDown && !_isActive)
             SelectedType = index;
     }
 
+    // correspond à la fonction appelée lorsque l'on appuie sur le bouton Apply
+    // On applique le current type selected à toute les cellules sélectionnée
     public static void ApplyNewCellType(int indexCellTypes, GameObject[] selection)
     {
         for (int i = 0; i < selection.Length; i++)
