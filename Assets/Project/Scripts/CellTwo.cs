@@ -45,6 +45,8 @@ public class CellTwo : MonoBehaviour
     private Color startEmissionColor;
     private Material mat;
 
+    public int currentAltitude;
+
     void Start()
     {
         mat = GetComponent<MeshRenderer>().material;
@@ -54,7 +56,7 @@ public class CellTwo : MonoBehaviour
     }
 
 
-
+    // Sert dans l'editor
     public void UpdateCellType()
     {
         transform.name = cellType.name;
@@ -95,10 +97,12 @@ public class CellTwo : MonoBehaviour
     
 
 
-    public IEnumerator ReturnToStartPos(float speed,GameObject prefabDissolve,int numberToDissolve)
+    public IEnumerator ReturnToStartPos(float speed,GameObject prefabDissolve)
     {
         Vector3 firstPos = transform.position;
-        
+
+        currentAltitude = 0;
+
         if(cellType.imAppliedToCell == false)
         transform.position = new Vector3(transform.position.x, startPosYbyWorldGenerate, transform.position.z);
         else
@@ -156,7 +160,9 @@ public class CellTwo : MonoBehaviour
         else
             GetComponent<MeshRenderer>().material = mat;
 
-        
+        currentAltitude++;
+
+
 
     }
 

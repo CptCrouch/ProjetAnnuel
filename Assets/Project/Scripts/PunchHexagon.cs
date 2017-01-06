@@ -35,6 +35,14 @@ public class PunchHexagon : MonoBehaviour {
     [SerializeField]
     public BallBehavior ballBehavior;
 
+    [Space(10)]
+    [Header("[ SnowBall Altitude ]")]
+    public int altitudeToForce1;
+    public int altitudeToForce2;
+    public int altitudeToForce3;
+
+    public Image[] allFeedbackImage;
+
 
     private PauseInGame pauseScript;
     
@@ -46,12 +54,12 @@ public class PunchHexagon : MonoBehaviour {
     private Vector3 choosedReaction;
 
     private List<GameObject> cellTargeted = new List<GameObject>();
+    private int currentGeneralAltitude;
     // Use this for initialization
     void Start()
     {
         pauseScript = FindObjectOfType<PauseInGame>();
-        if(punchAireForceActivate == true)
-        sliderAireForce.gameObject.SetActive(true);
+        
         //ballBehavior = FindObjectOfType<BallBehavior>();
     }
 
@@ -59,6 +67,30 @@ public class PunchHexagon : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        currentGeneralAltitude = GetGeneralAltitude();
+        Debug.Log(currentGeneralAltitude);
+        if(currentGeneralAltitude > altitudeToForce1 && currentGeneralAltitude < altitudeToForce2)
+        {
+            punchArea = 1;
+        }
+        else if(currentGeneralAltitude > altitudeToForce2 && currentGeneralAltitude < altitudeToForce3)
+        {
+            punchArea = 2;
+        }
+        else if (currentGeneralAltitude > altitudeToForce3)
+        {
+            punchArea = 3;
+        }
+        else
+        {
+            punchArea = 0;
+        }
+        sliderAireForce.value = punchArea;
+        if (punchAireForceActivate == true)
+        {
+            ChooseWhichFeedback(punchArea);
+        }
+
         Vector3 cameraCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
         RaycastHit hit;
         int layerCell = 8;
@@ -67,34 +99,23 @@ public class PunchHexagon : MonoBehaviour {
         LayerMask layerMaskBall = 1 << layerBall;
         if (punchAireForceActivate == true)
         {
-            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            /*if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 sliderAireForce.value--;
             }
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 sliderAireForce.value++;
-            }
+            }*/
 
-            punchArea = Mathf.RoundToInt(sliderAireForce.value);
+            //punchArea = Mathf.RoundToInt(sliderAireForce.value);
         }
-        //profondeur = sliderProfondeur.value;
+        
 
 
         if (pauseScript.isActive == false)
         {
-            /*if (Input.GetMouseButtonDown(0))
-            {
-                holdMouseButton = true;
-                choosedTool = Vector3.down;
-                choosedReaction = Vector3.up;
-            }*/
-
-
-
-
-
-
+          
             if (Input.GetMouseButtonDown(0))
             {
                 holdMouseButton = true;
@@ -103,13 +124,13 @@ public class PunchHexagon : MonoBehaviour {
             }
             if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangeBallTool, layerMaskBall))
             {
-                StartCoroutine(hit.collider.GetComponent<BallBehavior>().ChangeMaterialHighlight());
+                /*StartCoroutine(hit.collider.GetComponent<BallBehavior>().ChangeMaterialHighlight());
                 if (Input.GetMouseButtonDown(0))
                 {
                     Vector3 direction = (hit.collider.transform.position - transform.position).normalized;
                     hit.collider.GetComponent<BallBehavior>().ShootOnBall(direction, forceShootBall,transform.position);
                     holdMouseButton = false;
-                }
+                }*/
             }
             else
             {
@@ -117,16 +138,9 @@ public class PunchHexagon : MonoBehaviour {
                 /// 
                 if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangeEarthTool, layerMaskCell))
                 {
-                    //if (hit.collider.gameObject.GetComponent<Renderer>().material.color == Color.white)
-
-                    //if (CheckCellFeedBackValidity(hit.collider.gameObject) == true)
-                    //{
+                   
                     if(hit.collider.gameObject.GetComponent<CellTwo>()._imMoving == false)
                         StartCoroutine(hit.collider.gameObject.GetComponent<CellTwo>().ChangeColor());
-                        //lastFeedBackCells.Add(hit.collider.gameObject);
-                        //lastTargetedFeedbackCell = hit.collider.gameObject;
-                    //}
-                    
 
                     if (punchAireForceActivate)
                     {
@@ -147,10 +161,9 @@ public class PunchHexagon : MonoBehaviour {
                                     
                                     if (distanceFromCenter < 1.6f * h && worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>()._imMoving == false)
                                     {
-                                        
-                                        //if (worldGenerateObject.transform.GetChild(i).GetComponent<Renderer>().material.color == Color.white)
-                                            StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().ChangeColor());
-                                            //lastFeedBackCells.Add(worldGenerateObject.transform.GetChild(i).gameObject);
+                                           
+                                         StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().ChangeColor());
+                                      
                                     }
                                 }
                             }
@@ -246,6 +259,31 @@ public class PunchHexagon : MonoBehaviour {
 
             }
         }
+    }
+
+    void ChooseWhichFeedback(int index)
+    {
+        for (int i = 0; i < allFeedbackImage.Length; i++)
+        {
+            if(i == index)
+            {
+                allFeedbackImage[i].enabled = true;
+            }
+            else
+            {
+                allFeedbackImage[i].enabled = false;
+            }
+        }
+    }
+    public int GetGeneralAltitude()
+    {
+        int altitude =0;
+        for (int i = 0; i < worldGenerateObject.transform.childCount; i++)
+        {
+            int altCell = worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().currentAltitude;
+            altitude = altitude + altCell;
+        }
+        return altitude;
     }
 
     public bool CheckCellPosValidity(int randomNumber)

@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 public class PauseInGame : MonoBehaviour {
     [SerializeField]
     private GameObject sliderAireForce;
-   
+    [SerializeField]
+    private GameObject parentImageFb;
+
     [SerializeField]
     private GameObject menuPauseObject;
     [SerializeField]
@@ -28,9 +30,9 @@ public class PauseInGame : MonoBehaviour {
         if(isActive == true)
         {
             menuPauseObject.SetActive(true);
-            if(punchHexa.punchAireForceActivate == true)
-                sliderAireForce.SetActive(false);
-           
+            //if(punchHexa.punchAireForceActivate == true)
+            //sliderAireForce.SetActive(false);
+            parentImageFb.SetActive(false);
             firstPersonController.m_MouseLook.CursorIsLocked = false;
             firstPersonController.m_MouseLook.UpdateCursorLock();
 
@@ -39,9 +41,9 @@ public class PauseInGame : MonoBehaviour {
         else
         {
             menuPauseObject.SetActive(false);
-            if (punchHexa.punchAireForceActivate == true)
-                sliderAireForce.SetActive(true);
-           
+            //if (punchHexa.punchAireForceActivate == true)
+            //sliderAireForce.SetActive(true);
+            parentImageFb.SetActive(true);
             firstPersonController.m_MouseLook.CursorIsLocked = true;
             firstPersonController.RotateView();
             
