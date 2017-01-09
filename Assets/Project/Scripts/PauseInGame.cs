@@ -33,8 +33,8 @@ public class PauseInGame : MonoBehaviour {
             //if(punchHexa.punchAireForceActivate == true)
             //sliderAireForce.SetActive(false);
             parentImageFb.SetActive(false);
-            firstPersonController.m_MouseLook.CursorIsLocked = false;
-            firstPersonController.m_MouseLook.UpdateCursorLock();
+            //firstPersonController.m_MouseLook.CursorIsLocked = false;
+            //firstPersonController.m_MouseLook.UpdateCursorLock();
 
             Time.timeScale = 0;
         }
@@ -44,8 +44,8 @@ public class PauseInGame : MonoBehaviour {
             //if (punchHexa.punchAireForceActivate == true)
             //sliderAireForce.SetActive(true);
             parentImageFb.SetActive(true);
-            firstPersonController.m_MouseLook.CursorIsLocked = true;
-            firstPersonController.RotateView();
+            //firstPersonController.m_MouseLook.CursorIsLocked = true;
+            //firstPersonController.RotateView();
             
 
             Time.timeScale = 1;

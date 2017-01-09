@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MoveOnPlane : MonoBehaviour {
 
-    public float speedNormal = 5f;
+    public float speedRotate = 5f;
     private float speed;
     public float speedRun = 10;
     public KeyCode activeGravity = KeyCode.LeftShift;
@@ -11,7 +11,7 @@ public class MoveOnPlane : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         characController = GetComponent<CharacterController>();
-        speed = speedNormal;
+        speed = speedRotate;
 	}
 	
 	// Update is called once per frame
@@ -23,11 +23,10 @@ public class MoveOnPlane : MonoBehaviour {
         Vector3 pos = transform.position;
         pos.y = Mathf.Clamp(transform.position.y, 0.5f, 1000f);
         transform.position = pos;
-        //if (transform.position.y > 0.5)
-        transform.Translate(new Vector3(axisX, axisY, axisZ) * speed * Time.deltaTime);
-        //else
-            //transform.position = new Vector3(transform.position.x, 0.6f, transform.position.z);
 
+        //transform.Translate(new Vector3(axisX, axisY, axisZ) * speed * Time.deltaTime);
+        transform.RotateAround(Vector3.zero, Vector3.up, axisX * Time.deltaTime*speed);
+        
         if(Input.GetKeyDown(activeGravity))
         {
             if(characController.enabled == false)
@@ -44,7 +43,7 @@ public class MoveOnPlane : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.E))
         {
 
-            speed = speedNormal;
+            speed = speedRotate;
         }
 
 

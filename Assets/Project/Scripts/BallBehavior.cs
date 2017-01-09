@@ -93,7 +93,7 @@ public class BallBehavior : MonoBehaviour {
             //rbPlayer.velocity = direction.normalized * multiplicateurSpeedAutoMove * currentTime;
             //rb.velocity = Vector3.Lerp(rb.velocity, direction.normalized * speedAutoMove, Time.deltaTime);
         }
-        rbPlayer.velocity = new Vector3(rb.velocity.x,0,rb.velocity.z);
+        //rbPlayer.velocity = new Vector3(rb.velocity.x,0,rb.velocity.z);
 
 
     }
@@ -129,7 +129,8 @@ public class BallBehavior : MonoBehaviour {
                 GetAreaOfCell(alt, cellCollided.transform);
                 //cellToDissolve.Add(cellCollided);
                 //LaunchDissolve();
-                rbPlayer.velocity = Vector3.zero;
+                //rbPlayer.velocity = Vector3.zero;
+                //rb.velocity *= 10f;
                 currentTime = startSpeedAfterCollide;
                currentCellTarget = null;
             }

@@ -12,7 +12,7 @@ public class PunchHexagon : MonoBehaviour {
     [SerializeField, Range(0, 3)]
     private float profondeur = 1f;
     [SerializeField, Range(0, 3)]
-    private int punchArea = 1;
+    private int punchArea = 0;
     [SerializeField]
     public float speedScaleCellUp = 1f;
     [SerializeField]
@@ -69,7 +69,7 @@ public class PunchHexagon : MonoBehaviour {
     {
         currentGeneralAltitude = GetGeneralAltitude();
         Debug.Log(currentGeneralAltitude);
-        if(currentGeneralAltitude > altitudeToForce1 && currentGeneralAltitude < altitudeToForce2)
+        /*if(currentGeneralAltitude > altitudeToForce1 && currentGeneralAltitude < altitudeToForce2)
         {
             punchArea = 1;
         }
@@ -84,15 +84,16 @@ public class PunchHexagon : MonoBehaviour {
         else
         {
             punchArea = 0;
-        }
+        }*/
         sliderAireForce.value = punchArea;
         if (punchAireForceActivate == true)
         {
             ChooseWhichFeedback(punchArea);
         }
 
-        Vector3 cameraCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
+        //Vector3 cameraCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
         RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         int layerCell = 8;
         LayerMask layerMaskCell = 1 << layerCell;
         int layerBall = 9;
@@ -116,13 +117,13 @@ public class PunchHexagon : MonoBehaviour {
         if (pauseScript.isActive == false)
         {
           
-            if (Input.GetMouseButtonDown(0))
+            /*if (Input.GetMouseButtonDown(0))
             {
                 holdMouseButton = true;
                 choosedTool = Vector3.up;
                 choosedReaction = Vector3.down;
-            }
-            if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangeBallTool, layerMaskBall))
+            }*/
+            if (Physics.Raycast(ray, out hit, rangeBallTool, layerMaskBall))
             {
                 /*StartCoroutine(hit.collider.GetComponent<BallBehavior>().ChangeMaterialHighlight());
                 if (Input.GetMouseButtonDown(0))
@@ -136,7 +137,7 @@ public class PunchHexagon : MonoBehaviour {
             {
                 /// PARTIE FEEDBACK
                 /// 
-                if (Physics.Raycast(cameraCenter, transform.forward, out hit, rangeEarthTool, layerMaskCell))
+                if (Physics.Raycast(ray, out hit, rangeEarthTool, layerMaskCell))
                 {
                    
                     if(hit.collider.gameObject.GetComponent<CellTwo>()._imMoving == false)
@@ -175,9 +176,9 @@ public class PunchHexagon : MonoBehaviour {
 
 
 
-                    if (holdMouseButton == true)
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        
+                        choosedTool = Vector3.up;
                         if (hit.collider.GetComponent<CellTwo>()._imMoving == false && hit.collider.gameObject != lastTargetedCell)
                         {
                             float hitPosX = hit.collider.transform.position.x;
