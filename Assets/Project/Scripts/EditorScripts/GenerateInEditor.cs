@@ -7,8 +7,24 @@ using System.Collections;
 public class GenerateInEditor : MonoBehaviour {
 
     public WorldGenerate worldGenerate;
+
+    [Space(10)]
+    [Header("[ Diametre de l'HexagonWorld ]")]
+
+    public int diametreWorldHexagon;
+
+    [Space(10)]
+    [Header("[ Feedback Colors ]")]
+    public Color startCellColor;
+    public Color feedBackCellColor = Color.red;
+    public Color colorWhenGrow = Color.white;
+    public Color colorWhenTargeted = Color.white;
     
-    
+    [Space(10)]
+    public Material materialWhenGrow;
+    public Material feedbackCellMaterial;
+    public Material materialWhenTargeted;
+
     [HideInInspector]
     public List<CellType> cellTypes = new List<CellType>();
 
@@ -26,7 +42,14 @@ public class GenerateInEditor : MonoBehaviour {
     {
         if (alreadyAWorld == false)
         {
-            worldGenerate.GenerateHexagonWorld((worldGenerate.diametreWorldHexagon - 1) / 2);
+            worldGenerate.GenerateHexagonWorld(diametreWorldHexagon, 
+                startCellColor, 
+                feedBackCellColor, 
+                colorWhenGrow, 
+                materialWhenGrow, 
+                feedbackCellMaterial,
+                colorWhenTargeted,
+                materialWhenTargeted);
             alreadyAWorld = true;
         }
         else

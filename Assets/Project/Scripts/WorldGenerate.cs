@@ -10,24 +10,13 @@ public class WorldGenerate : MonoBehaviour {
     public int width;
 
     [Space(10)]
-    [Header("[ Create Hexagon World ]")]
+    [Header("[ Variable a ne pas toucher ]")]
     public bool isHexagonWorld = false;
     public int height;
     public float tailleYBigHexagon;
-    public int diametreWorldHexagon;
     public float increaseZ = 1.3f;
     public float increaseX = 0.75f;
 
-
-    [Space(10)]
-    [Header("[ Feedback Colors ]")]
-    public Color startCellColor;
-    public Color colorWhenGrow = Color.white;
-    public Material materialWhenGrow;
-    [Space(10)]
-    public Color feedBackCellColor = Color.red;
-    public Material feedbackCellMaterial;
-   
 
     //public int diametreGrille = 10;
 
@@ -54,7 +43,6 @@ public class WorldGenerate : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rayon = (diametreWorldHexagon-1) / 2;
 
         if (isHexagonWorld == false)
             GenerateWorld();
@@ -137,11 +125,14 @@ public class WorldGenerate : MonoBehaviour {
         
     }
 
-    public void GenerateHexagonWorld(int rayon)
+    public void GenerateHexagonWorld(int diametre, Color startCellColor, Color feedBackCellColor, Color colorWhenGrow, Material materialWhenGrow, Material feedbackCellMaterial, Color colorWhenTargeted,
+               Material materialWhenTargeted )
     {
+        rayon = (diametre - 1) / 2;
+
         for (int i = -rayon; i <= rayon; i++)
         {
-            int posX = diametreWorldHexagon - Mathf.Abs(i);
+            int posX = diametre - Mathf.Abs(i);
             if(posX % 2 == 0)
             {
                 for (int j = -posX+1; j <= posX -1; j=j+2)
@@ -169,10 +160,12 @@ public class WorldGenerate : MonoBehaviour {
                     cell.startColorbyWorldGenerate = startCellColor;
                     cell.colorFeedback = feedBackCellColor;
                     cell.colorWhenGrow = colorWhenGrow;
+                    cell.colorWhenTargeted = colorWhenTargeted;
 
                     
                     cell.matFeedback = feedbackCellMaterial;
                     cell.matWhenGrow = materialWhenGrow;
+                    cell.materialWhenTargeted = materialWhenTargeted;
 
                     poolCount++;
                     

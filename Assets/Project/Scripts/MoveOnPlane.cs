@@ -24,7 +24,7 @@ public class MoveOnPlane : MonoBehaviour {
         pos.y = Mathf.Clamp(transform.position.y, 0.5f, 1000f);
         transform.position = pos;
 
-        //transform.Translate(new Vector3(axisX, axisY, axisZ) * speed * Time.deltaTime);
+        transform.Translate(new Vector3(0, 0, axisZ) * speed * Time.deltaTime);
         transform.RotateAround(Vector3.zero, Vector3.up, axisX * Time.deltaTime*speed);
         
         if(Input.GetKeyDown(activeGravity))

@@ -24,16 +24,20 @@ public class BallBehavior : MonoBehaviour {
 
 
     [Space(10)]
-    [Header("[ Clamp Ball ]")]
+    [Header("[ Clamp Ball and Bouncing ]")]
     [SerializeField]
     public float multiplicateurVelocityCollide = 100f;
     [SerializeField]
     private float angleMaxVelocityY = 5f;
-    
+    [SerializeField]
+    private float maxSpeedToAddBounce= 5f;
+    [SerializeField]
+    private bool addBounceOnBall = false;
+
     [Space(10)]
     [Header("[ Move Auto ]")]
-    //[SerializeField]
-    //private float minimumSpeedToAutoMove = 5f;
+    [SerializeField]
+    public float minimumSpeedToAutoMove = 5f;
     [SerializeField]
     private float multiplicateurSpeedAutoMove = 2f;
     [SerializeField]
@@ -53,12 +57,17 @@ public class BallBehavior : MonoBehaviour {
     public Transform currentCellTarget;
     [HideInInspector]
     public bool imGrounded = false;
+    [HideInInspector]
+    public float currentSpeed = 0f;
+    [HideInInspector]
+    public float speedToUse = 0f;
 
     private float currentVelocityY;
     private bool currentlyMovingTowardCell = false;
     private float currentTime =1f;
+    
 
-    public Rigidbody rbPlayer;
+    
     
 
 
@@ -71,7 +80,7 @@ public class BallBehavior : MonoBehaviour {
         }
         worldGenerate = FindObjectOfType<WorldGenerate>();
         rb = GetComponent<Rigidbody>();
-        rbPlayer = GameObject.Find("Player").GetComponent<Rigidbody>();
+        
         currentTime = startSpeedAfterCollide;
         
     }
@@ -81,22 +90,24 @@ public class BallBehavior : MonoBehaviour {
         currentVelocityY = rb.velocity.y;
         currentVelocityY = Mathf.Clamp(rb.velocity.y, -1000, angleMaxVelocityY);
         rb.velocity = new Vector3(rb.velocity.x, currentVelocityY, rb.velocity.z);
+
+        currentSpeed = rb.velocity.magnitude;
         //Debug.Log(rb.velocity.magnitude);
 
 
         if (currentCellTarget != null && imGrounded == true)
         {
             Vector3 direction = new Vector3(currentCellTarget.position.x, 0, currentCellTarget.position.z) - transform.position;
-            //Debug.Log(direction.normalized);
+ 
             currentTime += Time.deltaTime;
-            rb.velocity = direction.normalized* multiplicateurSpeedAutoMove *currentTime;
-            //rbPlayer.velocity = direction.normalized * multiplicateurSpeedAutoMove * currentTime;
-            //rb.velocity = Vector3.Lerp(rb.velocity, direction.normalized * speedAutoMove, Time.deltaTime);
+
+            rb.velocity = direction.normalized * speedToUse;
         }
         //rbPlayer.velocity = new Vector3(rb.velocity.x,0,rb.velocity.z);
 
 
     }
+    
 
     public IEnumerator ChangeMaterialHighlight()
     {
@@ -123,15 +134,18 @@ public class BallBehavior : MonoBehaviour {
             {
 
                 int alt = cellCollided.currentAltitude;
-                if (alt > maxAltitude)
-                    alt = maxAltitude;
+                
                 StartCoroutine(cellCollided.ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
-                GetAreaOfCell(alt, cellCollided.transform);
+                GetAreaOfCell(1, cellCollided.transform,alt);
                 //cellToDissolve.Add(cellCollided);
                 //LaunchDissolve();
                 //rbPlayer.velocity = Vector3.zero;
-                //rb.velocity *= 10f;
+                if (rb.velocity.magnitude < maxSpeedToAddBounce && addBounceOnBall == true)
+                {
+                    rb.velocity *= multiplicateurVelocityCollide;
+                }
                 currentTime = startSpeedAfterCollide;
+                
                currentCellTarget = null;
             }
         }
@@ -145,15 +159,13 @@ public class BallBehavior : MonoBehaviour {
             CellTwo cellCollided = collision.collider.GetComponent<CellTwo>();
             if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
             {
-                //cellToDissolve.Add(cellCollided);
-                //LaunchDissolve();
+               
                 int alt = cellCollided.currentAltitude;
-                if (alt > maxAltitude)
-                    alt = maxAltitude;
+                
                 StartCoroutine(cellCollided.ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
-                GetAreaOfCell(alt, cellCollided.transform);
+                GetAreaOfCell(1, cellCollided.transform,alt);
 
-                rbPlayer.velocity = Vector3.zero;
+                
                 currentTime = startSpeedAfterCollide;
                 currentCellTarget = null;
             }
@@ -173,14 +185,14 @@ public class BallBehavior : MonoBehaviour {
         }
     }
 
-    IEnumerator WaitForDominoEffect(int area, Transform center)
+    IEnumerator WaitForDominoEffect(int area, Transform center,int startAltitude)
     {
         yield return new WaitForSeconds(timeToWaitForDominoEffect);
-        GetAreaOfCell(area,center);
+        GetAreaOfCell(area,center,startAltitude);
     }
 
 
-    void GetAreaOfCell(int areaForce, Transform center)
+    void GetAreaOfCell(int areaForce, Transform center,int startAltitude )
     {
         for (int h = 1; h <= areaForce; h++)
         {
@@ -195,15 +207,15 @@ public class BallBehavior : MonoBehaviour {
                 float distanceFromCenterHexagon = Vector3.Distance(hitVector, targetVector);
                 if (distanceFromCenterHexagon < 1.6f * h)
                 {
-                    if (cellTwo._imMoving == false && cellTwo.imAtStartPos == false)
+                    
+                    if (cellTwo._imMoving == false && cellTwo.imAtStartPos == false && cellTwo.currentAltitude < startAltitude)
                     {
                         //cellToDissolve.Add(punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>());
                         int alt = cellTwo.currentAltitude;
-                        if (alt > maxAltitude)
-                            alt = maxAltitude;
+                        
                         StartCoroutine(cellTwo.ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
 
-                        StartCoroutine(WaitForDominoEffect(alt, cellTwo.transform));
+                        StartCoroutine(WaitForDominoEffect(1, cellTwo.transform,alt));
                     }
                 }
                 //}

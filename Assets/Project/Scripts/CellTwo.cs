@@ -26,11 +26,15 @@ public class CellTwo : MonoBehaviour
     public Color colorFeedback;
     [HideInInspector]
     public Color colorWhenGrow;
-    
+    [HideInInspector]
+    public Color colorWhenTargeted;
+
     [HideInInspector]
     public Material matFeedback;
     [HideInInspector]
     public Material matWhenGrow;
+    [HideInInspector]
+    public Material materialWhenTargeted;
 
 
 
@@ -41,20 +45,35 @@ public class CellTwo : MonoBehaviour
     [HideInInspector]
     public float speedUpByCellType;
 
-    private Color startColor;
-    private Color startEmissionColor;
-    private Material mat;
+    [HideInInspector]
+    public Color startColor;
+    [HideInInspector]
+    public Color startEmissionColor;
+    [HideInInspector]
+    public Material startMat;
+    [HideInInspector]
+    public bool imTargeted;
+
+
+    private Color startColorTemp;
+    
+    private Color startEmissionColoTemp;
+    
+    private Material startMatTemp;
+
+   
 
     public int currentAltitude;
 
     void Start()
     {
-        mat = GetComponent<MeshRenderer>().material;
-        startColor = mat.color;
-        startEmissionColor = mat.GetColor("_EmissionColor");
+        startMat = GetComponent<MeshRenderer>().material;
+        startColor = startMat.color;
+        startEmissionColor = startMat.GetColor("_EmissionColor");
 
     }
 
+   
 
     // Sert dans l'editor
     public void UpdateCellType()
@@ -71,25 +90,24 @@ public class CellTwo : MonoBehaviour
     public IEnumerator ChangeColor()
     {
 
-        
-
         if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
-            mat.color = colorFeedback;
+            startMat.color = colorFeedback;
         else if (cellType.feedBackOnMaterial == false)
-            mat.SetColor("_EmissionColor", colorFeedback);
+            startMat.SetColor("_EmissionColor", colorFeedback);
         else
             GetComponent<MeshRenderer>().material = matFeedback;
         
         yield return new WaitForEndOfFrame();
         if (_imMoving == false)
         {
+            
             if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
-                mat.color = startColor;
+                startMat.color = startColor;
             else if (cellType.feedBackOnMaterial == false)
-                mat.SetColor("_EmissionColor", startEmissionColor);
+                startMat.SetColor("_EmissionColor", startEmissionColor);
             else
-                GetComponent<MeshRenderer>().material = mat;
-
+                GetComponent<MeshRenderer>().material = startMat;
+           
         }
         
     }
@@ -132,9 +150,9 @@ public class CellTwo : MonoBehaviour
         Vector3 firstPos = transform.position;
 
         if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
-            mat.color = colorWhenGrow;
+            startMat.color = colorWhenGrow;
         else if (cellType.feedBackOnMaterial == false)
-            mat.SetColor("_EmissionColor", colorWhenGrow);
+            startMat.SetColor("_EmissionColor", colorWhenGrow);
         else
             GetComponent<MeshRenderer>().material = matWhenGrow;
         
@@ -153,13 +171,14 @@ public class CellTwo : MonoBehaviour
         _imMoving = false;
         imAtStartPos = false;
 
+        
         if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
-            mat.color = startColor;
+            startMat.color = startColor;
         else if (cellType.feedBackOnMaterial == false)
-            mat.SetColor("_EmissionColor", startEmissionColor);
+            startMat.SetColor("_EmissionColor", startEmissionColor);
         else
-            GetComponent<MeshRenderer>().material = mat;
-
+            GetComponent<MeshRenderer>().material = startMat;
+        
         currentAltitude++;
 
 
@@ -169,7 +188,7 @@ public class CellTwo : MonoBehaviour
     public void EmittGrowSound()
     {
         float playerPosY = GameObject.FindGameObjectWithTag("Player").transform.position.y;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/tileUp", new Vector3(transform.position.x,playerPosY,transform.position.z));
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/tileUp", new Vector3(transform.position.x,playerPosY,transform.position.z));
     }
    
 }
