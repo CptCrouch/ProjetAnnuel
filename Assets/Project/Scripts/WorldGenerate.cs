@@ -198,8 +198,9 @@ public class WorldGenerate : MonoBehaviour {
                     cell.startColorbyWorldGenerate = startCellColor;
                     cell.colorFeedback = feedBackCellColor;
                     cell.colorWhenGrow = colorWhenGrow;
+                    cell.colorWhenTargeted = colorWhenTargeted;
 
-                    
+
                     cell.matFeedback = feedbackCellMaterial;
                     cell.matWhenGrow = materialWhenGrow;
 

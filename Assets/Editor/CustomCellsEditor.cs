@@ -160,6 +160,7 @@ public class CustomCellsEditor : Editor {
                         cellTwoTemp.cellType.speedUp = cellTypeTemp.speedUp;
                         cellTwoTemp.cellType.diffWithBasePosY = cellTypeTemp.diffWithBasePosY;
                         cellTwoTemp.cellType.feedBackOnEmission = cellTypeTemp.feedBackOnEmission;
+                        cellTwoTemp.cellType.feedBackOnMaterial = cellTypeTemp.feedBackOnMaterial;
                         cellTwoTemp.UpdateCellType();
                         EditorUtility.SetDirty(cellTwoTemp);
 

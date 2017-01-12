@@ -65,6 +65,9 @@ public class BallBehavior : MonoBehaviour {
     private float currentVelocityY;
     private bool currentlyMovingTowardCell = false;
     private float currentTime =1f;
+
+    [HideInInspector]
+    public List<CellTwo> listOfCellOnStart = new List<CellTwo>();
     
 
     
@@ -82,6 +85,10 @@ public class BallBehavior : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         
         currentTime = startSpeedAfterCollide;
+        for (int i = 0; i < worldGenerate.transform.childCount; i++)
+        {
+            listOfCellOnStart.Add(worldGenerate.transform.GetChild(i).GetComponent<CellTwo>());
+        }
         
     }
 
@@ -122,13 +129,13 @@ public class BallBehavior : MonoBehaviour {
         rb.AddForce(direction * strength, ForceMode.Impulse);
     }
 
-    void OnCollisionEnter(Collision collision)
+    /*void OnTriggerEnter(Collider collision)
     {
         //Debug.Log("pouet");
-        if (collision.collider.transform.tag == "Cell")
+        if (collision.transform.tag == "Cell")
         {
 
-            CellTwo cellCollided = collision.collider.GetComponent<CellTwo>();
+            CellTwo cellCollided = collision.GetComponent<CellTwo>();
 
             if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
             {
@@ -142,7 +149,7 @@ public class BallBehavior : MonoBehaviour {
                 //rbPlayer.velocity = Vector3.zero;
                 if (rb.velocity.magnitude < maxSpeedToAddBounce && addBounceOnBall == true)
                 {
-                    rb.velocity *= multiplicateurVelocityCollide;
+                    //rb.velocity *= multiplicateurVelocityCollide;
                 }
                 currentTime = startSpeedAfterCollide;
                 
@@ -150,7 +157,55 @@ public class BallBehavior : MonoBehaviour {
             }
         }
           
+    }*/
+    void OnCollisionEnter(Collision collision)
+    {
+        //Debug.Log("pouet");
+        if (collision.collider.transform.tag == "Cell")
+        {
+
+            CellTwo cellCollided = collision.collider.GetComponent<CellTwo>();
+
+            if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
+            {
+
+                int alt = cellCollided.currentAltitude;
+
+                StartCoroutine(cellCollided.ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
+                listOfCellOnStart.Add(cellCollided);
+                ChooseAndLaunchProperty(alt,cellCollided);
+
+                //GetAreaOfCellAndLaunchReturn(1, cellCollided.transform, alt);
+                
+                if (rb.velocity.magnitude < maxSpeedToAddBounce && addBounceOnBall == true)
+                {
+                    rb.velocity *= multiplicateurVelocityCollide;
+                }
+                currentTime = startSpeedAfterCollide;
+
+                currentCellTarget = null;
+            }
+        }
+
     }
+    /*void OnTriggerStay(Collider collision)
+    {
+        if (collision.transform.tag == "Cell")
+        {
+            CellTwo cellCollided = collision.GetComponent<CellTwo>();
+            if (cellCollided._imMoving == false && cellCollided.imAtStartPos == false)
+            {
+               
+                int alt = cellCollided.currentAltitude;
+                
+                StartCoroutine(cellCollided.ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
+                GetAreaOfCell(1, cellCollided.transform,alt);
+                currentTime = startSpeedAfterCollide;
+                currentCellTarget = null;
+            }
+
+        }
+    }*/
     
     void OnCollisionStay(Collision collision)
     {
@@ -163,15 +218,18 @@ public class BallBehavior : MonoBehaviour {
                 int alt = cellCollided.currentAltitude;
                 
                 StartCoroutine(cellCollided.ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
-                GetAreaOfCell(1, cellCollided.transform,alt);
+                listOfCellOnStart.Add(cellCollided);
+                ChooseAndLaunchProperty(alt, cellCollided);
+                //GetAreaOfCellAndLaunchReturn(1, cellCollided.transform,alt);
 
-                
+
                 currentTime = startSpeedAfterCollide;
                 currentCellTarget = null;
             }
 
         }
-        else if(collision.collider.transform.tag == "Ground")
+        else
+        if (collision.collider.transform.tag == "Ground")
         {
             imGrounded = true;
         }
@@ -185,14 +243,86 @@ public class BallBehavior : MonoBehaviour {
         }
     }
 
-    IEnumerator WaitForDominoEffect(int area, Transform center,int startAltitude)
+    public void ChooseAndLaunchProperty(int altitude, CellTwo target)
     {
-        yield return new WaitForSeconds(timeToWaitForDominoEffect);
-        GetAreaOfCell(area,center,startAltitude);
+        if(altitude ==1)
+        {
+            UpOneCellRandom(target);
+        }
+        else if(altitude == 2)
+        {
+            StartCoroutine(WaitForAreaEffect(1, target.transform, altitude));
+        }
+        else if(altitude >= 3)
+        {
+            StartCoroutine(WaitForDominosEffect(target.transform, altitude));
+        }
+    }
+
+    public void UpOneCellRandom(CellTwo cellToAvoid)
+    {
+        int random = Random.Range(0, listOfCellOnStart.Count);
+        //Debug.Log(random);
+        while(listOfCellOnStart[random] == cellToAvoid)
+        {
+            random = Random.Range(0, worldGenerate.transform.childCount);
+        }
+        CellTwo cellTwoTemp = listOfCellOnStart[random].GetComponent<CellTwo>();
+        StartCoroutine(cellTwoTemp.GetPunch(1, punchHexagon.speedScaleCellUp, Vector3.up));
+        listOfCellOnStart.Remove(cellTwoTemp);
+    }
+
+    public void LaunchChainDestruction(Transform center, int currentIndex)
+    {
+        if (currentIndex > 0)
+        {
+            Vector3 hitVector = new Vector3(center.transform.position.x, 0, center.position.z);
+            List<CellTwo> listCloseCell = new List<CellTwo>();
+            for (int i = 0; i < punchHexagon.worldGenerateObject.transform.childCount; i++)
+            {
+
+                CellTwo cellTwo = punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>();
+                Vector3 targetVector = new Vector3(cellTwo.transform.position.x, 0, cellTwo.transform.position.z);
+                float distanceFromCenterHexagon = Vector3.Distance(hitVector, targetVector);
+
+                if (distanceFromCenterHexagon < 1.6f)
+                {
+
+                    if (cellTwo._imMoving == false && cellTwo.imAtStartPos == false /*&& cellTwo.currentAltitude < startAltitude*/)
+                    {
+                        listCloseCell.Add(cellTwo);
+                    }
+                }
+                //}
+            }
+            if(listCloseCell.Count > 0)
+            {
+                int random = Random.Range(0, listCloseCell.Count - 1);
+                ChooseAndLaunchProperty(listCloseCell[random].currentAltitude, listCloseCell[random]);
+
+                StartCoroutine(listCloseCell[random].ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
+                listOfCellOnStart.Add(listCloseCell[random]);
+                StartCoroutine(WaitForDominosEffect(listCloseCell[random].transform, currentIndex - 1));
+            }
+ 
+        }
+
     }
 
 
-    void GetAreaOfCell(int areaForce, Transform center,int startAltitude )
+    IEnumerator WaitForAreaEffect(int area, Transform center,int startAltitude)
+    {
+        yield return new WaitForSeconds(timeToWaitForDominoEffect);
+        GetAreaOfCellAndLaunchReturn(area,center,startAltitude);
+    }
+    IEnumerator WaitForDominosEffect( Transform center, int currentIndex)
+    {
+        yield return new WaitForSeconds(timeToWaitForDominoEffect);
+        LaunchChainDestruction(center, currentIndex);
+    }
+
+
+    void GetAreaOfCellAndLaunchReturn(int areaForce, Transform center,int startAltitude )
     {
         for (int h = 1; h <= areaForce; h++)
         {
@@ -208,14 +338,16 @@ public class BallBehavior : MonoBehaviour {
                 if (distanceFromCenterHexagon < 1.6f * h)
                 {
                     
-                    if (cellTwo._imMoving == false && cellTwo.imAtStartPos == false && cellTwo.currentAltitude < startAltitude)
+                    if (cellTwo._imMoving == false && cellTwo.imAtStartPos == false /*&& cellTwo.currentAltitude < startAltitude*/)
                     {
                         //cellToDissolve.Add(punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>());
                         int alt = cellTwo.currentAltitude;
                         
                         StartCoroutine(cellTwo.ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
+                        listOfCellOnStart.Add(cellTwo);
+                        ChooseAndLaunchProperty(alt, cellTwo);
 
-                        StartCoroutine(WaitForDominoEffect(1, cellTwo.transform,alt));
+                        //StartCoroutine(WaitForDominoEffect(1, cellTwo.transform,alt));
                     }
                 }
                 //}

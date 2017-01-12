@@ -73,8 +73,8 @@ public class CellTwo : MonoBehaviour
 
     }
 
-   
 
+    #region ChangeCellState
     // Sert dans l'editor
     public void UpdateCellType()
     {
@@ -190,5 +190,9 @@ public class CellTwo : MonoBehaviour
         float playerPosY = GameObject.FindGameObjectWithTag("Player").transform.position.y;
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/tileUp", new Vector3(transform.position.x,playerPosY,transform.position.z));
     }
-   
+    #endregion
+
+
+    
+
 }

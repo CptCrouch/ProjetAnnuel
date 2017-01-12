@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using System.Collections.Generic;
 
 [InitializeOnLoad]
 public class DrawGUILayout : Editor {
@@ -64,13 +65,17 @@ public class DrawGUILayout : Editor {
         GUILayout.BeginArea(new Rect(0, _position.height - 35, _position.width, 30 ), EditorStyles.whiteLabel);
         GUILayout.BeginHorizontal();
         
-        if(GUILayout.Button("Apply CellType To Selection",EditorStyles.toolbarButton))
+        if(GUILayout.Button("APPLY To Selection",EditorStyles.toolbarButton))
         {
             ApplyNewCellType(SelectedType, Selection.gameObjects);
         }
+        GUILayout.Space(5);
+        if (GUILayout.Button("APPLY to All", EditorStyles.toolbarButton))
+        {
+            ApplyNewCellTypeToAll(SelectedType);
+        }
         GUILayout.FlexibleSpace();
-            
-        
+
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
         Handles.EndGUI();
@@ -102,6 +107,7 @@ public class DrawGUILayout : Editor {
         GUIStyle toggleStyle = GUI.skin.button;
 
         GUIStyle _text = EditorStyles.boldLabel;
+        if(generateInEditor.cellTypes[index].mat != null)
         _text.normal.textColor = generateInEditor.cellTypes[index].mat.color;
         GUI.Label(new Rect(12, index * 98 + 8, 100, 20), generateInEditor.cellTypes[index].name, _text);
 
@@ -130,6 +136,31 @@ public class DrawGUILayout : Editor {
                 cellTwo.cellType.diffWithBasePosY = generateInEditor.cellTypes[indexCellTypes].diffWithBasePosY;
                 cellTwo.GetComponent<MeshRenderer>().material = generateInEditor.cellTypes[indexCellTypes].mat;
                 cellTwo.cellType.feedBackOnEmission = generateInEditor.cellTypes[indexCellTypes].feedBackOnEmission;
+                cellTwo.cellType.feedBackOnMaterial = generateInEditor.cellTypes[indexCellTypes].feedBackOnMaterial;
+                cellTwo.cellType.imAppliedToCell = true;
+
+
+                cellTwo.UpdateCellType();
+                EditorUtility.SetDirty(cellTwo);
+            }
+        }
+    }
+    public static void ApplyNewCellTypeToAll(int indexCellTypes)
+    {
+        for (int i = 0; i < generateInEditor.worldGenerate.transform.childCount; i++)
+        {
+            if (generateInEditor.worldGenerate.transform.GetChild(i).tag == "Cell")
+            {
+                CellTwo cellTwo = generateInEditor.worldGenerate.transform.GetChild(i).GetComponent<CellTwo>();
+                Undo.RecordObject(cellTwo, "Update Cell");
+
+                cellTwo.cellType.name = generateInEditor.cellTypes[indexCellTypes].name;
+                //cellTwo.cellType.color = generateInEditor.cellTypes[indexCellTypes].color;
+                //cellTwo.cellType.speedUp = generateInEditor.cellTypes[indexCellTypes].speedUp;
+                cellTwo.cellType.diffWithBasePosY = generateInEditor.cellTypes[indexCellTypes].diffWithBasePosY;
+                cellTwo.GetComponent<MeshRenderer>().material = generateInEditor.cellTypes[indexCellTypes].mat;
+                cellTwo.cellType.feedBackOnEmission = generateInEditor.cellTypes[indexCellTypes].feedBackOnEmission;
+                cellTwo.cellType.feedBackOnMaterial = generateInEditor.cellTypes[indexCellTypes].feedBackOnMaterial;
                 cellTwo.cellType.imAppliedToCell = true;
 
 

@@ -62,7 +62,11 @@ public class PunchHexagon : MonoBehaviour {
     void Start()
     {
         pauseScript = FindObjectOfType<PauseInGame>();
-        
+
+        if (punchAireForceActivate == false)
+        {
+            ChooseWhichFeedback(punchArea, punchAireForceActivate);
+        }
         //ballBehavior = FindObjectOfType<BallBehavior>();
     }
 
@@ -91,7 +95,7 @@ public class PunchHexagon : MonoBehaviour {
         sliderAireForce.value = punchArea;
         if (punchAireForceActivate == true)
         {
-            ChooseWhichFeedback(punchArea);
+            ChooseWhichFeedback(punchArea,punchAireForceActivate);
         }
 
         //Vector3 cameraCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, Camera.main.nearClipPlane));
@@ -197,6 +201,7 @@ public class PunchHexagon : MonoBehaviour {
 
                             ballBehavior.currentCellTarget = hit.collider.transform;
                             ballBehavior.currentCellTarget.GetComponent<CellTwo>().imTargeted = true;
+                            
 
                             if (ballBehavior.currentSpeed < ballBehavior.minimumSpeedToAutoMove)
                                 ballBehavior.speedToUse = ballBehavior.minimumSpeedToAutoMove;
@@ -277,6 +282,7 @@ public class PunchHexagon : MonoBehaviour {
 
                             ballBehavior.currentCellTarget = hit.collider.transform;
                             ballBehavior.currentCellTarget.GetComponent<CellTwo>().imTargeted = true;
+                            ballBehavior.listOfCellOnStart.Remove(cellHit);
 
                             if (punchArea >= 1)
                                 StartCoroutine(cellHit.GetPunch(profondeur + punchArea - 1, speedScaleCellUp, choosedTool));
@@ -368,15 +374,27 @@ public class PunchHexagon : MonoBehaviour {
         }
     }
 
-    void ChooseWhichFeedback(int index)
+    
+
+    void ChooseWhichFeedback(int index, bool isActivate)
     {
-        for (int i = 0; i < allFeedbackImage.Length; i++)
+        if (isActivate == true)
         {
-            if(i == index)
+            for (int i = 0; i < allFeedbackImage.Length; i++)
             {
-                allFeedbackImage[i].enabled = true;
+                if (i == index)
+                {
+                    allFeedbackImage[i].enabled = true;
+                }
+                else
+                {
+                    allFeedbackImage[i].enabled = false;
+                }
             }
-            else
+        }
+        else
+        {
+            for (int i = 0; i < allFeedbackImage.Length; i++)
             {
                 allFeedbackImage[i].enabled = false;
             }
