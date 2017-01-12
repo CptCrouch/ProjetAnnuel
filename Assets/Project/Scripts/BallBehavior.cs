@@ -176,15 +176,16 @@ public class BallBehavior : MonoBehaviour {
                 ChooseAndLaunchProperty(alt,cellCollided);
 
                 //GetAreaOfCellAndLaunchReturn(1, cellCollided.transform, alt);
-                
                 if (rb.velocity.magnitude < maxSpeedToAddBounce && addBounceOnBall == true)
                 {
                     rb.velocity *= multiplicateurVelocityCollide;
                 }
                 currentTime = startSpeedAfterCollide;
 
+
                 currentCellTarget = null;
             }
+            
         }
 
     }
@@ -247,7 +248,8 @@ public class BallBehavior : MonoBehaviour {
     {
         if(altitude ==1)
         {
-            UpOneCellRandom(target);
+            //UpOneCellRandom(target);
+           
         }
         else if(altitude == 2)
         {
