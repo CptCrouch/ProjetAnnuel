@@ -135,6 +135,9 @@ public class DrawGUILayout : Editor {
                 //cellTwo.cellType.speedUp = generateInEditor.cellTypes[indexCellTypes].speedUp;
                 cellTwo.cellType.diffWithBasePosY = generateInEditor.cellTypes[indexCellTypes].diffWithBasePosY;
                 cellTwo.GetComponent<MeshRenderer>().material = generateInEditor.cellTypes[indexCellTypes].mat;
+                cellTwo.cellType.matAlt1 = generateInEditor.cellTypes[indexCellTypes].matAlt1;
+                cellTwo.cellType.matAlt2 = generateInEditor.cellTypes[indexCellTypes].matAlt2;
+                cellTwo.cellType.matAlt3 = generateInEditor.cellTypes[indexCellTypes].matAlt3;
                 cellTwo.cellType.feedBackOnEmission = generateInEditor.cellTypes[indexCellTypes].feedBackOnEmission;
                 cellTwo.cellType.feedBackOnMaterial = generateInEditor.cellTypes[indexCellTypes].feedBackOnMaterial;
                 cellTwo.cellType.imAppliedToCell = true;
@@ -159,6 +162,9 @@ public class DrawGUILayout : Editor {
                 //cellTwo.cellType.speedUp = generateInEditor.cellTypes[indexCellTypes].speedUp;
                 cellTwo.cellType.diffWithBasePosY = generateInEditor.cellTypes[indexCellTypes].diffWithBasePosY;
                 cellTwo.GetComponent<MeshRenderer>().material = generateInEditor.cellTypes[indexCellTypes].mat;
+                cellTwo.cellType.matAlt1 = generateInEditor.cellTypes[indexCellTypes].matAlt1;
+                cellTwo.cellType.matAlt2 = generateInEditor.cellTypes[indexCellTypes].matAlt2;
+                cellTwo.cellType.matAlt3 = generateInEditor.cellTypes[indexCellTypes].matAlt3;
                 cellTwo.cellType.feedBackOnEmission = generateInEditor.cellTypes[indexCellTypes].feedBackOnEmission;
                 cellTwo.cellType.feedBackOnMaterial = generateInEditor.cellTypes[indexCellTypes].feedBackOnMaterial;
                 cellTwo.cellType.imAppliedToCell = true;

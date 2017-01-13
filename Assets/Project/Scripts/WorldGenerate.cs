@@ -125,8 +125,7 @@ public class WorldGenerate : MonoBehaviour {
         
     }
 
-    public void GenerateHexagonWorld(int diametre, Color startCellColor, Color feedBackCellColor, Color colorWhenGrow, Material materialWhenGrow, Material feedbackCellMaterial, Color colorWhenTargeted,
-               Material materialWhenTargeted )
+    public void GenerateHexagonWorld(int diametre, MaterialFeedBackVariables matFeedBacks)
     {
         rayon = (diametre - 1) / 2;
 
@@ -153,19 +152,22 @@ public class WorldGenerate : MonoBehaviour {
                     cell.startPosYbyWorldGenerate = /*-height*/ (tailleYBigHexagon * 100) / 2;
                     //cell.startScaleY = height;
 
-                    newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    newObject.GetComponent<MeshRenderer>().sharedMaterial.color = matFeedBacks.startCellColor;
                     //newObject.GetComponent<MeshRenderer>().material.SetVector("_ObjectPosition", new Vector3(transform.position.x, 1, transform.position.z));
 
 
-                    cell.startColorbyWorldGenerate = startCellColor;
-                    cell.colorFeedback = feedBackCellColor;
-                    cell.colorWhenGrow = colorWhenGrow;
-                    cell.colorWhenTargeted = colorWhenTargeted;
+                    cell.startColorbyWorldGenerate = matFeedBacks.startCellColor;
+                    cell.colorFeedback = matFeedBacks.feedBackCellColor;
+                    cell.colorWhenGrow = matFeedBacks.colorWhenGrow;
+                    cell.colorWhenTargeted = matFeedBacks.colorWhenTargeted;
 
                     
-                    cell.matFeedback = feedbackCellMaterial;
-                    cell.matWhenGrow = materialWhenGrow;
-                    cell.materialWhenTargeted = materialWhenTargeted;
+                    cell.matFeedback = matFeedBacks.feedbackCellMaterial;
+                    cell.matFeedbackAlt1 = matFeedBacks.feedbackCellMaterialAlt1;
+                    cell.matFeedbackAlt2 = matFeedBacks.feedbackCellMaterialAlt2;
+                    cell.matFeedbackAlt3 = matFeedBacks.feedbackCellMaterialAlt3;
+                    cell.matWhenGrow = matFeedBacks.materialWhenGrow;
+                   
 
                     poolCount++;
                     
@@ -192,17 +194,20 @@ public class WorldGenerate : MonoBehaviour {
                     cell.startPosYbyWorldGenerate = /*-height*/ (tailleYBigHexagon * 100) / 2;
                     //cell.startScaleY = height;
 
-                    newObject.GetComponent<MeshRenderer>().sharedMaterial.color = startCellColor;
+                    newObject.GetComponent<MeshRenderer>().sharedMaterial.color = matFeedBacks.startCellColor;
                     //newObject.GetComponent<MeshRenderer>().material.SetVector("_ObjectPosition", new Vector3(transform.position.x, 1, transform.position.z));
 
-                    cell.startColorbyWorldGenerate = startCellColor;
-                    cell.colorFeedback = feedBackCellColor;
-                    cell.colorWhenGrow = colorWhenGrow;
-                    cell.colorWhenTargeted = colorWhenTargeted;
+                    cell.startColorbyWorldGenerate = matFeedBacks.startCellColor;
+                    cell.colorFeedback = matFeedBacks.feedBackCellColor;
+                    cell.colorWhenGrow = matFeedBacks.colorWhenGrow;
+                    cell.colorWhenTargeted = matFeedBacks.colorWhenTargeted;
 
 
-                    cell.matFeedback = feedbackCellMaterial;
-                    cell.matWhenGrow = materialWhenGrow;
+                    cell.matFeedback = matFeedBacks.feedbackCellMaterial;
+                    cell.matFeedbackAlt1 = matFeedBacks.feedbackCellMaterialAlt1;
+                    cell.matFeedbackAlt2 = matFeedBacks.feedbackCellMaterialAlt2;
+                    cell.matFeedbackAlt3 = matFeedBacks.feedbackCellMaterialAlt3;
+                    cell.matWhenGrow = matFeedBacks.materialWhenGrow;
 
                     poolCount++;
                     

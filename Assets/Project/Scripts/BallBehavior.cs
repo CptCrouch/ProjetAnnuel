@@ -248,7 +248,7 @@ public class BallBehavior : MonoBehaviour {
     {
         if(altitude ==1)
         {
-            //UpOneCellRandom(target);
+            UpOneCellRandom(target);
            
         }
         else if(altitude == 2)

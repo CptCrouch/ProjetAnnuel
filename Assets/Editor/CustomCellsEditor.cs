@@ -22,12 +22,14 @@ public class CustomCellsEditor : Editor {
     // principale Fonction qui va appeler le reste à chaque update
     void DrawCellsEditInspector()
     {
+        GUILayout.Space(5);
+        GUILayout.Label("[ Generate World Buttons ]", EditorStyles.boldLabel);
         // On draw les boutons de creation du monde
         DrawCreateCleanWorld();
         GUILayout.Space(5);
-        GUILayout.Label("Cell Types", EditorStyles.boldLabel);
+        GUILayout.Label("[ Cell Types ]", EditorStyles.boldLabel);
         GUILayout.Space(5);
-        GUILayout.Label("Order : Name / IsWithFeedBackEmission/ IsWithFeedBackMaterial / Material / SpeedGrow / Altitude");
+        GUILayout.Label("[ Order : Name / IsWithFeedBackEmission/ IsWithFeedBackMaterial / Material / Mat Alt1 / Mat Alt2 / Mat Alt3 / SpeedGrow / Altitude ]");
         
         GUILayout.Space(5);
 
@@ -69,6 +71,7 @@ public class CustomCellsEditor : Editor {
         GUILayout.BeginHorizontal();
         {
 
+            
             // BeginChangeCheck et EndChangeCheck permet de voir si la variable a été modifié
             EditorGUI.BeginChangeCheck();
             string newName = GUILayout.TextField(m_targetedScript.cellTypes[index].name, GUILayout.Width(120));
@@ -79,11 +82,16 @@ public class CustomCellsEditor : Editor {
             bool newBoolFeedbackEmission = GUILayout.Toggle(m_targetedScript.cellTypes[index].feedBackOnEmission,tex, GUILayout.Width(20));
             bool newBoolFeedbackMaterial = GUILayout.Toggle(m_targetedScript.cellTypes[index].feedBackOnMaterial, tex, GUILayout.Width(20));
 
-            Material newMaterial = (Material)EditorGUILayout.ObjectField( m_targetedScript.cellTypes[index].mat, typeof(Material), true, GUILayout.Width(120));
-           
-            float newSpeedUp = EditorGUILayout.FloatField("", m_targetedScript.cellTypes[index].speedUp, GUILayout.Width(80));
+            Material newMaterial = (Material)EditorGUILayout.ObjectField( m_targetedScript.cellTypes[index].mat, typeof(Material), true, GUILayout.Width(80));
+            Material newMaterialAlt1 = (Material)EditorGUILayout.ObjectField(m_targetedScript.cellTypes[index].matAlt1, typeof(Material), true, GUILayout.Width(80));
+            Material newMaterialAlt2 = (Material)EditorGUILayout.ObjectField(m_targetedScript.cellTypes[index].matAlt2, typeof(Material), true, GUILayout.Width(80));
+            Material newMaterialAlt3 = (Material)EditorGUILayout.ObjectField(m_targetedScript.cellTypes[index].matAlt3, typeof(Material), true, GUILayout.Width(80));
+
             
-            int newStartY = EditorGUILayout.IntField("", m_targetedScript.cellTypes[index].diffWithBasePosY, GUILayout.Width(80));
+
+            float newSpeedUp = EditorGUILayout.FloatField("", m_targetedScript.cellTypes[index].speedUp, GUILayout.Width(40));
+            
+            int newStartY = EditorGUILayout.IntField("", m_targetedScript.cellTypes[index].diffWithBasePosY, GUILayout.Width(40));
 
             if(newBoolFeedbackEmission == true)
             {
@@ -103,6 +111,9 @@ public class CustomCellsEditor : Editor {
                // m_targetedScript.cellTypes[index].color = newColor;
                 m_targetedScript.cellTypes[index].speedUp = newSpeedUp;
                 m_targetedScript.cellTypes[index].mat = newMaterial;
+                m_targetedScript.cellTypes[index].matAlt1= newMaterialAlt1;
+                m_targetedScript.cellTypes[index].matAlt2 = newMaterialAlt2;
+                m_targetedScript.cellTypes[index].matAlt3 = newMaterialAlt3;
                 m_targetedScript.cellTypes[index].diffWithBasePosY = newStartY;
                 m_targetedScript.cellTypes[index].feedBackOnEmission = newBoolFeedbackEmission;
                 m_targetedScript.cellTypes[index].feedBackOnMaterial = newBoolFeedbackMaterial;

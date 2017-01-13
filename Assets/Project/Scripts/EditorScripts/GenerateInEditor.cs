@@ -3,6 +3,30 @@
 using System.Collections.Generic;
 using System.Collections;
 
+[System.Serializable]
+public struct MaterialFeedBackVariables
+{
+    public Color startCellColor;
+    public Color feedBackCellColor;
+    public Color colorWhenGrow;
+    public Color colorWhenTargeted;
+
+    [Space(10)]
+    public Material materialWhenGrow;
+
+    [Space(10)]
+    public Material feedbackCellMaterial;
+    
+    public Material feedbackCellMaterialAlt1;
+  
+    public Material feedbackCellMaterialAlt2;
+   
+    public Material feedbackCellMaterialAlt3;
+
+    [Space(10)]
+    public Material materialWhenTargeted;
+}
+
 [ExecuteInEditMode]
 public class GenerateInEditor : MonoBehaviour {
 
@@ -14,16 +38,10 @@ public class GenerateInEditor : MonoBehaviour {
     public int diametreWorldHexagon;
 
     [Space(10)]
-    [Header("[ Feedback Colors ]")]
-    public Color startCellColor;
-    public Color feedBackCellColor = Color.red;
-    public Color colorWhenGrow = Color.white;
-    public Color colorWhenTargeted = Color.white;
+    [Header("[ FeedBacks Material and Colors ]")]
+    public MaterialFeedBackVariables matColors = new MaterialFeedBackVariables();
+
     
-    [Space(10)]
-    public Material materialWhenGrow;
-    public Material feedbackCellMaterial;
-    public Material materialWhenTargeted;
 
     [HideInInspector]
     public List<CellType> cellTypes = new List<CellType>();
@@ -42,14 +60,7 @@ public class GenerateInEditor : MonoBehaviour {
     {
         if (alreadyAWorld == false)
         {
-            worldGenerate.GenerateHexagonWorld(diametreWorldHexagon, 
-                startCellColor, 
-                feedBackCellColor, 
-                colorWhenGrow, 
-                materialWhenGrow, 
-                feedbackCellMaterial,
-                colorWhenTargeted,
-                materialWhenTargeted);
+            worldGenerate.GenerateHexagonWorld(diametreWorldHexagon, matColors);
             alreadyAWorld = true;
         }
         else

@@ -32,6 +32,15 @@ public class CellTwo : MonoBehaviour
     [HideInInspector]
     public Material matFeedback;
     [HideInInspector]
+    public Material matFeedbackAlt1;
+    [HideInInspector]
+    public Material matFeedbackAlt2;
+    [HideInInspector]
+    public Material matFeedbackAlt3;
+
+
+
+    [HideInInspector]
     public Material matWhenGrow;
     [HideInInspector]
     public Material materialWhenTargeted;
@@ -65,11 +74,15 @@ public class CellTwo : MonoBehaviour
 
     public int currentAltitude;
 
+    private Material currentMat;
+
     void Start()
     {
         startMat = GetComponent<MeshRenderer>().material;
         startColor = startMat.color;
         startEmissionColor = startMat.GetColor("_EmissionColor");
+
+        currentMat = startMat;
 
     }
 
@@ -95,7 +108,16 @@ public class CellTwo : MonoBehaviour
         else if (cellType.feedBackOnMaterial == false)
             startMat.SetColor("_EmissionColor", colorFeedback);
         else
-            GetComponent<MeshRenderer>().material = matFeedback;
+        {
+            if (currentAltitude == 1)
+                GetComponent<MeshRenderer>().material = matFeedbackAlt1;
+            else if (currentAltitude == 2)
+                GetComponent<MeshRenderer>().material = matFeedbackAlt2;
+            else if (currentAltitude >= 3)
+                GetComponent<MeshRenderer>().material = matFeedbackAlt3;
+            else
+                GetComponent<MeshRenderer>().material = matFeedback;
+        }
         
         yield return new WaitForEndOfFrame();
         if (_imMoving == false)
@@ -106,7 +128,7 @@ public class CellTwo : MonoBehaviour
             else if (cellType.feedBackOnMaterial == false)
                 startMat.SetColor("_EmissionColor", startEmissionColor);
             else
-                GetComponent<MeshRenderer>().material = startMat;
+                GetComponent<MeshRenderer>().material = currentMat;
            
         }
         
@@ -120,8 +142,13 @@ public class CellTwo : MonoBehaviour
         Vector3 firstPos = transform.position;
 
         currentAltitude = 0;
+        if (cellType.feedBackOnMaterial == true)
+        {
+            GetComponent<MeshRenderer>().material = startMat;
+            currentMat = startMat;
+        }
 
-        if(cellType.imAppliedToCell == false)
+        if (cellType.imAppliedToCell == false)
         transform.position = new Vector3(transform.position.x, startPosYbyWorldGenerate, transform.position.z);
         else
         transform.position = new Vector3(transform.position.x, startPosYbyWorldGenerate + cellType.diffWithBasePosY, transform.position.z);
@@ -171,15 +198,26 @@ public class CellTwo : MonoBehaviour
         _imMoving = false;
         imAtStartPos = false;
 
-        
+        currentAltitude++;
+
         if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
             startMat.color = startColor;
         else if (cellType.feedBackOnMaterial == false)
             startMat.SetColor("_EmissionColor", startEmissionColor);
         else
-            GetComponent<MeshRenderer>().material = startMat;
+        {
+            if (currentAltitude == 1)
+                GetComponent<MeshRenderer>().material =cellType.matAlt1;
+            else if(currentAltitude == 2)
+                GetComponent<MeshRenderer>().material = cellType.matAlt2;
+            else if(currentAltitude >=3)
+                GetComponent<MeshRenderer>().material = cellType.matAlt3;
+
+            currentMat = GetComponent<MeshRenderer>().material;
+
+        }
         
-        currentAltitude++;
+        
 
 
 
