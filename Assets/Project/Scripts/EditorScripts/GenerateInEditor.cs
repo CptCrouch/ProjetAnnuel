@@ -7,9 +7,11 @@ using System.Collections;
 public struct MaterialFeedBackVariables
 {
     public Color startCellColor;
+
     public Color feedBackCellColor;
+
     public Color colorWhenGrow;
-    public Color colorWhenTargeted;
+    
 
     [Space(10)]
     public Material materialWhenGrow;
@@ -23,8 +25,7 @@ public struct MaterialFeedBackVariables
    
     public Material feedbackCellMaterialAlt3;
 
-    [Space(10)]
-    public Material materialWhenTargeted;
+    
 }
 
 [ExecuteInEditMode]

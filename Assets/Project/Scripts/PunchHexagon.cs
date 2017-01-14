@@ -33,7 +33,7 @@ public class PunchHexagon : MonoBehaviour {
     [SerializeField]
     public bool punchAireForceActivate = true;
     [SerializeField]
-    public BallBehavior ballBehavior;
+    public DestructionBehavior destroyManager;
     [SerializeField]
     public bool isWithPinceau;
 
@@ -199,15 +199,10 @@ public class PunchHexagon : MonoBehaviour {
 
                             lastTargetedCell = hit.collider.transform.gameObject;
 
-                            ballBehavior.currentCellTarget = hit.collider.transform;
-                            ballBehavior.listOfCellOnStart.Remove(cellHit);
-                            ballBehavior.currentCellTarget.GetComponent<CellTwo>().imTargeted = true;
                             
-
-                            if (ballBehavior.currentSpeed < ballBehavior.minimumSpeedToAutoMove)
-                                ballBehavior.speedToUse = ballBehavior.minimumSpeedToAutoMove;
-                            else
-                                ballBehavior.speedToUse = ballBehavior.currentSpeed;
+                            destroyManager.listOfCellOnStart.Remove(cellHit);
+                            
+                            
 
                             if (punchArea >= 1)
                                 StartCoroutine(cellHit.GetPunch(profondeur + punchArea - 1, speedScaleCellUp, choosedTool));
@@ -253,7 +248,7 @@ public class PunchHexagon : MonoBehaviour {
                                                         StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool));
 
                                                     //cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
-                                                    ballBehavior.listOfCellOnStart.Remove(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>());
+                                                    destroyManager.listOfCellOnStart.Remove(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>());
 
 
                                                 }
@@ -282,9 +277,8 @@ public class PunchHexagon : MonoBehaviour {
 
                             lastTargetedCell = hit.collider.transform.gameObject;
 
-                            ballBehavior.currentCellTarget = hit.collider.transform;
-                            ballBehavior.currentCellTarget.GetComponent<CellTwo>().imTargeted = true;
-                            ballBehavior.listOfCellOnStart.Remove(cellHit);
+                            
+                            destroyManager.listOfCellOnStart.Remove(cellHit);
 
                             if (punchArea >= 1)
                                 StartCoroutine(cellHit.GetPunch(profondeur + punchArea - 1, speedScaleCellUp, choosedTool));
@@ -329,7 +323,7 @@ public class PunchHexagon : MonoBehaviour {
                                                     else
                                                         StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool));
 
-                                                    ballBehavior.listOfCellOnStart.Remove(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>());
+                                                    destroyManager.listOfCellOnStart.Remove(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>());
 
                                                     //cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
 

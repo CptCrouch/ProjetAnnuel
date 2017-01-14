@@ -15,16 +15,16 @@ public class BallSoundManager : MonoBehaviour {
     //public FMODUnity.StudioEventEmitter myBallEvent;
 
 
-    BallBehavior ballBehavior;
+   DestructionBehavior destroyBehavior;
     // Use this for initialization
     void Start () {
-        ballBehavior = FindObjectOfType<BallBehavior>();
+        destroyBehavior = FindObjectOfType<DestructionBehavior>();
 
         ballRolling = FMODUnity.RuntimeManager.CreateInstance(rolling);
         ballRolling.getParameter("Volume", out volumeBallRolling);
         ballRolling.getParameter("Speed", out speedBallRolling);
         speedBallRolling.setValue(0.5f);
-        FMODUnity.RuntimeManager.AttachInstanceToGameObject(ballRolling, transform, ballBehavior.rb);
+        
         ballRolling.start();
 
         
@@ -34,17 +34,7 @@ public class BallSoundManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-        if(ballBehavior.imGrounded == true)
-        {
-            if (ballBehavior.rb.velocity.magnitude > 1)
-                volumeBallRolling.setValue(1);
-            else
-                volumeBallRolling.setValue(0);
-        }
-        else
-        {
-            volumeBallRolling.setValue(0);
-        }
+        
         
         
        

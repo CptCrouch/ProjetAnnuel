@@ -5,6 +5,8 @@ public class CellTwo : MonoBehaviour
 {
     public CellType cellType = new CellType();
 
+    public MaterialFeedBackVariables variables = new MaterialFeedBackVariables();
+
     [HideInInspector]
     public bool _imMoving;
     [HideInInspector]
@@ -20,35 +22,8 @@ public class CellTwo : MonoBehaviour
 
     [HideInInspector]
     public float startPosYbyWorldGenerate;
-    [HideInInspector]
-    public Color startColorbyWorldGenerate;
-    [HideInInspector]
-    public Color colorFeedback;
-    [HideInInspector]
-    public Color colorWhenGrow;
-    [HideInInspector]
-    public Color colorWhenTargeted;
 
-    [HideInInspector]
-    public Material matFeedback;
-    [HideInInspector]
-    public Material matFeedbackAlt1;
-    [HideInInspector]
-    public Material matFeedbackAlt2;
-    [HideInInspector]
-    public Material matFeedbackAlt3;
-
-
-
-    [HideInInspector]
-    public Material matWhenGrow;
-    [HideInInspector]
-    public Material materialWhenTargeted;
-
-
-
-
-
+    
     [HideInInspector]
     public float timeToGoBackToStartColor = 2f;
     [HideInInspector]
@@ -104,19 +79,19 @@ public class CellTwo : MonoBehaviour
     {
 
         if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
-            startMat.color = colorFeedback;
+            startMat.color = variables.feedBackCellColor;
         else if (cellType.feedBackOnMaterial == false)
-            startMat.SetColor("_EmissionColor", colorFeedback);
+            startMat.SetColor("_EmissionColor", variables.feedBackCellColor);
         else
         {
             if (currentAltitude == 1)
-                GetComponent<MeshRenderer>().material = matFeedbackAlt1;
+                GetComponent<MeshRenderer>().material = variables.feedbackCellMaterialAlt1;
             else if (currentAltitude == 2)
-                GetComponent<MeshRenderer>().material = matFeedbackAlt2;
+                GetComponent<MeshRenderer>().material = variables.feedbackCellMaterialAlt2;
             else if (currentAltitude >= 3)
-                GetComponent<MeshRenderer>().material = matFeedbackAlt3;
+                GetComponent<MeshRenderer>().material = variables.feedbackCellMaterialAlt3;
             else
-                GetComponent<MeshRenderer>().material = matFeedback;
+                GetComponent<MeshRenderer>().material = variables.feedbackCellMaterial;
         }
         
         yield return new WaitForEndOfFrame();
@@ -177,11 +152,11 @@ public class CellTwo : MonoBehaviour
         Vector3 firstPos = transform.position;
 
         if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
-            startMat.color = colorWhenGrow;
+            startMat.color = variables.colorWhenGrow;
         else if (cellType.feedBackOnMaterial == false)
-            startMat.SetColor("_EmissionColor", colorWhenGrow);
+            startMat.SetColor("_EmissionColor", variables.colorWhenGrow);
         else
-            GetComponent<MeshRenderer>().material = matWhenGrow;
+            GetComponent<MeshRenderer>().material = variables.materialWhenGrow;
         
 
 
