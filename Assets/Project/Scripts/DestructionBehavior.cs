@@ -248,7 +248,7 @@ public class DestructionBehavior : MonoBehaviour {
    
 
 
-    Transform GetClosestCell(Transform worldGen)
+    /*Transform GetClosestCell(Transform worldGen)
     {
         Transform closestTarget = null;
         float closestDistance = Mathf.Infinity;
@@ -268,6 +268,6 @@ public class DestructionBehavior : MonoBehaviour {
         }
 
         return closestTarget;
-    }
+    }*/
 }
            

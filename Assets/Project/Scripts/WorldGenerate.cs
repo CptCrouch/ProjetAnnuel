@@ -37,32 +37,8 @@ public class WorldGenerate : MonoBehaviour {
     private int poolCount;
     private int rayon;
     //public List<GameObject> cells;
-    
-    
 
-
-    // Use this for initialization
-    void Start () {
-
-        if (isHexagonWorld == false)
-            GenerateWorld();
-        else
-        {
-            if (Application.isEditor ==  false)
-            {
-                //GenerateHexagonWorld(rayon);
-                
-            }
-            else
-            {
-                Debug.Log("WorldGenerate in editor");
-            }
-            
-        }
-
-
-	}
-    public void GenerateWorld()
+    /*public void GenerateWorld()
     {
        
                 for (int j = 0; j < length; j++)
@@ -123,7 +99,7 @@ public class WorldGenerate : MonoBehaviour {
         }
             
         
-    }
+    }*/
 
     public void GenerateHexagonWorld(int diametre, MaterialFeedBackVariables matFeedBacks)
     {
