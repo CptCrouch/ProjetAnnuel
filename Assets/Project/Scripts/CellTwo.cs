@@ -7,6 +7,15 @@ public class CellTwo : MonoBehaviour
 
     public MaterialFeedBackVariables variables = new MaterialFeedBackVariables();
 
+    public DestroyState state = new DestroyState();
+
+    private DestructionBehavior destructionBehavior;
+    [HideInInspector]
+    public GameObject childTimeFeedback;
+
+    //[HideInInspector]
+    //public CellTwo cellWhoImAdjacentWith;
+
     [HideInInspector]
     public bool _imMoving;
     [HideInInspector]
@@ -35,8 +44,7 @@ public class CellTwo : MonoBehaviour
     public Color startEmissionColor;
     [HideInInspector]
     public Material startMat;
-    [HideInInspector]
-    public bool imTargeted;
+    
 
 
     private Color startColorTemp;
@@ -53,6 +61,9 @@ public class CellTwo : MonoBehaviour
 
     void Start()
     {
+        destructionBehavior = FindObjectOfType<DestructionBehavior>();
+        state = DestroyState.Idle;
+
         startMat = GetComponent<MeshRenderer>().material;
         startColor = startMat.color;
         startEmissionColor = startMat.GetColor("_EmissionColor");
@@ -109,7 +120,41 @@ public class CellTwo : MonoBehaviour
         
     }
 
-    
+    public void ChangeScaleTimeFeedback(bool isGrow)
+    {
+        if (isGrow == true)
+        {
+            childTimeFeedback.transform.localScale = new Vector3(childTimeFeedback.transform.localScale.x * 2, childTimeFeedback.transform.localScale.y * 2, childTimeFeedback.transform.localScale.z * 2);
+            childTimeFeedback.GetComponent<MeshRenderer>().material.color = Color.red;
+        }
+        else
+        {
+            childTimeFeedback.transform.localScale = new Vector3(childTimeFeedback.transform.localScale.x / 2, childTimeFeedback.transform.localScale.y / 2, childTimeFeedback.transform.localScale.z / 2);
+            childTimeFeedback.GetComponent<MeshRenderer>().material.color = Color.white;
+        }
+    }
+
+    public IEnumerator StartTimerDestruction()
+    {
+        state = DestroyState.OnDestroy;
+        childTimeFeedback.SetActive(true);
+        ChangeScaleTimeFeedback(true);
+        
+        float timer = 0;
+        while(timer<=destructionBehavior.timeToDestroyCell && state==DestroyState.OnDestroy)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        if (state == DestroyState.OnDestroy)
+        {
+            destructionBehavior.LaunchCellDestruction(this);
+            childTimeFeedback.SetActive(false);
+            ChangeScaleTimeFeedback(false);
+        }
+
+        
+    }
 
 
     public IEnumerator ReturnToStartPos(float speed,GameObject prefabDissolve)
@@ -122,7 +167,7 @@ public class CellTwo : MonoBehaviour
             GetComponent<MeshRenderer>().material = startMat;
             currentMat = startMat;
         }
-
+        state = DestroyState.Idle;
         if (cellType.imAppliedToCell == false)
         transform.position = new Vector3(transform.position.x, startPosYbyWorldGenerate, transform.position.z);
         else
@@ -141,15 +186,21 @@ public class CellTwo : MonoBehaviour
             mat.material.SetFloat("_Didi",time);
             yield return null;
         }
+
+        destructionBehavior.ChooseRandomClosestCell(destructionBehavior.GetClosestCells(this));
+
         Destroy(feedBackDissolve);
 
     }
 
+    
 
-
-    public IEnumerator GetPunch(float strength, float speed, Vector3 direction)
+    public IEnumerator GetPunch(float strength, float speed, Vector3 direction,bool isByPlayer)
     {
         Vector3 firstPos = transform.position;
+        DestroyState startState = state;
+
+        // Aller Feedbacks
 
         if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
             startMat.color = variables.colorWhenGrow;
@@ -157,11 +208,16 @@ public class CellTwo : MonoBehaviour
             startMat.SetColor("_EmissionColor", variables.colorWhenGrow);
         else
             GetComponent<MeshRenderer>().material = variables.materialWhenGrow;
-        
+        //
 
+        //Changement d'etat
 
+        state = DestroyState.OnMove;
         _imMoving = true;
-       
+        //
+
+        // Montée
+
         while (transform.position.y <= firstPos.y + (strength * direction.y))
         {
             transform.Translate(direction * Time.deltaTime * speed);
@@ -169,12 +225,30 @@ public class CellTwo : MonoBehaviour
         }
 
         transform.position = new Vector3(transform.position.x, firstPos.y + (strength * direction.y), transform.position.z);
-        
+        //
+
+        //Changement d'Etat Fin
+
         _imMoving = false;
         imAtStartPos = false;
 
         currentAltitude++;
 
+        if (isByPlayer == true)
+        {
+            if(startState ==DestroyState.AdjacentCell)
+            {
+                destructionBehavior.GetAreaDisableFeedbacks(1, destructionBehavior.GetAllCellOnDestroyInArea(1, this), true);
+            }
+            StartCoroutine(StartTimerDestruction());
+            destructionBehavior.GetAreaEnableFeedbacks(1, this);
+            Debug.Log(state);
+        }
+        else
+            state = DestroyState.Idle;
+        //
+
+        // Retour Feedbacks
         if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
             startMat.color = startColor;
         else if (cellType.feedBackOnMaterial == false)
@@ -191,9 +265,7 @@ public class CellTwo : MonoBehaviour
             currentMat = GetComponent<MeshRenderer>().material;
 
         }
-        
-        
-
+        //
 
 
     }

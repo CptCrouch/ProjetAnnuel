@@ -205,9 +205,9 @@ public class PunchHexagon : MonoBehaviour {
                             
 
                             if (punchArea >= 1)
-                                StartCoroutine(cellHit.GetPunch(profondeur + punchArea - 1, speedScaleCellUp, choosedTool));
+                                StartCoroutine(cellHit.GetPunch(profondeur + punchArea - 1, speedScaleCellUp, choosedTool,true));
                             else
-                                StartCoroutine(cellHit.GetPunch(profondeur + punchArea, speedScaleCellUp, choosedTool));
+                                StartCoroutine(cellHit.GetPunch(profondeur + punchArea, speedScaleCellUp, choosedTool,true));
 
                             cellTargeted.Add(hit.collider.gameObject);
                             //cellHit.EmittGrowSound();
@@ -243,9 +243,9 @@ public class PunchHexagon : MonoBehaviour {
                                                     //Debug.Log(modifiedStrength);
 
                                                     if (forceUniform == false)
-                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(modifiedStrength, speedScaleCellUp, choosedTool));
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(modifiedStrength, speedScaleCellUp, choosedTool,true));
                                                     else
-                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool));
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool,true));
 
                                                     //cellTargeted.Add(worldGenerateObject.transform.GetChild(i).gameObject);
                                                     destroyManager.listOfCellOnStart.Remove(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>());
@@ -281,9 +281,9 @@ public class PunchHexagon : MonoBehaviour {
                             destroyManager.listOfCellOnStart.Remove(cellHit);
 
                             if (punchArea >= 1)
-                                StartCoroutine(cellHit.GetPunch(profondeur + punchArea - 1, speedScaleCellUp, choosedTool));
+                                StartCoroutine(cellHit.GetPunch(profondeur + punchArea - 1, speedScaleCellUp, choosedTool,true));
                             else
-                                StartCoroutine(cellHit.GetPunch(profondeur + punchArea, speedScaleCellUp, choosedTool));
+                                StartCoroutine(cellHit.GetPunch(profondeur + punchArea, speedScaleCellUp, choosedTool,true));
 
                             cellTargeted.Add(hit.collider.gameObject);
                             cellHit.EmittGrowSound();
@@ -319,9 +319,9 @@ public class PunchHexagon : MonoBehaviour {
                                                     //Debug.Log(modifiedStrength);
 
                                                     if (forceUniform == false)
-                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(modifiedStrength, speedScaleCellUp, choosedTool));
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(modifiedStrength, speedScaleCellUp, choosedTool,true));
                                                     else
-                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool));
+                                                        StartCoroutine(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>().GetPunch(profondeur + punchArea - h, speedScaleCellUp, choosedTool,true));
 
                                                     destroyManager.listOfCellOnStart.Remove(worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>());
 

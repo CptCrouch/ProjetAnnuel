@@ -8,6 +8,10 @@ public class MoveOnPlane : MonoBehaviour {
     public float speedRun = 10;
     public KeyCode activeGravity = KeyCode.LeftShift;
     private CharacterController characController;
+
+    public float minPosZ;
+    public float maxPosZ;
+
 	// Use this for initialization
 	void Start () {
         characController = GetComponent<CharacterController>();
@@ -22,9 +26,12 @@ public class MoveOnPlane : MonoBehaviour {
 
         Vector3 pos = transform.position;
         pos.y = Mathf.Clamp(transform.position.y, 0.5f, 1000f);
+        //pos.z = Mathf.Clamp(transform.position.z, minPosZ, maxPosZ);
         transform.position = pos;
+        
+            transform.Translate(new Vector3(0, 0, axisZ) * speed * Time.deltaTime);
 
-        transform.Translate(new Vector3(0, 0, axisZ) * speed * Time.deltaTime);
+
         transform.RotateAround(Vector3.zero, Vector3.up, axisX * Time.deltaTime*speed);
         
         if(Input.GetKeyDown(activeGravity))

@@ -133,6 +133,8 @@ public class WorldGenerate : MonoBehaviour {
 
 
                     cell.variables = matFeedBacks;
+                    cell.childTimeFeedback = cell.transform.GetChild(0).gameObject;
+                    cell.childTimeFeedback.SetActive(false);
                    
 
                     poolCount++;
@@ -164,6 +166,8 @@ public class WorldGenerate : MonoBehaviour {
                     //newObject.GetComponent<MeshRenderer>().material.SetVector("_ObjectPosition", new Vector3(transform.position.x, 1, transform.position.z));
 
                     cell.variables = matFeedBacks;
+                    cell.childTimeFeedback = cell.transform.GetChild(0).gameObject;
+                    cell.childTimeFeedback.SetActive(false);
 
                     poolCount++;
                     
