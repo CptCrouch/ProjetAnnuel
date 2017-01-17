@@ -286,7 +286,7 @@ public class PunchHexagon : MonoBehaviour {
                                 StartCoroutine(cellHit.GetPunch(profondeur + punchArea, speedScaleCellUp, choosedTool,true));
 
                             cellTargeted.Add(hit.collider.gameObject);
-                            cellHit.EmittGrowSound();
+                            //cellHit.EmittGrowSound();
 
                             // dans le cas ou l'on a une aire de force supérieur ou égale à 1
                             if (punchAireForceActivate == true)

@@ -9,21 +9,37 @@ public class DestructionBehavior : MonoBehaviour {
     PunchHexagon punchHexagon;
      
     public float timeToWaitForDominoEffect;
-
-    public float timeToDestroyCell;
+    public float timeToDestroyCellMin =0.1f;
+    public float timeToDestroyCellMax =2f;
 
     [Space(10)]
     [Header("[ FeedbackDissolve ]")]
-    [SerializeField]
-    public float speedFeedbackDissolve = 0.5f;
-    [SerializeField]
-    public GameObject prefabDissolve;
     
+    [SerializeField]
+    public float speedFeedbackDissolveAlt1 = 0.5f;
+    [SerializeField]
+    public float speedFeedbackDissolveAlt2 = 0.5f;
+    [SerializeField]
+    public float speedFeedbackDissolveAlt3 = 0.5f;
+
+    [SerializeField]
+    public GameObject prefabDissolveAlt1;
+    [SerializeField]
+    public GameObject prefabDissolveAlt2;
+    [SerializeField]
+    public GameObject prefabDissolveAlt3;
+    [SerializeField]
+    public Color colorToExplode = Color.red;
+
 
     private List<CellTwo> cellToDissolve = new List<CellTwo>();
 
     [HideInInspector]
     public List<CellTwo> listOfCellOnStart = new List<CellTwo>();
+    [HideInInspector]
+    public CellTwo cellOnWaitForDestruction;
+
+    
     
 
     
@@ -44,15 +60,59 @@ public class DestructionBehavior : MonoBehaviour {
         
     }
 
+    public void DisableAllVirus()
+    {
+        for (int i = 0; i < worldGenerate.transform.childCount; i++)
+        {
+            CellTwo cell = worldGenerate.transform.GetChild(i).GetComponent<CellTwo>();
+            cell.canLaunchVirus = false;
+        }
+    }
+    public void DisableAllCellDestruction()
+    {
+        for(int i = 0; i < worldGenerate.transform.childCount; i++)
+        {
+            CellTwo cell = worldGenerate.transform.GetChild(i).GetComponent<CellTwo>();
+            cell.DisableCell();
+        }
+    }
    
+    public float CalculateSpeedWithNumberOfCellUp()
+    {
+        float speed;
+        int numOfCellUp = 0;
+        for (int i = 0; i < worldGenerate.transform.childCount; i++)
+        {
+            if(worldGenerate.transform.GetChild(i).GetComponent<CellTwo>().imAtStartPos == false)
+            {
+                numOfCellUp++;
+            }
+        }
+        //speed = timeToDestroyCell - (timeToDestroyCell-(timeToDestroyCell/10)*(numOfCellUp / worldGenerate.transform.childCount));
+        speed = timeToDestroyCellMax - (timeToDestroyCellMax -timeToDestroyCellMin) * numOfCellUp / worldGenerate.transform.childCount;
+        //speed = numOfCellUp / worldGenerate.transform.childCount;
+        Debug.Log(speed);
+       
+
+        return speed;
+    }
+
+
+
     public void LaunchCellDestruction(CellTwo cell)
     {
         int alt = cell.currentAltitude;
+        if(alt ==1)
+            StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt1, prefabDissolveAlt1,true));
+        if(alt ==2)
+            StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt2, prefabDissolveAlt2, true));
+        if (alt >= 3)
+            StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt3, prefabDissolveAlt3, true));
 
-        StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
+
         List<CellTwo> cellListTemp = new List<CellTwo>();
         cellListTemp.Add(cell);
-        GetAreaDisableFeedbacks(1, cellListTemp, false);
+        //GetAreaDisableFeedbacks(1, cellListTemp, false);
         listOfCellOnStart.Add(cell);
         ChooseAndLaunchProperty(alt, cell);
     }
@@ -67,12 +127,12 @@ public class DestructionBehavior : MonoBehaviour {
            
         }
         else if(altitude == 2)
-        {
-            StartCoroutine(WaitForAreaEffect(1, target.transform, altitude));
+        {      
+            StartCoroutine(WaitForDominosEffect(target, altitude));
         }
         else if(altitude >= 3)
         {
-            StartCoroutine(WaitForDominosEffect(target.transform, altitude));
+            StartCoroutine(WaitForAreaEffect(1, target, altitude));
         }
     }
 
@@ -90,11 +150,11 @@ public class DestructionBehavior : MonoBehaviour {
         listOfCellOnStart.Remove(cellTwoTemp);
     }
 
-    public void LaunchChainDestruction(Transform center, int currentIndex)
+    public void LaunchChainDestruction(CellTwo center, int currentIndex)
     {
-        if (currentIndex > 0)
-        {
-            Vector3 hitVector = new Vector3(center.transform.position.x, 0, center.position.z);
+        //if (currentIndex > 0)
+        //{
+            Vector3 hitVector = new Vector3(center.transform.position.x, 0, center.transform.position.z);
             List<CellTwo> listCloseCell = new List<CellTwo>();
             for (int i = 0; i < worldGenerate.transform.childCount; i++)
             {
@@ -118,31 +178,41 @@ public class DestructionBehavior : MonoBehaviour {
                 int random = Random.Range(0, listCloseCell.Count - 1);
                 ChooseAndLaunchProperty(listCloseCell[random].currentAltitude, listCloseCell[random]);
 
-                StartCoroutine(listCloseCell[random].ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
+                if (listCloseCell[random].currentAltitude == 1)
+                    StartCoroutine(listCloseCell[random].ReturnToStartPos(speedFeedbackDissolveAlt1, prefabDissolveAlt1, false));
+                if (listCloseCell[random].currentAltitude == 2)
+                    StartCoroutine(listCloseCell[random].ReturnToStartPos(speedFeedbackDissolveAlt2, prefabDissolveAlt2, false));
+                if (listCloseCell[random].currentAltitude >= 3)
+                    StartCoroutine(listCloseCell[random].ReturnToStartPos(speedFeedbackDissolveAlt3, prefabDissolveAlt3, false));
+
                 listOfCellOnStart.Add(listCloseCell[random]);
-                StartCoroutine(WaitForDominosEffect(listCloseCell[random].transform, currentIndex - 1));
+                StartCoroutine(WaitForDominosEffect(listCloseCell[random], currentIndex - 1));
+            }
+            else
+            {
+                ChooseRandomClosestCell(GetClosestCells(center));
             }
  
-        }
+        //}
 
     }
 
 
-    IEnumerator WaitForAreaEffect(int area, Transform center,int startAltitude)
+    IEnumerator WaitForAreaEffect(int area, CellTwo center,int startAltitude)
     {
         yield return new WaitForSeconds(timeToWaitForDominoEffect);
         GetAreaOfCellAndLaunchReturn(area,center,startAltitude);
     }
-    IEnumerator WaitForDominosEffect( Transform center, int currentIndex)
+    IEnumerator WaitForDominosEffect( CellTwo center, int currentIndex)
     {
         yield return new WaitForSeconds(timeToWaitForDominoEffect);
         LaunchChainDestruction(center, currentIndex);
     }
 
 
-    void GetAreaOfCellAndLaunchReturn(int areaForce, Transform center,int startAltitude )
+    void GetAreaOfCellAndLaunchReturn(int areaForce, CellTwo center,int startAltitude )
     {
-        Vector3 hitVector = new Vector3(center.position.x, 0, center.position.z);
+        Vector3 hitVector = new Vector3(center.transform.position.x, 0, center.transform.position.z);
         for (int h = 1; h <= areaForce; h++)
         {
 
@@ -160,8 +230,14 @@ public class DestructionBehavior : MonoBehaviour {
                     {
                         //cellToDissolve.Add(punchHexagon.worldGenerateObject.transform.GetChild(i).GetComponent<CellTwo>());
                         int alt = cellTwo.currentAltitude;
-                        
-                        StartCoroutine(cellTwo.ReturnToStartPos(speedFeedbackDissolve, prefabDissolve));
+
+                        if (alt == 1)
+                            StartCoroutine(cellTwo.ReturnToStartPos(speedFeedbackDissolveAlt1, prefabDissolveAlt1, true));
+                        if (alt == 2)
+                            StartCoroutine(cellTwo.ReturnToStartPos(speedFeedbackDissolveAlt2, prefabDissolveAlt2, true));
+                        if (alt >= 3)
+                            StartCoroutine(cellTwo.ReturnToStartPos(speedFeedbackDissolveAlt3, prefabDissolveAlt3, true));
+
                         listOfCellOnStart.Add(cellTwo);
                         ChooseAndLaunchProperty(alt, cellTwo);
 
@@ -217,7 +293,7 @@ public class DestructionBehavior : MonoBehaviour {
                 if (distanceFromCenterHexagon < 1.6f * h)
                 {
 
-                    if(cellTwo.state == DestroyState.OnDestroy)
+                    if (cellTwo.state == DestroyState.OnDestroy || cellTwo.state == DestroyState.OnMove)
                     {
                         getList.Add(cellTwo);
                     }
@@ -240,7 +316,13 @@ public class DestructionBehavior : MonoBehaviour {
                 listCellTwoToDisable[j].state = DestroyState.AdjacentCell;
 
                 listCellTwoToDisable[j].childTimeFeedback.SetActive(true);
-                listCellTwoToDisable[j].ChangeScaleTimeFeedback(false);
+
+                if (listCellTwoToDisable[j].isGrow == true)
+                {
+                    listCellTwoToDisable[j].ChangeScaleTimeFeedback(false);
+                    listCellTwoToDisable[j].isGrow = false;
+                }
+                
                 // reset time feedback si besoin
             }
 
@@ -293,7 +375,7 @@ public class DestructionBehavior : MonoBehaviour {
         for (int i = 0; i < worldGenerate.transform.childCount; i++)
         {
             CellTwo cell = worldGenerate.transform.GetChild(i).GetComponent<CellTwo>();
-           if(cell.imAtStartPos == false )
+           if(cell.imAtStartPos == false && cell != currentCell )
             {
                 Vector3 targetVector = new Vector3(cell.transform.position.x, 0, cell.transform.position.z);
                 float distanceFromCenterHexagon = Vector3.Distance(hitVector, targetVector);
@@ -325,8 +407,12 @@ public class DestructionBehavior : MonoBehaviour {
         {
             int random = Random.Range(0, list.Count);
 
-            StartCoroutine(list[random].StartTimerDestruction());
-            GetAreaEnableFeedbacks(1, list[random]);
+            /*if(cellOnWaitForDestruction.onDestroy == true)
+            cellOnWaitForDestruction.DisableCell();*/
+
+            list[random].destroyCoroutine = StartCoroutine(list[random].StartTimerDestruction(CalculateSpeedWithNumberOfCellUp()));
+            cellOnWaitForDestruction = list[random];
+            //GetAreaEnableFeedbacks(1, list[random]);
         }
     }
 

@@ -112,7 +112,7 @@ public class WorldGenerate : MonoBehaviour {
             {
                 for (int j = -posX+1; j <= posX -1; j=j+2)
                 {
-                    Vector3 pos = new Vector3(j  * increaseX, /*-height*/ (tailleYBigHexagon * 100) / 2, i * increaseZ);
+                    Vector3 pos = new Vector3(j  * increaseX, /*-height*/ (tailleYBigHexagon * 50) / 2, i * increaseZ);
 
                     
                     GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
@@ -125,7 +125,7 @@ public class WorldGenerate : MonoBehaviour {
                     newObject.name = "Cell";
                     newObject.AddComponent<CellTwo>();
                     CellTwo cell = newObject.GetComponent<CellTwo>();
-                    cell.startPosYbyWorldGenerate = /*-height*/ (tailleYBigHexagon * 100) / 2;
+                    cell.startPosYbyWorldGenerate = /*-height*/ (tailleYBigHexagon * 50) / 2;
                     //cell.startScaleY = height;
 
                     newObject.GetComponent<MeshRenderer>().sharedMaterial.color = matFeedBacks.startCellColor;
@@ -133,8 +133,8 @@ public class WorldGenerate : MonoBehaviour {
 
 
                     cell.variables = matFeedBacks;
-                    cell.childTimeFeedback = cell.transform.GetChild(0).gameObject;
-                    cell.childTimeFeedback.SetActive(false);
+                    //cell.childTimeFeedback = cell.transform.GetChild(0).gameObject;
+                    //cell.childTimeFeedback.SetActive(false);
                    
 
                     poolCount++;
@@ -148,7 +148,7 @@ public class WorldGenerate : MonoBehaviour {
                 int lel = (posX - 1) / 2;
                 for (int j = -lel; j <= lel; j++)
                 {
-                    Vector3 pos = new Vector3(j * increaseX *2, /*-height*/ (tailleYBigHexagon * 100) / 2, i * increaseZ);
+                    Vector3 pos = new Vector3(j * increaseX *2, /*-height*/ (tailleYBigHexagon * 50) / 2, i * increaseZ);
 
                     GameObject newObject = Instantiate(prefabHexagon, Vector3.zero, Quaternion.identity) as GameObject;
                     newObject.transform.position = pos;
@@ -159,15 +159,15 @@ public class WorldGenerate : MonoBehaviour {
                     newObject.name = "Cell";
                     newObject.AddComponent<CellTwo>();
                     CellTwo cell = newObject.GetComponent<CellTwo>();
-                    cell.startPosYbyWorldGenerate = /*-height*/ (tailleYBigHexagon * 100) / 2;
+                    cell.startPosYbyWorldGenerate = /*-height*/ (tailleYBigHexagon * 50) / 2;
                     //cell.startScaleY = height;
 
                     newObject.GetComponent<MeshRenderer>().sharedMaterial.color = matFeedBacks.startCellColor;
                     //newObject.GetComponent<MeshRenderer>().material.SetVector("_ObjectPosition", new Vector3(transform.position.x, 1, transform.position.z));
 
                     cell.variables = matFeedBacks;
-                    cell.childTimeFeedback = cell.transform.GetChild(0).gameObject;
-                    cell.childTimeFeedback.SetActive(false);
+                    //cell.childTimeFeedback = cell.transform.GetChild(0).gameObject;
+                    //cell.childTimeFeedback.SetActive(false);
 
                     poolCount++;
                     

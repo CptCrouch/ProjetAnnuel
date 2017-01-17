@@ -53,6 +53,19 @@ public class CellTwo : MonoBehaviour
     
     private Material startMatTemp;
 
+    private float timer = 0;
+    private Color color = Color.black;
+
+    [HideInInspector]
+    public bool onDestroy;
+    [HideInInspector]
+    public bool canLaunchVirus;
+    [HideInInspector]
+    public Coroutine destroyCoroutine;
+
+    [HideInInspector]
+    public bool isGrow = false;
+
    
 
     public int currentAltitude;
@@ -134,33 +147,60 @@ public class CellTwo : MonoBehaviour
         }
     }
 
-    public IEnumerator StartTimerDestruction()
+    public IEnumerator StartTimerDestruction(float timerToDestroyCell)
     {
         state = DestroyState.OnDestroy;
-        childTimeFeedback.SetActive(true);
-        ChangeScaleTimeFeedback(true);
-        
-        float timer = 0;
-        while(timer<=destructionBehavior.timeToDestroyCell && state==DestroyState.OnDestroy)
+        onDestroy = true;
+        canLaunchVirus = true;
+
+        color = Color.black;
+        timer = 0;
+        currentMat.SetColor("_EmissionColor", color);
+        while (timer<=timerToDestroyCell && onDestroy == true)
         {
+            color = Color.Lerp(Color.black,destructionBehavior.colorToExplode,timer/timerToDestroyCell);
+            currentMat.SetColor("_EmissionColor", color);
             timer += Time.deltaTime;
+           
             yield return null;
         }
-        if (state == DestroyState.OnDestroy)
+        if (onDestroy == true)
         {
+            
             destructionBehavior.LaunchCellDestruction(this);
-            childTimeFeedback.SetActive(false);
-            ChangeScaleTimeFeedback(false);
+            
+ 
         }
-
+        currentMat.SetColor("_EmissionColor", Color.black);
+        currentMat.SetFloat("_EmissionColor", 0);
+        timer = 0;
+        onDestroy = false;
         
+        yield return null;
+
+
+    }
+
+    public void DisableCell()
+    {
+        if(onDestroy == true)
+        StopCoroutine(destroyCoroutine);
+
+        state = DestroyState.Idle;
+
+        currentMat.SetColor("_EmissionColor", Color.black);
+        currentMat.SetFloat("_EmissionColor", 0);
+        timer = 0;
+        color = Color.black;
+        onDestroy = false;
+
     }
 
 
-    public IEnumerator ReturnToStartPos(float speed,GameObject prefabDissolve)
+    public IEnumerator ReturnToStartPos(float speed,GameObject prefabDissolve,bool launchPassive)
     {
         Vector3 firstPos = transform.position;
-
+        
         currentAltitude = 0;
         if (cellType.feedBackOnMaterial == true)
         {
@@ -187,85 +227,98 @@ public class CellTwo : MonoBehaviour
             yield return null;
         }
 
-        destructionBehavior.ChooseRandomClosestCell(destructionBehavior.GetClosestCells(this));
-
+        if (launchPassive == true && canLaunchVirus == true)
+        {
+            destructionBehavior.DisableAllVirus();
+            destructionBehavior.ChooseRandomClosestCell(destructionBehavior.GetClosestCells(this));
+            
+        }
+        canLaunchVirus = false;
         Destroy(feedBackDissolve);
 
     }
 
+    
     
 
     public IEnumerator GetPunch(float strength, float speed, Vector3 direction,bool isByPlayer)
     {
         Vector3 firstPos = transform.position;
         DestroyState startState = state;
-
-        // Aller Feedbacks
-
-        if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
-            startMat.color = variables.colorWhenGrow;
-        else if (cellType.feedBackOnMaterial == false)
-            startMat.SetColor("_EmissionColor", variables.colorWhenGrow);
-        else
-            GetComponent<MeshRenderer>().material = variables.materialWhenGrow;
-        //
-
-        //Changement d'etat
-
-        state = DestroyState.OnMove;
-        _imMoving = true;
-        //
-
-        // Montée
-
-        while (transform.position.y <= firstPos.y + (strength * direction.y))
-        {
-            transform.Translate(direction * Time.deltaTime * speed);
-            yield return null;
-        }
-
-        transform.position = new Vector3(transform.position.x, firstPos.y + (strength * direction.y), transform.position.z);
-        //
-
-        //Changement d'Etat Fin
-
-        _imMoving = false;
         imAtStartPos = false;
 
-        currentAltitude++;
-
-        if (isByPlayer == true)
+        if (currentAltitude == 3)
         {
-            if(startState ==DestroyState.AdjacentCell)
+            destructionBehavior.LaunchCellDestruction(this);
+            destructionBehavior.DisableAllVirus();
+            destructionBehavior.DisableAllCellDestruction();
+        }
+        else
+        {
+            if (isByPlayer == true)
             {
-                destructionBehavior.GetAreaDisableFeedbacks(1, destructionBehavior.GetAllCellOnDestroyInArea(1, this), true);
+                destructionBehavior.DisableAllVirus();
+                /*if (destructionBehavior.cellOnWaitForDestruction != null && destructionBehavior.cellOnWaitForDestruction.onDestroy == true)
+                {
+                    destructionBehavior.cellOnWaitForDestruction.DisableCell();
+                }*/
+                destructionBehavior.DisableAllCellDestruction();
+                if (onDestroy == false)
+                    destroyCoroutine = StartCoroutine(StartTimerDestruction(destructionBehavior.CalculateSpeedWithNumberOfCellUp()));
+                else
+                {
+                    //DisableCell();
+
+
+                    destroyCoroutine = StartCoroutine(StartTimerDestruction(destructionBehavior.CalculateSpeedWithNumberOfCellUp()));
+                }
+
+                destructionBehavior.cellOnWaitForDestruction = this;
+
+                
             }
-            StartCoroutine(StartTimerDestruction());
-            destructionBehavior.GetAreaEnableFeedbacks(1, this);
-            Debug.Log(state);
+            else
+                state = DestroyState.Idle;
+
+
+
+
+            _imMoving = true;
+            
+
+            while (transform.position.y <= firstPos.y + (strength * direction.y))
+            {
+                transform.Translate(direction * Time.deltaTime * speed);
+                yield return null;
+            }
+
+            transform.position = new Vector3(transform.position.x, firstPos.y + (strength * direction.y), transform.position.z);
+
+            _imMoving = false;
+            
+
+            currentAltitude++;
+
+
+
+            if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
+                startMat.color = startColor;
+            else if (cellType.feedBackOnMaterial == false)
+                startMat.SetColor("_EmissionColor", startEmissionColor);
+            else
+            {
+                if (currentAltitude == 1)
+                    GetComponent<MeshRenderer>().material = cellType.matAlt1;
+                else if (currentAltitude == 2)
+                    GetComponent<MeshRenderer>().material = cellType.matAlt2;
+                else if (currentAltitude >= 3)
+                    GetComponent<MeshRenderer>().material = cellType.matAlt3;
+
+                currentMat = GetComponent<MeshRenderer>().material;
+
+            }
         }
-        else
-            state = DestroyState.Idle;
-        //
-
-        // Retour Feedbacks
-        if (cellType.feedBackOnEmission == false && cellType.feedBackOnMaterial == false)
-            startMat.color = startColor;
-        else if (cellType.feedBackOnMaterial == false)
-            startMat.SetColor("_EmissionColor", startEmissionColor);
-        else
-        {
-            if (currentAltitude == 1)
-                GetComponent<MeshRenderer>().material =cellType.matAlt1;
-            else if(currentAltitude == 2)
-                GetComponent<MeshRenderer>().material = cellType.matAlt2;
-            else if(currentAltitude >=3)
-                GetComponent<MeshRenderer>().material = cellType.matAlt3;
-
-            currentMat = GetComponent<MeshRenderer>().material;
-
-        }
-        //
+        
 
 
     }

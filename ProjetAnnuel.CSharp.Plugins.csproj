@@ -214,10 +214,9 @@
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\Tags.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\Workspace.xml" />
     <None Include="Assets\Project\Shaders\CloakSurfaceShader.shader" />
-    <None Include="Assets\Project\Shaders\Dissolve - Copie.shader" />
     <None Include="Assets\Project\Shaders\Dissolve.shader" />
-    <None Include="Assets\Project\Shaders\DissolveShader.shader" />
     <None Include="Assets\Project\Shaders\HighlightBall.shader" />
+    <None Include="Assets\Project\Shaders\Include\DissolveShader.shader" />
     <None Include="Assets\Project\Shaders\Include\snoise.cginc" />
     <None Include="Assets\Project\Shaders\InvisibleShadowCaster.shader" />
     <None Include="Assets\Project\Shaders\MergeTextureAvecBruitClassique.shader" />
