@@ -150,7 +150,7 @@ public class CellTwo : MonoBehaviour
         }
     }
 
-    public IEnumerator StartTimerDestruction(float timerToDestroyCell)
+    public IEnumerator StartTimerDestruction(float timerToDestroyCell, bool launchByVirus)
     {
         state = DestroyState.OnDestroy;
         onDestroy = true;
@@ -170,7 +170,7 @@ public class CellTwo : MonoBehaviour
         if (onDestroy == true)
         {
             
-            destructionBehavior.LaunchCellDestruction(this);
+            destructionBehavior.LaunchCellDestruction(this,launchByVirus);
             
  
         }
@@ -200,11 +200,18 @@ public class CellTwo : MonoBehaviour
     }
 
 
-    public IEnumerator ReturnToStartPos(float speed,GameObject prefabDissolve,bool launchPassive)
+    public IEnumerator ReturnToStartPos(float speed,GameObject prefabDissolve,bool launchPassive, int chainParameter,bool launchByVirus)
     {
         Vector3 firstPos = transform.position;
 
-        soundManager.EmittDestroySound(2,this);
+        if (launchByVirus == false)
+        {
+            soundManager.EmittDestroySound(chainParameter, currentAltitude);
+        }
+        else
+        {
+            soundManager.EmittDestroySound(0, currentAltitude);
+        }
         
         currentAltitude = 0;
         if (cellType.feedBackOnMaterial == true)
@@ -224,7 +231,7 @@ public class CellTwo : MonoBehaviour
         mat.material.SetFloat("_Didi", 1);
         mat.material.SetVector("_ObjectPosition", new Vector4(transform.position.x, 1, transform.position.z,1));
         //Debug.Log(mat.sharedMaterial.GetFloat("_Didi"));
-        while (mat.material.GetFloat("_Didi") >=0)
+        while (mat.material.GetFloat("_Didi") >=0.5f)
         {
             //Debug.Log(mat.sharedMaterial.GetFloat("_Didi"));
             float time = mat.material.GetFloat("_Didi") - Time.deltaTime * speed;
@@ -236,10 +243,12 @@ public class CellTwo : MonoBehaviour
         {
             destructionBehavior.DisableAllVirus();
             destructionBehavior.ChooseRandomClosestCell(destructionBehavior.GetClosestCells(this));
-            Debug.Log("caca");
+
             
         }
         canLaunchVirus = false;
+        feedBackDissolve.GetComponent<MeshRenderer>().enabled = false;
+        yield return new WaitForSeconds(1f);
         Destroy(feedBackDissolve);
 
     }
@@ -256,13 +265,13 @@ public class CellTwo : MonoBehaviour
 
         if (currentAltitude == 3)
         {
-            destructionBehavior.LaunchCellDestruction(this);
+            destructionBehavior.LaunchCellDestruction(this,false);
             destructionBehavior.DisableAllVirus();
             destructionBehavior.DisableAllCellDestruction();
         }
         else
         {
-            soundManager.EmittGrowSound();
+            soundManager.EmittGrowSound(currentAltitude+1);
             if (isByPlayer == true)
             {
                 destructionBehavior.DisableAllVirus();
@@ -272,13 +281,13 @@ public class CellTwo : MonoBehaviour
                 }*/
                 destructionBehavior.DisableAllCellDestruction();
                 if (onDestroy == false)
-                    destroyCoroutine = StartCoroutine(StartTimerDestruction(destructionBehavior.CalculateSpeedWithNumberOfCellUp()));
+                    destroyCoroutine = StartCoroutine(StartTimerDestruction(destructionBehavior.CalculateSpeedWithNumberOfCellUp(),false));
                 else
                 {
                     //DisableCell();
 
 
-                    destroyCoroutine = StartCoroutine(StartTimerDestruction(destructionBehavior.CalculateSpeedWithNumberOfCellUp()));
+                    destroyCoroutine = StartCoroutine(StartTimerDestruction(destructionBehavior.CalculateSpeedWithNumberOfCellUp(),false));
                 }
 
                 destructionBehavior.cellOnWaitForDestruction = this;

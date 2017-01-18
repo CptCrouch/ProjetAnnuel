@@ -5,7 +5,7 @@
             <value>destroyWave</value>
         </property>
         <property name="outputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixer">
             <destination>{2ded1e7b-cf65-4cbc-979a-7ab2cfa4bac3}</destination>
@@ -124,6 +124,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{65351a46-6c5a-4a8b-aa44-585c0cc89464}">
+        <property name="volume">
+            <value>-3</value>
+        </property>
         <property name="name">
             <value>Audio 1</value>
         </property>
@@ -166,6 +169,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{7bb30d9f-bac7-47d2-bda5-1b346b9a8802}">
+        <property name="volume">
+            <value>-3.5</value>
+        </property>
         <property name="name">
             <value>Audio 3</value>
         </property>
@@ -189,7 +195,6 @@
         <relationship name="effects">
             <destination>{19401600-de44-48b3-95f6-bd012dfff43c}</destination>
             <destination>{ab8551c7-2b28-4981-b23f-da60e10fce15}</destination>
-            <destination>{5801304d-01c8-4793-bf6c-4058da365f0e}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{bf296f88-6f0c-4b34-a045-527172d5b5c9}"/>
@@ -236,7 +241,6 @@
         </property>
     </object>
     <object class="MixerBusFader" id="{ab8551c7-2b28-4981-b23f-da60e10fce15}"/>
-    <object class="SpatialiserEffect" id="{5801304d-01c8-4793-bf6c-4058da365f0e}"/>
     <object class="MixerBusFader" id="{24080b09-dc38-47ff-aea9-398e1c06ac66}"/>
     <object class="AutomationPoint" id="{affc4ec2-6adf-40eb-9e8e-781492d139cc}">
         <property name="position">

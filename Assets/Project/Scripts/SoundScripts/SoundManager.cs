@@ -30,20 +30,27 @@ public class SoundManager : MonoBehaviour {
 	}
 
     #region Sound
-    public void EmittGrowSound()
+    public void EmittGrowSound(int altitudeTarget)
     {
-        Vector3 playerPos = player.transform.position;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/tileUp", playerPos);
+        if(altitudeTarget == 1)
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/tileUp1");
+        if (altitudeTarget == 2)
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/tileUp2");
+        if (altitudeTarget == 3)
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/tileUp3");
     }
 
-    public void EmittDestroySound(float parameter, CellTwo cellTwo)
-    {
-        Vector3 playerPos = player.transform.position;
+    public void EmittDestroySound(float parameter, int cellAltitude)
+    { 
         FMOD.Studio.EventInstance eventInstance = FMODUnity.RuntimeManager.CreateInstance(destruction);
-        FMOD.Studio.ParameterInstance parameterEvent;
-        eventInstance.getParameter("chainValue", out parameterEvent);
+        FMOD.Studio.ParameterInstance parameterEventChain;
+        FMOD.Studio.ParameterInstance parameterEventAltitude;
+        eventInstance.getParameter("chainValue", out parameterEventChain);
+        eventInstance.getParameter("tileHigh", out parameterEventAltitude);
 
-        parameterEvent.setValue(parameter);
+        
+        parameterEventChain.setValue(parameter);
+        parameterEventAltitude.setValue(cellAltitude);
         eventInstance.start();
         
 
