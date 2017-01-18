@@ -231,6 +231,7 @@ public class CellTwo : MonoBehaviour
         {
             destructionBehavior.DisableAllVirus();
             destructionBehavior.ChooseRandomClosestCell(destructionBehavior.GetClosestCells(this));
+            Debug.Log("caca");
             
         }
         canLaunchVirus = false;

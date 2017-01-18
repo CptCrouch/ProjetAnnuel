@@ -12,6 +12,10 @@ public class DestructionBehavior : MonoBehaviour {
     public float timeToDestroyCellMin =0.1f;
     public float timeToDestroyCellMax =2f;
 
+    public int nombreChaineDestruction = 6;
+
+    public bool alt1WithRepop;
+
     [Space(10)]
     [Header("[ FeedbackDissolve ]")]
     
@@ -97,6 +101,22 @@ public class DestructionBehavior : MonoBehaviour {
         return speed;
     }
 
+    public bool CheckIfThisWillLaunchChain(CellTwo cell)
+    {
+        Vector3 hitVector = new Vector3(cell.transform.position.x, 0, cell.transform.position.z);
+        for (int i = 0; i < worldGenerate.transform.childCount; i++)
+        {
+            CellTwo cellTwo = worldGenerate.transform.GetChild(i).GetComponent<CellTwo>();
+            Vector3 targetVector = new Vector3(cellTwo.transform.position.x, 0, cellTwo.transform.position.z);
+            float distanceFromCenterHexagon = Vector3.Distance(hitVector, targetVector);
+            if (distanceFromCenterHexagon < 1.6f )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
     public void LaunchCellDestruction(CellTwo cell)
@@ -104,10 +124,20 @@ public class DestructionBehavior : MonoBehaviour {
         int alt = cell.currentAltitude;
         if(alt ==1)
             StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt1, prefabDissolveAlt1,true));
-        if(alt ==2)
-            StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt2, prefabDissolveAlt2, true));
+        if (alt == 2)
+        {
+            if(CheckIfThisWillLaunchChain(cell) == true)
+                StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt2, prefabDissolveAlt2, false));
+            else
+                StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt2, prefabDissolveAlt2, true));
+        }
         if (alt >= 3)
-            StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt3, prefabDissolveAlt3, true));
+        {
+            if (CheckIfThisWillLaunchChain(cell) == true)
+                StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt3, prefabDissolveAlt3, false));
+            else
+                StartCoroutine(cell.ReturnToStartPos(speedFeedbackDissolveAlt3, prefabDissolveAlt3, true));
+        }
 
 
         List<CellTwo> cellListTemp = new List<CellTwo>();
@@ -123,12 +153,13 @@ public class DestructionBehavior : MonoBehaviour {
     {
         if(altitude ==1)
         {
+            if(alt1WithRepop == true)
             UpOneCellRandom(target);
            
         }
         else if(altitude == 2)
         {      
-            StartCoroutine(WaitForDominosEffect(target, altitude));
+            StartCoroutine(WaitForDominosEffect(target, nombreChaineDestruction));
         }
         else if(altitude >= 3)
         {
@@ -152,8 +183,8 @@ public class DestructionBehavior : MonoBehaviour {
 
     public void LaunchChainDestruction(CellTwo center, int currentIndex)
     {
-        //if (currentIndex > 0)
-        //{
+        if (currentIndex > 0)
+        {
             Vector3 hitVector = new Vector3(center.transform.position.x, 0, center.transform.position.z);
             List<CellTwo> listCloseCell = new List<CellTwo>();
             for (int i = 0; i < worldGenerate.transform.childCount; i++)
@@ -191,9 +222,15 @@ public class DestructionBehavior : MonoBehaviour {
             else
             {
                 ChooseRandomClosestCell(GetClosestCells(center));
+                Debug.Log("Pouet");
             }
- 
-        //}
+
+        }
+        else
+        {
+            ChooseRandomClosestCell(GetClosestCells(center));
+            Debug.Log("Prout");
+        }
 
     }
 
@@ -391,9 +428,12 @@ public class DestructionBehavior : MonoBehaviour {
         for (int i = 0; i < worldGenerate.transform.childCount; i++)
         {
             CellTwo cell = worldGenerate.transform.GetChild(i).GetComponent<CellTwo>();
-            if(cell.transform.position == closestPosition.position && cell.state != DestroyState.OnDestroy)
+            if (cell.imAtStartPos == false)
             {
-                newList.Add(cell);
+                if (cell.transform.position == closestPosition.position && cell.state != DestroyState.OnDestroy)
+                {
+                    newList.Add(cell);
+                }
             }
         }
 
