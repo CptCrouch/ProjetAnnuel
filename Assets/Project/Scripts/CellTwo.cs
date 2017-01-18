@@ -72,10 +72,13 @@ public class CellTwo : MonoBehaviour
 
     private Material currentMat;
 
+    private SoundManager soundManager;
+
     void Start()
     {
         destructionBehavior = FindObjectOfType<DestructionBehavior>();
         state = DestroyState.Idle;
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
 
         startMat = GetComponent<MeshRenderer>().material;
         startColor = startMat.color;
@@ -200,6 +203,8 @@ public class CellTwo : MonoBehaviour
     public IEnumerator ReturnToStartPos(float speed,GameObject prefabDissolve,bool launchPassive)
     {
         Vector3 firstPos = transform.position;
+
+        soundManager.EmittDestroySound(2,this);
         
         currentAltitude = 0;
         if (cellType.feedBackOnMaterial == true)
@@ -239,14 +244,15 @@ public class CellTwo : MonoBehaviour
 
     }
 
-    
-    
 
-    public IEnumerator GetPunch(float strength, float speed, Vector3 direction,bool isByPlayer)
+
+
+    public IEnumerator GetPunch(float strength, float speed, Vector3 direction, bool isByPlayer)
     {
         Vector3 firstPos = transform.position;
         DestroyState startState = state;
         imAtStartPos = false;
+
 
         if (currentAltitude == 3)
         {
@@ -256,6 +262,7 @@ public class CellTwo : MonoBehaviour
         }
         else
         {
+            soundManager.EmittGrowSound();
             if (isByPlayer == true)
             {
                 destructionBehavior.DisableAllVirus();
@@ -276,7 +283,7 @@ public class CellTwo : MonoBehaviour
 
                 destructionBehavior.cellOnWaitForDestruction = this;
 
-                
+
             }
             else
                 state = DestroyState.Idle;
@@ -285,7 +292,7 @@ public class CellTwo : MonoBehaviour
 
 
             _imMoving = true;
-            
+
 
             while (transform.position.y <= firstPos.y + (strength * direction.y))
             {
@@ -296,7 +303,7 @@ public class CellTwo : MonoBehaviour
             transform.position = new Vector3(transform.position.x, firstPos.y + (strength * direction.y), transform.position.z);
 
             _imMoving = false;
-            
+
 
             currentAltitude++;
 
@@ -319,19 +326,12 @@ public class CellTwo : MonoBehaviour
 
             }
         }
-        
+    
 
 
     }
 
-    public void EmittGrowSound()
-    {
-        float playerPosY = GameObject.FindGameObjectWithTag("Player").transform.position.y;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/tileUp", new Vector3(transform.position.x,playerPosY,transform.position.z));
-    }
     #endregion
 
-
-    
 
 }

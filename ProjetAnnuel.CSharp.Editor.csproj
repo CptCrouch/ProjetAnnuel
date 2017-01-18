@@ -136,17 +136,28 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\Asset\{670bbd04-c13f-4b63-b2e9-80ed82d55ac1}.xml" />
-    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{06e94069-61a4-4dfc-b8d2-d75629b276a3}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{34af80ee-174f-4b28-b957-11e428b08e83}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{4387770a-106d-4ec1-b83f-6976cd144305}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{4a8cd9a2-839e-41aa-b432-cc4db24ccf8a}.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{5e093e88-7b6a-427f-8c1b-25ff963d9063}.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{64ab3204-4116-498a-bab9-96997fbcc9fb}.xml" />
-    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{d275b963-3cec-42d0-9fc6-49fb5f2a3ddd}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{74ccdd8b-6d63-4cd4-8cef-173e13cae696}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{95da6e50-dbac-49f3-8719-e119b3a13f36}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{c604b649-3225-4e63-9aa6-998962c4cf8b}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{ca114c07-1095-4173-94f4-936407a434ec}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\AudioFile\{f22d6941-0ba5-4e6b-847b-65bf4e90e9ee}.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\Bank\{64a47f66-5af9-4ddb-ae89-7f4098a402ec}.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\BankFolder\{dd835aa9-c0c8-47e0-a742-55739c86da07}.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\EncodingSetting\{86ff08bf-1d0d-4617-aefa-916e8b22bcf8}.xml" />
-    <None Include="Assets\FMOD_Projet\soundProject\Metadata\Event\{0b37d5d0-9daf-4a4a-a239-1c6d0557db2b}.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\Event\{179e3c78-4a35-4c37-8c17-b6258cc58639}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\Event\{70f95774-a0ee-4069-8263-6f4ecc32efda}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\Event\{7d56675b-b524-4e49-b332-4f5ecdca69ed}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\Event\{c2bc49ae-8249-4126-9912-ef0589aee61e}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\Event\{dd7c2d7e-672a-4bf5-8390-50624ed734e0}.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\Event\{eddf1268-e14a-4de5-8c0a-265957b5d2ad}.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\EventFolder\{0069fc37-4280-4126-b4ab-d1ee889708f0}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\EventFolder\{b78e1288-9106-4704-ac7b-a9ebf027f66a}.xml" />
+    <None Include="Assets\FMOD_Projet\soundProject\Metadata\EventFolder\{e0992f5d-f025-453b-8a74-7902ead9cbdd}.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\Master.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\Mixer.xml" />
     <None Include="Assets\FMOD_Projet\soundProject\Metadata\Return\{f08e1da9-ebba-435c-930d-42eb40e90d07}.xml" />
